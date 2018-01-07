@@ -1,0 +1,197 @@
+
+% thesis document
+\newcommand{\mychapter}[1]{\chapter{#1}}
+\newcommand{\mychapterfoot}[1]{\chapter[#1]{#1\texorpdfstring{\footnotemark{}}{}}}
+
+% font styles
+\newcommand{\xcolor}[1]{\textsl{\textsf{#1}}} % colored graph labels
+% \newcommand{\xvar}[1]{\textup{\textsf{#1}}} % code variables in AlgorithmStyle
+\newcommand{\xprog}[1]{\textsc{#1}} % programs
+
+% editing
+\newcommand{\xrev}[1]{\textcolor{red}{#1}} % revision
+\newcommand{\xneed}[1]{\textcolor{red}{\textbf{#1}}} % need to address
+
+% colors
+\definecolor{light-gray}{gray}{0.8}
+\definecolor{uiuc-orange-1}{HTML}{FA6300}
+\definecolor{uiuc-orange-2}{HTML}{E14A00}
+
+% epigraph
+\renewcommand{\epigraphflush}{flushleft}
+\renewcommand{\sourceflush}{flushleft}
+\setlength{\epigraphwidth}{0.8\textwidth}
+
+% change equation spacing
+\expandafter\def\expandafter\normalsize\expandafter{%
+    \normalsize
+    \setlength\abovedisplayskip{8pt}
+    \setlength\belowdisplayskip{8pt}
+    \setlength\abovedisplayshortskip{8pt}
+    \setlength\belowdisplayshortskip{8pt}
+}
+
+\newcommand{\cfbox}[2]{%
+#2
+%    \colorlet{currentcolor}{.}%
+%    {\color{#1}%
+%    \fbox{\color{currentcolor}#2}}%
+}
+
+% spacing
+
+% indexing (algorithms)
+\newcommand{\myind}[1]{$\langle${#1}$\rangle$}
+
+
+\newcommand{\bL}{\bm{L}}
+\newcommand{\bl}{\bm{l}}
+\newcommand{\bM}{\bm{M}}
+\newcommand{\bmm}{\bm{m}}
+
+\newcommand{\breakline}{\vspace{-1ex}\begin{center}\noindent\rule{0.6\columnwidth}{0.4pt}\end{center}}
+
+%-------------------------------------------------
+% from DETC2017-67668 Co-Design Theory Paper
+%-------------------------------------------------
+\definecolor{light-gray}{gray}{0.4}
+\definecolor{box-gray}{gray}{1}
+\newcommand{\bxi}{\bm{\xi}}
+\newcommand{\bxp}{\bm{x}_p}
+\newcommand{\bxc}{\bm{x}_c}
+\newcommand{\bu}{\bm{u}}
+\newcommand{\bp}{\bm{p}}
+\newcommand{\bfd}{\bm{f}}
+\newcommand{\bzero}{\bm{0}}
+\newcommand{\blambda}{\bm{\lambda}}
+\newcommand{\bmu}{\bm{\mu}}
+\newcommand{\bnu}{\bm{\nu}}
+\newcommand{\lagrange}{\mathcal{L}}
+\newcommand{\mayer}{\mathcal{M}}
+\newcommand{\eqtextcolor}[1]{\text{\textcolor{black!30}{#1}}}
+\newcommand{\pd}[2]{\frac{\partial #1}{\partial #2}}
+\newcommand{\der}[2]{\frac{d #1}{d #2}}
+%-------------------------------------------------
+
+%-------------------------------------------------
+% from DETC2017-67676 Scaling Paper
+%-------------------------------------------------
+\newcommand{\mybar}[1]{\bar{#1}}
+%-------------------------------------------------
+
+%-------------------------------------------------
+% from MD-16-1635 PM Architectures Paper
+%-------------------------------------------------
+% \newcommand{\mypm}{\textit{PM}}
+\newcommand{\mypm}{PM}
+\newtheorem{definition}{Definition}
+% \definecolor{light-gray}{gray}{0.8}
+% \newcommand{\xcolor}[1]{\text{\textsl{\textsf{#1}}}}
+\newcommand\scalemath[2]{\scalebox{#1}{\mbox{\ensuremath{\displaystyle #2}}}}   
+\newcommand*\circled[1]{\tikz[baseline=(char.base)]{
+            \node[shape=circle,draw,inner sep=1pt] (char) {\small #1};}}
+\newcommand\hlight[2]{\tikz[overlay, remember picture,baseline=-\the\dimexpr\fontdimen22\textfont2\relax]\node[rectangle,fill=black!#2,rounded corners,fill opacity = 0.8,thick,text opacity =1] {$#1$};} 
+\newcommand{\tikzmark}[2]{
+    \tikz[overlay,remember picture,baseline] 
+    \node[anchor=base] (#1) {$#2$};
+}
+%-------------------------------------------------
+
+%-------------------------------------------------
+% from DT QP paper
+%-------------------------------------------------
+\newcommand{\qp}{QP}
+\newcommand{\lqdo}{LQDO}
+\newcommand{\dt}{DT}
+\newcommand{\apgp}{APGP}
+\newcommand*{\tran}{^{\mkern-1.5mu\mathsf{T}}}
+\newcommand{\overbar}[1]{\mkern 1.5mu\overline{\mkern-1.5mu#1\mkern-1.5mu}\mkern 1.5mu}
+\newcommand{\myoverbar}[1]{\mkern 1.5mu\overline{\mkern-1.5mu#1\mkern-1.5mu}\mkern 1.5mu} %  alternative to \bar{} command
+\newcommand{\myunderbar}[1]{\mkern 1.5mu\underline{\mkern-1.5mu#1\mkern-1.5mu}\mkern 1.5mu} %  alternative to \bar{} command
+\newenvironment{lbmatrix}[1]
+  {\left[\array{@{}*{#1}{c}@{}}}
+  {\endarray\right]}
+
+\newcommand{\xind}[1]{\langle{#1}\rangle}
+\newcommand{\mysparsesymbol}{\textcolor{black!20}{$\bullet$}}
+\newcommand{\mytemp}{\textcolor{black}{$\bullet$}}
+\newcommand{\mysparseboxcolor}{black!20}
+\def\Vhrulefill{\leavevmode\leaders\hrule height 0.7ex depth \dimexpr0.4pt-0.7ex\hfill\kern0pt}
+
+%-------------------------------------------------
+
+% --- mathtools ---------------------------------
+\DeclarePairedDelimiter\abs{\lvert}{\rvert} % absolute value delimiter
+\DeclarePairedDelimiter\norm{\lVert}{\rVert} % norm delimiter 
+
+% captions
+\captionsetup{labelfont=bf, justification=raggedright}
+
+\setcounter{secnumdepth}{3} % include subsubsection in numbering
+
+\usepackage[titles]{tocloft}
+\renewcommand{\contentsname}{Table of contents}
+\renewcommand{\cftchapfont}{\normalfont\bfseries}% titles in bold
+\renewcommand{\cftchappagefont}{\normalfont\bfseries}% page numbers in bold
+\renewcommand{\cftdotsep}{1}
+\renewcommand{\cftchapleader}{\cftdotfill{\cftsecdotsep}}% dot leaders in bold
+\setcounter{tocdepth}{1}
+
+% \titleformat{\chapter}[display]
+%         {\normalfont}{\chaptertitlename\ \thechapter}{0pt}{\normalfont}
+
+% for allison
+\definecolor{jta}{RGB}{183, 28, 28}
+% \newcommand{\JTA}[1]{\textcolor{jta}{$\prescript{\text{(JTA)}}{}{}$}\textcolor{jta}{#1}}
+% \definecolor{linkcolor}{RGB}{40, 53, 147}
+% \definecolor{linkcolor}{RGB}{41, 98, 255}
+% \definecolor{linkcolor}{RGB}{6, 69, 173}
+\definecolor{linkcolor}{RGB}{0, 0, 255}
+% \definecolor{jtalink}{RGB}{0, 0, 128}
+\definecolor{jtalink2}{RGB}{0, 0, 64}
+
+\definecolor{uiucblue}{HTML}{13294b}
+
+% https://tex.stackexchange.com/questions/14372/use-of-small-in-the-equation-environment
+\makeatletter
+\renewcommand{\maketag@@@}[1]{\hbox{\m@th\normalsize\normalfont#1}}%
+\makeatother
+
+% glossary link
+\renewcommand*{\glstextformat}[1]{\textcolor{uiucblue}{#1}}
+
+
+% % https://tex.stackexchange.com/questions/209276/how-to-align-dots-and-roman-numbers-in-a-classicthesis-toc
+% \renewcommand\cftsubsecfillnum[1]{{\cftsubsecleader\ }\nobreak 
+%     \hbox{\cftsubsecpagefont #1}\cftsubsecafterpnum \par }
+
+% https://tex.stackexchange.com/questions/196416/dotted-leader-does-not-reach-the-page-number-in-toc
+% \usepackage{tocloft}
+% \usepackage{everypage}
+% \usepackage{calc}
+
+% \AddEverypageHook{\addtocontents{toc}{
+% \protect\cftsetpnumwidth{\widthof{\thepage}}
+% }}
+
+% https://tex.stackexchange.com/questions/186548/toc-dotted-lines-have-unequal-length
+
+% \usepackage{tocloft}
+\makeatletter
+% \renewcommand{\@pnumwidth}{6em}
+\renewcommand{\cftpnumalign}{l}
+\cftsetpnumwidth{2.3em}
+\makeatother
+
+% https://tex.stackexchange.com/questions/147193/tocloft-customizations-not-working-for-algorithms-list
+\makeatletter
+\begingroup
+  \let\newcounter\@gobble
+  \let\setcounter\@gobbletwo
+  \globaldefs\@ne
+  \let\c@loadepth\@ne
+  \newlistof{algorithmt}{loa}{\listalgorithmcfname}
+\endgroup
+% \let\l@algocf\l@algorithmt
+\let\l@algocf\l@figure
+\makeatother

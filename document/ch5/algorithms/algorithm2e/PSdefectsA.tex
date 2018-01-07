@@ -1,0 +1,192 @@
+\begin{vAlgorithm}[!ht]{1\columnwidth}{0em}
+\LinesNumbered
+\DontPrintSemicolon
+
+\SetKwInOut{Require}{Require}
+
+\caption[Create matrices for the defect constraints using a pseudospectral method.]{Create $\mathbf{A}_{e1}$ and $\mathbf{B}_{e1}$ matrices for the defect constraints using a pseudospectral method.}\label{alg:ch5:PSdefects}
+
+\Require{ $\bm{A}$, $\bm{B}$, $\bm{G}$, $\bm{D}$ \tcc*{matrices that define the dynamics in Eqn.~(\ref{eq:ch5:fdyn}) and differentiation matrix in Eqn.~(\ref{eq:ch5:ps:state:approx})}} 
+
+% [\xvar{ID},\xvar{JD},\xvar{VD}] $\gets$ \textsc{find}{$\bm{D}$} \tcc*{deconstruct differentiation matrix}
+
+$\emptyset$ $\gets$ $\mathcal{I}$, $\mathcal{J}$, $\mathcal{V}$ \tcc*{initialize sequences}
+
+\For{\xvar{i} $\gets$ $1$ \KwTo $n_\xi$}{
+
+\xvar{DefectIdx} $\gets$ $(\xvar{i} - 1)N_t + 1$ \KwTo $\xvar{i}N_t$ \tcc*{current defect constraint row locations}
+
+% controls
+\tcc*[l]{$\triangleright$ controls \Vhrulefill}
+
+$\xvar{I}$ $\gets$ \textsc{repmat}(\xvar{DefectIdx},1,$n_u$) \tcc*{current defect constraint row indices}
+
+$\xvar{J}$ $\gets$ $1$ \KwTo $n_u N_t$ \tcc*{current optimization variable column indices}
+
+$\xvar{B}$ $\gets$ evaluate $\bm{B}$\myind{\xvar{i},:} on $\bm{t}$ % \tcc*{the form will be $[\bm{B}_{i,1}(t_0), \cdots, \bm{B}_{i,1}(t_{n_t}), \bm{B}_{i,2}(t_0), \cdots, \bm{B}_{i,2}(t_{n_t}), \cdots, \bm{B}_{i,n_u}(t_{n_t})]\tran$ }
+
+$\xvar{V}$ $\gets$ $-(\Delta/2) \xvar{B}$
+
+$\mathcal{I}$ $\gets$ \textsc{combine}($\mathcal{I}$, \xvar{I})
+
+$\mathcal{J}$ $\gets$ \textsc{combine}($\mathcal{J}$, \xvar{J})
+
+$\mathcal{V}$ $\gets$ \textsc{combine}($\mathcal{V}$, \xvar{V})
+
+% states
+\tcc*[l]{$\triangleright$ states \Vhrulefill}
+
+$\xvar{I}$ $\gets$ \textsc{repmat}(\xvar{DefectIdx},1,$n_u$) \tcc*{current defect constraint row indices}
+
+$\xvar{J}$ $\gets$ $n_u N_t+1$ \KwTo $(n_u+n_\xi)N_t$ \tcc*{current optimization variable column indices}
+
+$\xvar{A}$ $\gets$ evaluate $\bm{A}$\myind{\xvar{i},:} on $\bm{t}$ % \tcc*{the form will be $[\bm{A}_{i,1}(t_0), \cdots, \bm{A}_{i,1}(t_{n_t}), \bm{A}_{i,2}(t_0), \cdots, \bm{A}_{i,2}(t_{n_t}), \cdots, \bm{A}_{i,n_\xi}(t_{n_t})]\tran$ }
+
+$\xvar{V}$ $\gets$ $-(\Delta/2) \xvar{A}$
+
+$\mathcal{I}$ $\gets$ \textsc{combine}($\mathcal{I}$, \xvar{I})
+
+$\mathcal{J}$ $\gets$ \textsc{combine}($\mathcal{J}$, \xvar{J})
+
+$\mathcal{V}$ $\gets$ \textsc{combine}($\mathcal{V}$, \xvar{V})
+
+% parameters
+\tcc*[l]{$\triangleright$ parameters \Vhrulefill}
+
+$\xvar{I}$ $\gets$ \textsc{repmat}(\xvar{DefectIdx},1,$n_p$) \tcc*{current defect constraint row indices}
+
+$\xvar{J}$ $\gets$ $\textsc{kron}(N_t (n_u+n_\xi)+(1$ \KwTo $n_p), \textsc{ones}(1,N_t))$  \tcc*{current optimization variable column indices}
+
+$\xvar{G}$ $\gets$ evaluate $\bm{G}$\myind{\xvar{i},:} on $\bm{t}$ % \tcc*{the form will be $[\bm{G}_{i,1}(t_0), \cdots, \bm{G}_{i,1}(t_{n_t}), \bm{G}_{i,2}(t_0), \cdots, \bm{G}_{i,2}(t_{n_t}), \cdots, \bm{G}_{i,n_u}(t_{n_t})]\tran$ }
+
+$\xvar{V}$ $\gets$ $-(\Delta/2) \xvar{G}$
+
+$\mathcal{I}$ $\gets$ \textsc{combine}($\mathcal{I}$, \xvar{I})
+
+$\mathcal{J}$ $\gets$ \textsc{combine}($\mathcal{J}$, \xvar{J})
+
+$\mathcal{V}$ $\gets$ \textsc{combine}($\mathcal{V}$, \xvar{V})
+
+}
+
+\xvar{D} $\gets$ \textsc{combine}(\textsc{zeros}($n_{\xi} N_t$,$n_u N_t$), \textsc{blkdiag}($\bm{D},\cdots,\bm{D}$), \textsc{zeros}($n_{\xi} N_t$,$n_p$)) \label{line:ch5:D} \tcc*{$n_\xi$ copies of $\bm{D}$ to \textsc{blkdiag}}
+
+$\mathbf{A}_{e1}$ $\gets$ \xvar{D} $\oplus$ \textsc{sparse}($\mathcal{I}$, $\mathcal{J}$, $\mathcal{V}$, $n_\xi N_t$, $n_X$) \tcc*{sparse matrix}
+
+
+% b 
+$\emptyset$ $\gets$ $\mathcal{I}$, $\mathcal{V}$ \tcc*{initialize sequences}
+
+\For{\xvar{i} $\gets$ $1$ \KwTo $n_\xi$}{
+
+$\xvar{I}$ $\gets$ $(\xvar{i} - 1)N_t + 1$ \KwTo $\xvar{i}N_t$ \tcc*{current defect constraint row indices}
+
+$\xvar{d}$ $\gets$ evaluate $\bm{d}$\myind{\xvar{i}} on $\bm{t}$
+
+$\xvar{V}$ $\gets$ $(\Delta/2) \xvar{d}$ \tcc*{$\bm{\nu}$ for the TR method}
+
+$\mathcal{I}$ $\gets$ \textsc{combine}($\mathcal{I}$, \xvar{I})
+
+$\mathcal{V}$ $\gets$ \textsc{combine}($\mathcal{V}$, \xvar{V})
+
+}
+
+$\mathbf{B}_{e1}$ $\gets$ \textsc{sparse}($\mathcal{I}$, $1$, $\mathcal{V}$, $n_\xi N_t$, 1) \tcc*{sparse matrix}
+
+\textbf{return} $\mathbf{A}_{e1}$, $\mathbf{B}_{e1}$ \tcc*{matrices}
+
+
+\end{vAlgorithm}
+
+
+% \begin{algorithm}
+% \caption{Create $\mathbf{A}_{e1}$ and $\mathbf{B}_{e1}$ matrices for the defect constraints using a pseudospectral method.}\label{alg:ch5:PSdefects}
+% \setstretch{0.8}
+% \begin{algorithmic}[1]
+% \Require $\bm{A}$, $\bm{B}$, $\bm{G}$, $\bm{D}$ \tcc*{matrices that define the dynamics in Eqn.~(\ref{eq:ch5:fdyn}) and differentiation matrix in Eqn.~(\ref{eq:ch5:ps:state:approx})}
+
+% % [\xvar{ID},\xvar{JD},\xvar{VD}] $\gets$ \textsc{find}{$\bm{D}$} \tcc*{deconstruct differentiation matrix}
+
+% $\emptyset$ $\gets$ $\mathcal{I}$, $\mathcal{J}$, $\mathcal{V}$ \tcc*{initialize sequences}
+
+% \For{\xvar{i} $\gets$ 1 to $n_\xi$} 
+
+% \xvar{DefectIdx} $\gets$ $(\xvar{i} - 1)N_t + 1$ to $\xvar{i}N_t$ \tcc*{current defect constraint row locations}
+
+% % controls
+% $\triangleright$ controls \Vhrulefill
+
+% $\xvar{I}$ $\gets$ \textsc{repmat}{\xvar{DefectIdx},1,$n_u$} \tcc*{current defect constraint row indices}
+
+% $\xvar{J}$ $\gets$ $1$ to $n_u N_t$ \tcc*{current optimization variable column indices}
+
+% $\xvar{B}$ $\gets$ evaluate $\bm{B}$\myind{\xvar{i},:} on $\bm{t}$ \tcc*{the form will be $[\bm{B}_{i,1}(t_0), \cdots, \bm{B}_{i,1}(t_{n_t}), \bm{B}_{i,2}(t_0), \cdots, \bm{B}_{i,2}(t_{n_t}), \cdots, \bm{B}_{i,n_u}(t_{n_t})]\tran$ }
+
+% $\xvar{V}$ $\gets$ $-(\Delta/2) \xvar{B}$
+
+% $\mathcal{I}$ $\gets$ \textsc{combine}{$\mathcal{I}$, \xvar{I}}
+% $\mathcal{J}$ $\gets$ \textsc{combine}{$\mathcal{J}$, \xvar{J}}
+% $\mathcal{V}$ $\gets$ \textsc{combine}{$\mathcal{V}$, \xvar{V}}
+
+% % states
+% $\triangleright$ states \Vhrulefill
+
+% $\xvar{I}$ $\gets$ \textsc{repmat}{\xvar{DefectIdx},1,$n_u$} \tcc*{current defect constraint row indices}
+
+% $\xvar{J}$ $\gets$ $n_u N_t+1$ to $(n_u+n_\xi)N_t$ \tcc*{current optimization variable column indices}
+
+% $\xvar{A}$ $\gets$ evaluate $\bm{A}$\myind{\xvar{i},:} on $\bm{t}$ \tcc*{the form will be $[\bm{A}_{i,1}(t_0), \cdots, \bm{A}_{i,1}(t_{n_t}), \bm{A}_{i,2}(t_0), \cdots, \bm{A}_{i,2}(t_{n_t}), \cdots, \bm{A}_{i,n_\xi}(t_{n_t})]\tran$ }
+
+% $\xvar{V}$ $\gets$ $-(\Delta/2) \xvar{A}$
+
+% % $\mathcal{I}$ $\gets$ \textsc{combine}{$\mathcal{I}$, \xvar{I}, \xvar{ID}+\textsc{min}(DefectIdx)$-1$}
+% % $\mathcal{J}$ $\gets$ \textsc{combine}{$\mathcal{J}$, \xvar{J}, \xvar{JD}+\textsc{min}(DefectIdx)$-1+n_u N_t$}
+% % $\mathcal{V}$ $\gets$ \textsc{combine}{$\mathcal{V}$, \xvar{V}, \xvar{VD}}
+% $\mathcal{I}$ $\gets$ \textsc{combine}{$\mathcal{I}$, \xvar{I}}
+% $\mathcal{J}$ $\gets$ \textsc{combine}{$\mathcal{J}$, \xvar{J}}
+% $\mathcal{V}$ $\gets$ \textsc{combine}{$\mathcal{V}$, \xvar{V}}
+
+% % parameters
+% $\triangleright$ parameters \Vhrulefill
+
+% $\xvar{I}$ $\gets$ \textsc{repmat}{\xvar{DefectIdx},1,$n_p$} \tcc*{current defect constraint row indices}
+
+% $\xvar{J}$ $\gets$ $\textsc{kron}{N_t (n_u+n_\xi)+(1 \text{ to } n_p), \textsc{ones}(1,N_t)}$  \tcc*{current optimization variable column indices}
+
+% $\xvar{G}$ $\gets$ evaluate $\bm{G}$\myind{\xvar{i},:} on $\bm{t}$ \tcc*{the form will be $[\bm{G}_{i,1}(t_0), \cdots, \bm{G}_{i,1}(t_{n_t}), \bm{G}_{i,2}(t_0), \cdots, \bm{G}_{i,2}(t_{n_t}), \cdots, \bm{G}_{i,n_u}(t_{n_t})]\tran$ }
+
+% $\xvar{V}$ $\gets$ $-(\Delta/2) \xvar{G}$
+
+% $\mathcal{I}$ $\gets$ \textsc{combine}{$\mathcal{I}$, \xvar{I}}
+% $\mathcal{J}$ $\gets$ \textsc{combine}{$\mathcal{J}$, \xvar{J}}
+% $\mathcal{V}$ $\gets$ \textsc{combine}{$\mathcal{V}$, \xvar{V}}
+
+% \EndFor
+
+% \xvar{D} $\gets$ \textsc{combine}{\textsc{zeros}($n_{\xi} N_t$,$n_u N_t$), \textsc{blkdiag}($\bm{D},\cdots,\bm{D}$), \textsc{zeros}($n_{\xi} N_t$,$n_p$)} \label{line:ch5:D} \tcc*{$n_\xi$ copies of $\bm{D}$ to \textsc{blkdiag}}
+
+% $\mathbf{A}_{e1}$ $\gets$ \xvar{D} $\oplus$ \textsc{sparse}{$\mathcal{I}$, $\mathcal{J}$, $\mathcal{V}$, $n_\xi N_t$, $n_X$} \tcc*{sparse matrix}
+
+
+% % b 
+% $\emptyset$ $\gets$ $\mathcal{I}$, $\mathcal{V}$ \tcc*{initialize sequences}
+
+% \For{\xvar{i} $\gets$ 1 to $n_\xi$} 
+
+% $\xvar{I}$ $\gets$ $(\xvar{i} - 1)N_t + 1$ to $\xvar{i}N_t$ \tcc*{current defect constraint row indices}
+
+% $\xvar{d}$ $\gets$ evaluate $\bm{d}$\myind{\xvar{i}} on $\bm{t}$
+
+% $\xvar{V}$ $\gets$ $(\Delta/2) \xvar{d}$ \tcc*{$\bm{\nu}$ for the TR method}
+
+% $\mathcal{I}$ $\gets$ \textsc{combine}{$\mathcal{I}$, \xvar{I}}
+% $\mathcal{V}$ $\gets$ \textsc{combine}{$\mathcal{V}$, \xvar{V}}
+
+% \EndFor
+
+% $\mathbf{B}_{e1}$ $\gets$ \textsc{sparse}{$\mathcal{I}$, $1$, $\mathcal{V}$, $n_\xi N_t$, 1} \tcc*{sparse matrix}
+
+% \textbf{return} $\mathbf{A}_{e1}$, $\mathbf{B}_{e1}$ \tcc*{matrices}
+
+% \end{algorithmic}
+% \end{algorithm}

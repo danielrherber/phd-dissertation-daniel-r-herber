@@ -1,0 +1,27 @@
+\begin{vAlgorithm}[!ht]{\columnwidth}{0em}
+\LinesNumbered
+\DontPrintSemicolon
+
+\SetKwFunction{circshift}{circshift}
+
+\SetKwInOut{Input}{Input}
+\SetKwInOut{Output}{Output}
+
+\caption{Limit potential connections based on replicate ordering.\label{alg:app1:ordering}}
+
+\Input{%
+        \xvbox{2.5mm}{$\xvar{V}$} -- vector of remaining ports for each component replicate \\
+        \xvbox{2.5mm}{$\xvar{Vf}$} -- initial vector of ports available for each component replicate \\
+        $\xvar{iInitRep}$ -- indices of the initial replicate for each component type
+      }
+\Output{%
+        $\xvar{Vordering}$ -- binary vector where $1$ indicates an edge is possible, $0$ if it is not
+       }
+
+\BlankLine
+
+$\xvar{Vordering}$ $\leftarrow$ $\circshift(\xvar{V},[1])$ $\neq$ $\xvar{Vf}$ \tcc*{check if left neighbor has a connection\label{alg:app1:ordering-l1}}
+
+$\xvar{Vordering}(\xvar{iInitRep})$ $\leftarrow$ 1 \tcc*{initial replicates are always 1\label{alg:app1:ordering-l2}}
+
+\end{vAlgorithm}

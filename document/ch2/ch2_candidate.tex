@@ -1,0 +1,133 @@
+%------------------
+\section{Candidate Architectures with Perfect Matchings \label{sec:ch2:candidates}}
+
+First, some relevant graph theory background is given.
+
+\begin{definition}[Graph] \label{def:ch2:graph}
+A graph is a pair $\gls{G} = (\gls{V},\gls{E})$ of sets satisfying $E \subset [V]^2$ where the elements of $V$ are the vertices and the elements of $E$ are its edges. 
+\end{definition}
+
+A \textit{simple graph} is an unweighted, undirected graph containing no graph loops or multiple edges. 
+The adjacency matrix of $G$ is the $\gls{number} \times n$ matrix \gls{A}$\ = A(G)$ whose entries $a_{ij}$ are given by:
+\begin{align*}
+a_{ij} = \begin{cases}
+1 & \text{if the set $(v_i, v_j) \in E$} \\
+0 & \text{otherwise} \\
+\end{cases}
+\end{align*}
+
+\noindent For a simple graph, the \textit{adjacency matrix} must have 0s on the diagonal. For an undirected graph, the adjacency matrix is symmetric and if only a subset of the edges are present in $E$, the correct $A(G)$ can be constructed with $\mathrm{sign}(A + A^{\gls{transpose}})$. The \textit{connectivity matrix} of simple graph $G$ can be found with:
+\begin{align} \label{eq:ch2:connectivity}
+A_{\glsfirst{component}}(n) =  A^n
+\end{align}
+
+\noindent where the interpretation of $A_C(n)$ is for every nonzero entry, there exists at most $n$ undirected walks required to go from $v_i$ to $v_j$, i.e.,~the pair of vertices are connected in some sense \cite[p.~165]{Godsil2001a}. We will assume that $n$ is the same as the length of $A$ giving all walks. 
+
+The degree of a vertex is the number of edges incident at the vertex and the average degree is $\gls{d} = 2 \abs*{E} / \abs*{V}$ \cite[p.~5]{Diestel2000a}. A \textit{matching} in a graph is a set of edges such that no two have a vertex in common and a perfect matching is a matching that covers every vertex \cite[p.~255]{Rispoli2007a}.
+
+\begin{definition}[Colored Graph] \label{def:ch2:cgraph}
+A colored graph $G$ is a three-tuple $(V,E,L)$ where $(V,E)$ specifies an undirected graph and $\gls{L}=\{V_i\}^k_{i=1}$ is a partition of the vertices into color sets ($V_i \cap V_j = \Phi$, $i \neq j$, and $(\cup_{i=1}^k V_i) = V$). For convenience, define $\mathrm{color}(v) = i$ if $v\in V_i$.
+\end{definition}
+
+The graphs in Fig.~\ref{fig:ch2:initialexamples} are colored graphs where each vertex represents a component. The colored labels indicate different component types. For example, in Fig.~\ref{fig:ch2:initialexamples}a, \circled{\xcolor{K}} represents a vertex with a coloring $\gls{colorings}$ indicating that it is a spring component type and that \circled{\xcolor{B}} represents a damper component type. These are termed 2-\textit{port} components since they can have up to 2 unique edges if ports are connected to a single additional vertex (this port notion is analogous to bond graph modeling \cite{Wu2008a}).
+However, there are fundamental limitations with this representation. For example, 
+if the order that the ports of a component are connected to edges prescribed in $A$ is important, then pure component graph representation is not sufficient for determining a unique architecture. Consider the planetary gear \circled{\xcolor{P}} in Fig.~\ref{fig:ch2:initialexamples}b. Since the planetary gear is represented by a single vertex, it is unclear which of the connected components \{\circled{\xcolor{E}}, \circled{\xcolor{G}}, \circled{\xcolor{M}}\} is connected to the sun, ring, and carrier (common names for the planetary gear ports \cite{Bayrak2016a}). Permutations of this decision would result in different architectures but the same adjacency matrix. Another limitation is the unspecified nature of parallel connections when only component-level vertices are used. If the adjacency matrix specifies that $\xcolor{K}$ has three connections, it cannot be necessarily uniquely determined what connections are incident at each specific port of $\xcolor{K}$. A better representation would determine unique graphs, motivating a pure ports graph representation of architectures.
+
+%------------------
+\subsection{Ports Graph}
+
+A port graph $G^{\gls{port}}$ is constructed from a three-tuple $({C},{R},{P})$: 
+\begin{enumerate}[label=$\bullet$, leftmargin=*, widest=$\bullet$, nosep]
+
+\item $\gls{C}$ is the colored label set representing distinct component types, whose size is denoted by $n_C$
+
+\item $\gls{R}$ is a column vector indicating the number of replicates for each component type
+
+\item $\gls{P}$ is a column vector indicating the number of ports for each component type
+\end{enumerate}
+
+Using $({C},{R},{P})$ we will create the three-tuple $({V},{E},{L})$ that defines a proper colored graph (see Definition~\ref{def:ch2:cgraph}). The definition of an $n$-port component in this context is all $n$ ports are completely connected to each other. Therefore each component can be considered a complete graph of its ports (see Fig.~\ref{fig:completegraphs} for the first five complete graphs). The vertex and edge set for $G^{P}$ is then defined as the union of these complete subgraphs:
+\begin{align}
+({V},{E})^{P} = \bigcup_{k=1}^{n_C} \bigcup_{j=1}^{R_k} K_{P_k}
+\end{align}
+
+\noindent where $\gls{K}_{P_k}$ is a complete graph of size $P_k$.
+
+\input{../ch2/figures/completegraphs}
+
+The complete label for each vertex is constructed from a naming scheme where the base is the colored label from ${C}$, the subscript is the replicate number, and the superscript is the port number. Then the set of colored labels for $G^{P}$ can be constructed as:
+\begin{align}
+{L}^{P} = \bigcup_{k=1}^{n_C} \bigcup_{j=1}^{R_k} \bigcup_{i=1}^{P_k} \left\lbrace (C_k)_j^i \right\rbrace
+\end{align}
+\noindent where each label is unique at this point.
+
+There are a number of graph measures and metrics that can be computed for this class of graphs. First, the number of vertices is given by: $N_P = \abs{{V}^{P}} = {P}\tran {R}$, where $\gls{abs}$ is the cardinality of a set. The number of edges in $K_n$ is $n(n-1)/2$ \cite[p.~22]{Godsil2001a}, so we can easily calculate the number of edges in $G^{P}$ as:
+\begin{align}
+\abs*{{E}^{P}} = \frac{1}{2} \left( {P}  \circ \left( {P} - 1 \right) \right)\tran {R}
+\end{align}
+
+\noindent where $\gls{hadamard}$ denotes the Hadamard product. The total number of components is: $N_C = e\tran {R}$ where $\gls{e}$ is a column vector of ones of appropriate length.
+
+\subsection{Interconnectivity Graph\label{sec:ch2:inter}}
+
+The essence of an architecture design problem is determining the relationships between ports. Therefore a natural question is: what are all the possible architectures? Subgraph enumeration provides a relevant framework for determining all possible graphs satisfying specified properties \cite{Rispoli2007a}. We now say that a candidate architecture in an architecture design space described by $(C,R,P)$ has the following properties:
+\begin{enumerate}[nosep]
+\item A set of components bounded by $(C,R,P)$ (so $n_P \leq N_P$, where $n_P$ is the total number of ports for the candidate architecture).
+\item Each port in $(V^P, \{\ \}, L^P )$, i.e.,~$G^P$ without edges, is connected to another port (this implies $n_P$ is even and is also known as a complete topology since there are no open ports \cite{Snavely1993a}).
+\end{enumerate}
+
+\noindent Now, a complete architecture design space described by $(C,R,P)$ would be a set of candidate architectures that contain all possible valid subsets of components and all possible valid edge combinations between said subset of components. We will denote this graph structure space (a set of all graphs that fulfill a certain set of conditions) as $\glsfirst{gss}_1$. We will now see that the enumeration based on \glsfirstplural{PM} will correspond to the complete architecture design space.
+
+Recall that a \mypm{} is a matching in which every vertex of the graph is incident to exactly one edge \cite{Rispoli2007a}; all \mypm{}s for $K_2$, $K_4$, and $K_6$ are shown in Fig.~\ref{fig:ch2:perfectmatchings}. Since a necessary condition for a \mypm{} is an even number of vertices, we will assume $N_P$ is even (Sec.~\ref{sec:ch2:comparison} discusses the implications of this restriction).  The number of \mypm{}s for $K_{n}$ can be calculated using the double factorial function:
+\begin{align}
+% \mathcal{D}(n)
+\gls{doublefac} = (n-1)!! = (n-1) \times (n - 3) \times \dots \times 3 \times 1 \quad n \text{ even}
+\end{align}
+\noindent and the first several values of this function are $\mathcal{D}(2) = 1$, $\mathcal{D}(4) = 3$, $\mathcal{D}(6) = 15$, $\mathcal{D}(8) = 105$, $\mathcal{D}(10) = 945$, $\mathcal{D}(12) = 10,395$,  $\mathcal{D}(14) = 135,135$, $\mathcal{D}(16) = 2,027,025$, $\mathcal{D}(18) = 34,459,425$ \cite{OEISA001147}. This function grows slower than the traditional factorial function since the even elements have been omitted. This result agrees quite well with the bound by Mittal and Frayman for a similar problem (the bound being on order of $\sqrt{N_P!}$) \cite{Mittal1989a}.
+
+\input{../ch2/figures/perfectmatchings}
+
+For $n$ between $1$ and $\mathcal{D}(N_P)$, $\gls{pmedge}(n,N_P)$ denotes the edge set for the $n$th \mypm{} of $K_{N_P}$. The uniqueness of each \mypm{} can be ensured by ordering all edges with the first element being the larger vertex (in the sense of the index value). For example for the first graph in Fig.~\ref{fig:ch2:perfectmatchings}b, $\mathcal{P}(1,4) = \{ (4,1),(3,2) \} \neq \{ (1,4),(2,3) \}$. It will be convenient to map the edge set to a vector where sequential pairs are a single edge (e.g.,~$\{ (4,1),(3,2) \} \to [4\ 1\ 3\ 2]$. There are two interesting properties of the set of all \mypm{}s \cite{Rispoli2007a}:
+\begin{enumerate}[nosep]
+\item Enumerating all \mypm{}s of $K_N$ results in a set of graphs where all possible edge combinations are present where each port is connected to exactly one other port.
+\item The set of \mypm{}s graphs of $K_N$, contains all edge sets for $K_{N-2}$, where $N \geq 4$.
+\end{enumerate}
+
+\noindent Now with these two properties in mind, consider any candidate architecture defined by the properties above. It has $n_P \leq N_P$ and $n_P$ is even, so there exists a \mypm{} matching edge set in the set of \mypm{} graphs of $K_{N_P}$ that contains the subset of components and the particular edge combination since all edge combinations of $n_P$ are found in the set $N_P$. Therefore, because any candidate architecture can be found in the set of \mypm{} graphs of $K_{N_P}$, a PM approach captures the complete architecture design space.
+
+A \mypm{} approach is a type of \glsfirst{GNRS} since there is a binary relation between $\mathcal{G}_1$ and $n \in [1, \mathcal{D}(N_p)]$. A \mypm{} approach is {left-total} and {left-unique} with respect to complete topologies of $(C,R,P)$ (left implies a map from $\mathcal{G}_1$ to $n$ and these are desired properties for a GNRS) \cite{Wyatt2014a}. Algorithm~\ref{alg:ch2:singlepm} is useful for this direction as it determines $\mathcal{P}(n,N_P)$ \cite{github-pm-architectures-project, Rispoli2007a}\footnote{Ref.~\cite{github-pm-architectures-project} contains \textsc{Matlab} codes for Alg.~\ref{alg:ch2:singlepm} and more efficient recursive algorithm when all perfect matchings are required.
+}. In addition, a \mypm{} approach is {right-total} and {right-unique} with respect to the same conditions (right implies a map from $n$ to $\mathcal{G}_1$). Algorithm~\ref{alg:ch2:inversepm} is useful for the right direction as it determines $\mathcal{P}^{-1}(E)$ where $E$ is a valid \mypm{} edge set. Based on these two efficient algorithms, a \mypm{} approach is \textit{algorithmic} in both directions \cite{Wyatt2014a}.
+
+The interconnectivity graph $G^{\gls{interconnectivity}}$ then is defined with $V^P$, $L^P$, and an edge set from the set of \mypm{}s:
+\begin{align} \label{eq:ch2:Ppm}
+E^I = \mathcal{P}(n,N_P) \qquad \text{where $n \in \left[ 1, 2, \dots, \mathcal{D}(N_P) \right]$}
+\end{align}
+
+\noindent The number of edges is: $\abs{E^I} = N_P/2$.
+
+\input{../ch2/algorithms/singlepm}
+
+\input{../ch2/algorithms/inversepm}
+
+\subsection{Connected Ports/Components Graph}
+
+The connected ports graph is the union of the ports graph and interconnectivity graph:
+\begin{align}
+G^{\gls{CP}}  = G^P \cup G^I
+\end{align}
+
+\noindent The number of vertices is still $N_p$. There is possibility of multiple edges when combining the graphs since edges between the already connected ports of a component may be connected with a \mypm{}. We can simplify $G^{CP}$ by combining all multiple edges into a single equivalent edge, thus creating a simple graph. Using this operation, the number of edges of $G^{CP}$ can be bounded by:
+\begin{align}
+\abs*{E^P} \leq \abs*{E^{CP}} \leq \abs*{E^P} + \abs*{E^I}
+\end{align}
+
+\noindent since each edge of $E^I$ could be a repeat of an edge in $E^P$. $G^{CP}$ is a unique representation of an architecture since a \mypm{} is between specific ports and all components are fully connected subgraphs. 
+
+There are advantages of the component graph representation that should be utilized, such as a reduced number of vertices and edges (and not differentiating replicates). We now characterize \textit{simple components} whose port ordering does not matter (e.g.,~a 2-port spring) and \textit{structured components} where it does (e.g.,~a 3-port planetary gear). All simple components will be reduced to a single vertex and the appropriate edges will be created. The labels for simple components will be modified by removing both the superscript and subscript of $L^{CP}$. Structured components will only have their subscripts removed to maintain port discernibility. This graph representation is termed the connected component graph $G^{\glsfirst{CC}}$.
+
+To get a better sense of the structure of $G^{CC}$ consider all components to be simple components. Then the number of vertices is simply $N_C$. The number of edges of $G^{CC}$ can be bounded by $0 \leq \abs{E^{CC}} \leq \abs{E^I}$ and the labels are:
+\begin{align}
+{L}^{CC} = \bigcup_{k=1}^{n_C} \bigcup_{j=1}^{R_k} \left\lbrace C_k \right\rbrace
+\end{align}
+
+\noindent All graphs in the remaining sections are considered to be $G^{CC}$ graphs unless otherwise noted.

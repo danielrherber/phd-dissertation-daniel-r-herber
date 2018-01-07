@@ -1,0 +1,211 @@
+%-------------------------------------------------------------------
+\section{Linear-Quadratic Dynamic Optimization} \label{sec:ch5:lqdo}
+
+In this section, we begin by describing the general NLDO formulation and then a \qp{} is defined. Then, with an assumed property of the solution method, we will characterize the \lqdo{} formulation that supports solution via {\qp}s.
+
+%-------------------------------------------------------------------
+\subsection{General Nonlinear Dynamic Optimization} \label{sec:ch5:gnldo}
+
+% Brief statement of general nonlinear optimal control
+Dynamic-system design permits the optimization of: control trajectories, $\gls{olc}(t)$; static parameters, $\gls{parameters}$; and the time horizon defined by the boundary values $\gls{time}_{\glsfoo[noindex]{initial}}$ and $t_{\glsfoo[noindex]{final}}$. Written as an infinite-dimensional mathematical program, the NLDO formulation is:%
+\begin{subequations}%
+\label{eq:ch5:NLDO}
+\begin{align}
+\min_{\bm{u}(t),\bm{p},t_0,t_f} \qquad& \gls{objective} = \int_{t_0}^{t_f} \mathcal{L} \big(t,\bm{\xi}(t),\bm{u}(t), \bm{p} \big) dt + \mathcal{M}\big(\bm{p}, t_0, \bm{\xi}(t_0), t_f, \bm{\xi}(t_f) \big) \label{eq:ch5:NLobj} \\
+\text{subject to:} \qquad &  \hspace{0.0in} 
+\dot{\bm{\xi}}(t) - \glsname{f}\big(t, \bm{\xi}(t), \bm{u}(t), \bm{p} \big) = \bm{0} \label{eq:ch5:NLdyn} \\
+& \gls{equality}\big(t, \bm{\xi}(t), \bm{u}(t), \bm{p}, t_0, \bm{\xi}(t_0), t_f, \bm{\xi}(t_f) \big) = \bm{0}  \label{eq:ch5:NLeq} \\
+& \gls{inequality}\big(t, \bm{\xi}(t), \bm{u}(t), \bm{p}, t_0, \bm{\xi}(t_0), t_f, \bm{\xi}(t_f) \big) \leq \bm{0}  \label{eq:ch5:NLineq}
+\end{align}
+\end{subequations}%
+
+\noindent where Eqn.~(\ref{eq:ch5:NLobj}) defines the objective function with Lagrange $\gls{lagrange}$ and Mayer $\gls{mayer}$ terms.
+Equation~(\ref{eq:ch5:NLdyn}) enforces the first-order \glsfoo[noindex]{ODE} that describes the dynamic behavior of the states $\gls{states}(t)$.
+Equation~(\ref{eq:ch5:NLeq}) enforces the algebraic equality constraints, and Eqn.~(\ref{eq:ch5:NLineq}) enforces the algebraic inequality constraints.
+Most NLDO problems only contain certain elements of this general formulation.
+Many presentations of general NLDO reorganize Eqns.~(\ref{eq:ch5:NLeq})--(\ref{eq:ch5:NLineq}) by partitioning the constraints into those which depend on time-varying quantities and those which do not.
+The time-varying constraints are termed \textit{path} constraints, and time-independent constraints termed \textit{boundary} constraints (as was done in Chapters~\ref{ch:3} and \ref{ch:4}) \cite{Betts2010a, Biegler2010a, Herber2014a}.
+Some formulations also include the states as optimization variables (primarily motivated by the eventual solution method and the states are still constrained by Eqn.~(\ref{eq:ch5:NLdyn})).
+
+\subsection{Quadratic Program}
+
+In this chapter, we are concerned with a subclass of Prob.~(\ref{eq:ch5:NLDO}) that can be solved numerically as a finite-dimensional \qp. A \qp{} is defined as:%
+\begin{subequations}%
+\label{eq:ch5:basicQP}
+\begin{align}
+\min_{\gls{xqp}} \qquad& \frac{1}{2}\mathbf{X}^{\glsfirst{transpose}} \gls{hqp} \mathbf{X} + \gls{fqp}\tran \mathbf{X} + \gls{cqp} \label{eq:ch5:qpH} \\
+\text{subject to:} \qquad& \gls{Aqp}_{\glsfirst{noteq}} \mathbf{X} = \gls{Bqp}_{e} \label{eq:ch5:Ae} \\
+& \mathbf{A}_{\glsfirst{notineq}} \mathbf{X} \leq \mathbf{B}_{i} \label{eq:ch5:Ai} \\
+& \myunderbar{\mathbf{X}\gls{myunderbar}} \leq \mathbf{X} \leq \myoverbar{\mathbf{X}\gls{myoverbar}} \label{eq:ch5:qpbounds}
+\end{align}
+\end{subequations}%
+
+\noindent where $\mathbf{X}$ is the set of optimization variables, and all other terms in the formulation are real-valued with no dependence on $\mathbf{X}$.
+$\mathbf{H}$ is known as the Hessian matrix and is symmetric.
+We note that the \qp{} formulation in Prob.~(\ref{eq:ch5:basicQP}) is decidedly more structured than NLDO formulation in Prob.~(\ref{eq:ch5:NLDO}).
+The optimal solution to a quadratic program exists and is the global optimum if the objective is a convex quadratic function and the feasible set of Prob.~(\ref{eq:ch5:basicQP}) is nonempty \cite{Pang1983a}.
+There are a variety of efficient algorithms for solving {\qp}s, including  active-set \cite{Pang1983a}, interior-point \cite{Altman1999a}, and augmented Lagrangian \cite{Delbos2005a} methods.
+
+\subsection{Linear-Quadratic Dynamic Optimization Problem Formulation} \label{sec:ch5:lqdoform}
+
+In this section, a subclass of Prob.~(\ref{eq:ch5:NLDO}) is defined that, when combined with a solution method, can generate a \qp{} in the form of Prob.~(\ref{eq:ch5:basicQP}) that approximates the infinite-dimensional solution. 
+There are two aspects that determine if a particular infinite-dimensional problem can be formulated as \qp: 1) the structure of the objective function and constraints in Prob.~(\ref{eq:ch5:NLDO}), and 2) the solution method that approximates the infinite-dimensional problem as a finite one.
+To address the latter aspect, we will only consider order-maintaining methods.
+An order-maintaining method, for example, would have the following property: if a term is linear in the infinite-dimensional problem, then it will be approximated as a set of variables that appear linearly in the finite-dimensional problem.
+An equivalent property will need to be true for quadratic terms.
+
+First, we denote the vector of optimization variables as:
+\begin{align}\label{eq:ch5:x:cont}
+\gls{x} = \begin{bmatrix} \bm{u} \\ \bm{\xi} \\ \bm{p} \end{bmatrix}
+\end{align}
+
+\noindent Both elements of the time horizon are missing because they do not permit {\qp}s (see Sec.~\ref{sec:ch5:mtp}).
+In addition, the states are included to support proper analysis of the problem class and the eventual solution methods.
+We also see $\bm{\xi}(t_0)$ and $\bm{\xi}(t_f)$ directly in the formulation, so we define an expanded set of optimization variables as:
+\begin{align} \label{eq:ch5:varindices}
+\gls{expanded} = \begin{lbmatrix}{1} \bm{x}_c \\ \bm{x}_d \end{lbmatrix} \ \text{where:} \ \ 
+\bm{x}_c = \begin{lbmatrix}{1} \bm{u} \\ \bm{\xi} \end{lbmatrix}
+:= \begin{lbmatrix}{1} \bm{x}_1 \\ \bm{x}_2 \end{lbmatrix} \  \text{and} \ \ 
+\bm{x}_d = \begin{lbmatrix}{1} \bm{p} \\ \bm{\xi}(t_0) \\ \bm{\xi}(t_f) \end{lbmatrix}
+:= \begin{lbmatrix}{1} \bm{x}_3 \\ \bm{x}_4 \\ \bm{x}_5 \end{lbmatrix}
+\end{align}
+
+\noindent where $\bm{x}_{\glsfirst{continuous}}$ and $\bm{x}_{\glsfirst{discrete}}$ are collections of the continuous (infinite-dimensional) and discrete (finite-dimensional) optimization variables, and indexed variables $\bm{x}_i$ are equivalent to the variable in the same row in the vector directly to the left in the same equation (e.g.,~$\bm{u} := \bm{x}_1$). 
+
+%-------------------------------------------------------------------
+\subsubsection{Linear Dynamics}
+
+A good place to start is with the dynamics expressed in Eqn.~(\ref{eq:ch5:NLdyn}) as it is a unique feature of DO. An appropriate choice for the state dynamics is a linear nonhomogeneous differential equation:
+\begin{align} \label{eq:ch5:fdyn}
+\bm{f} = \bm{f}^{\glsfirst{notqp}} := \gls{dynA}(t)\bm{\xi}(t) + \gls{dynB}(t) \bm{u}(t) + \gls{dynG}(t)\bm{p} + \gls{dynd}(t) 
+\end{align}
+
+\noindent where $\{\bm{A},\bm{B},\bm{G}\}$ are the \glsfirst{LTV} state/input/parameter matrices and $\bm{d}(t)$ is a disturbance.
+
+Many authors consider different variations on Eqn.~(\ref{eq:ch5:fdyn}).
+The simplest form is that of a \glsfirst{LTI} system: $\bm{f} = \bm{A}\bm{\xi} + \bm{B} \bm{u}$ \cite{Lack1967a, Sala2007a}.
+The next most common form is the LTV system without $\bm{G}$ or $\bm{d}$ \cite{Wang1992a}.
+The addition of the disturbance does appear in a number of formulations \cite{Hampton1996a, Popescu2009a, Li2015a, Bryson1975a, Han2012a}.
+No general formulations are seen which include $\bm{p}$, but this may be due to the limited number of problems where $\bm{p}$ shows up linearly in $\bm{f}$. 
+However, this demonstrates that even the simplest mixed parameter-control problems are not \lqdo{} problems \cite{Herber2014a}.
+A more general form is $\gls{dynE}(t)\dot{\bm{\xi}} = \bm{f}^{QP}$, known as descriptor form \cite{Gerdts2015a, Campbell2013a}.
+Here we will only consider that case where $\bm{E}$ is nonsingular so it may be written as $\dot{\bm{\xi}} = \bm{E}^{-1}\bm{f}^{QP}$. 
+
+One may be tempted to integrate this differential equation and would arrive at the following:
+\begin{align} \label{eq:ch5:statesol}
+\bm{\xi}(t) = \bm{\Phi}(t,t_0) \bm{\xi}(t_0) + \int_{t_0}^{t}  \bm{\Phi}(t,\tau) \big( \bm{B}(\tau) \bm{u}(\tau) + \bm{G}(\tau) \bm{p} + \bm{d}(\tau) \big) d\tau
+\end{align}
+
+\noindent where $\gls{transition}$ is the state-transition matrix which describes the dynamics of the homogeneous system (i.e.,~the integral in Eqn.~(\ref{eq:ch5:statesol}) is zero) \cite{Chen1999a}.
+The most general transition matrix is given by the Peano-Baker series.
+However, if $\bm{A}$ is time-invariant, then the state-transition matrix is $e^{\bm{A}(t-\tau)}$.
+Some solution methods will utilize these properties, but in general, the differential equation is challenging to utilize directly.
+
+%-------------------------------------------------------------------
+\subsubsection{Quadratic Objective Function}
+
+The \qp{} objective function in Eqn.~(\ref{eq:ch5:qpH}) is a polynomial with degree two; therefore, we will choose a general quadratic cost functional containing appropriate elements of $\tilde{\bm{x}}$:%
+\allowdisplaybreaks[1]%
+\begin{gather} \label{eq:ch5:QOFLagrange}
+\mathcal{L} = \mathcal{L}^{QP} := 
+\underbracket{\sum_{i=1}^5 \sum_{j=1}^5 \bm{x}_i\tran  \gls{Lbm}_{ij}(t) \bm{x}_j}_{\textstyle H^{\mathcal{L}} = \tilde{\bm{x}}\tran  \bL \tilde{\bm{x}} }
+\ + \
+\underbracket{\sum_{j=1}^5 \gls{lbm}_j\tran (t) \bm{x}_j}_{\textstyle F^{\mathcal{L}} = \bl\tran   \tilde{\bm{x}}}
+\ + \
+c^{\mathcal{L}}(t) \\ \label{eq:ch5:QOFMayer}
+\mathcal{M} = \mathcal{M}^{QP} := 
+\underbracket{\sum_{i=3}^5 \sum_{j=3}^5 \bm{x}_i\tran \gls{Mbm}_{ij} \bm{x}_j}_{\textstyle H^{\mathcal{M}} = {\bm{x}}\tran_d \bM {\bm{x}}_d }
+\ + \
+\underbracket{\sum_{j=3}^5 \gls{mbm}\tran_j \bm{x}_j}_{\textstyle F^{\mathcal{M}} = \bmm\tran  \bm{x}_d}
+\ + \
+c^{\mathcal{M}}
+\end{gather}
+\allowdisplaybreaks[0]%
+
+\noindent where we require that $\bL_{ij} = \bL_{ji}\tran$ and $\bM_{ij} = \bM_{ji}\tran$ so that both are symmetric since $\mathbf{H}$ needs to be symmetric.
+We note that the Mayer term only includes the discrete optimization variables because including any element of $\bm{x}_c$ would not result in a scalar quantity\footnote{We can also note that since the time horizon is fixed in \lqdo, $\mathcal{M}$ is redundant since $\bm{M}_{ij}/(t_f-t_0)$ could be added to $\bm{L}_{ij}$ for the appropriate indices.
+To facilitate more natural descriptions, all terms are considered.}.
+
+The Lagrange and Mayer terms in Eqns.~(\ref{eq:ch5:QOFLagrange})--(\ref{eq:ch5:QOFMayer}) include all possible time-varying quadratic and linear terms in the most general expression.
+While most of the applications utilize a few select time-variant and time-invariant terms for their performance index \cite{Hampton1996a, Popescu2009a, Campbell2013a, Gerdts2015a, Tang2007a, Jerez2011a, Bashein1971a}, there are a few applications in the literature which include all the time-varying $\bm{x}_c$ dependent terms in the linear and quadratic terms, but only includes $\bm{\xi}(t_f)$ terms in linear and quadratic Mayer terms \cite{Wang1992a, Sideris2010a, Han2012a}.
+Constants in Lagrange and Mayer terms ($c^{\mathcal{L}}$ and $c^{\mathcal{M}}$) are not widely used, but $c^{\mathcal{M}}$ term appears in a few references \cite{Gerdts2015a}.
+We also note that if there are no quadratic terms (i.e.,~$\bm{L}=\bm{0}$ and $\bm{M}=\bm{0}$), then the \lqdo{} problem can be solved with linear programming (a special case of quadratic programming) \cite{Boyd2009a}.
+
+%-------------------------------------------------------------------
+\subsubsection{Additional Linear Constraints} 
+
+In most DO problems there are additional constraints that need to be enforced.
+In the context of \lqdo, these can all be expressed as the following general linear equality and inequality constraint forms:%
+\allowdisplaybreaks[1]%
+\begin{gather}
+h = h^{QP} := \sum_{j=1}^5 \gls{Ybm}_{j}(t)\tran \bm{x}_j - \hat{Y}(t) = \bm{Y}\tran \tilde{\bm{x}} - \hat{Y} = 0 \label{eq:ch5:hqp} \\
+g = g^{QP} := \sum_{j=1}^5 \gls{Zbm}_{j}(t)\tran \bm{x}_j - \hat{Z}(t) = \bm{Z}\tran \tilde{\bm{x}} - \hat{Z} \leq 0 \label{eq:ch5:gqp}
+\end{gather}%
+\allowdisplaybreaks[0]%
+
+\noindent This representation of the constraints mixes the path and boundary definitions mentioned in Sec.~\ref{sec:ch5:gnldo}. In Sec.~\ref{sec:ch5:alg:lin:constraints} it will be shown that a straightforward procedure exists to determine which class (path or boundary) is most appropriate for a specified constraint. 
+
+As with the previous \lqdo{} elements, there are a number of common constraint types seen in literature that are captured by these general linear constraints.
+There is a broad class of boundary condition constraints that only contain the initial and final states \cite{Gerdts2015a} including prescribed initial conditions \cite{Lack1967a, Bryson1975a, Wang1992a, Anderson2007a, Tang2007a, Sideris2010a, Han2012a}, prescribed final or terminal conditions \cite{Lack1967a, Bashein1971a, Bryson1975a, Jerez2011a}, and periodic conditions \cite{Herber2014a}.
+Initial and final state conditions need not be only equality constraints \cite{Jerez2011a}. Mixed control-state constraints are also possible \cite{Sideris2010a, Bryson1975a, Gerdts2015a, Jerez2011a, Han2012a}.
+This type of constraint commonly includes only $\bm{x}_c$ terms, but the whole collection $\tilde{\bm{x}}$ is possible and necessary such as when a parameter is used to represent maximum or absolute values (see Sec.~\ref{sec:ch5:absolute:values} and Sec.~\ref{sec:ch5:minmax:objective}).
+
+There is a special subclass of Eqn.~(\ref{eq:ch5:gqp}) which contains only single linear term:%
+\begin{subequations}%
+\label{eq:ch5:simplebounds}
+\begin{align}
+\myunderbar{\bm{x}}(t) - \bm{x}_j \leq \bm{0} \\
+\bm{x}_j - \overbar{\bm{x}}(t)  \leq \bm{0}
+\end{align}
+\end{subequations}
+\noindent This subclass is mentioned because it fits the form of Eqn.~(\ref{eq:ch5:qpbounds}) more so than either Eqn.~(\ref{eq:ch5:Ae})--(\ref{eq:ch5:Ai}).
+If $\myunderbar{\bm{x}}$ and $\overbar{\bm{x}}$ are not time-varying (see Ref.~\cite{Lack1967a} where they can be time-varying), these constraints are commonly called saturation constraints or simple bounds \cite{Bashein1971a}.
+
+%-------------------------------------------------------------------
+\subsubsection{Comparison to Similar Formulations}
+
+With all elements of the \lqdo{} problem, we will briefly compare with some other common formulations found in the literature.
+Perhaps the most ubiquitous \lqdo{} problem is the finite-horizon \glsfoo[noindex]{LQR} problem \cite{Liberzon2012a}:%
+\begin{subequations}%
+\label{eq:ch5:lqr}
+\begin{align}
+\min_{\bm{u}(t)} \qquad& \int_{t_0}^{t_f} \left( \bm{\xi}\tran(t)\bm{L}_{22}\bm{\xi}(t)  + \bm{u}\tran(t)\bm{L}_{11}\bm{u}(t) \right) dt +  \bm{\xi}\tran(t_f)\bm{M}_{55} \bm{\xi}(t_f) \\
+\text{subject to:} \qquad &  \hspace{0.0in} 
+\dot{\bm{\xi}}(t) - \big(  \bm{A}\bm{\xi}(t) + \bm{B} \bm{u}(t) \big) = \bm{0} \\
+& \bm{\xi}(t_0) - \bm{\xi}_0 = \bm{0}
+\end{align}
+\end{subequations}%
+
+\noindent We note that the problem is time-invariant with no path constraints or mixed terms.
+This problem structure is still amenable to deriving a set of reasonably simple optimality conditions in the form of a boundary value problem \cite{Bryson1975a, Liberzon2012a}.
+The optimality conditions for different variations on Prob.~(\ref{eq:ch5:lqr}) have also been studied by Bryson and Ho~\cite{Bryson1975a}. These variations include an LTV system with $\bm{\xi}\tran \bm{L}_{21} \bm{u}$ terms, exactly zero terminal error (i.e.,~$\bm{\xi}(t_f) = \bm{0}$), and the nonhomogeneous equation $\bm{f} = \bm{A}(t) \bm{\xi}(t) + \bm{B}(t) \bm{u}(t) + \bm{d}(t)$.
+Since these problem structures do not have path constraints, it is fairly straightforward to derive the optimality conditions.
+
+% new paragraph
+Many \glsfirst{MPC} paradigms utilize Prob.~(\ref{eq:ch5:lqr}) \cite{Borrelli2015a}. % [p.~167
+The following additional constraints are also common in MPC formulations:
+\begin{align}
+x(t) \in \mathcal{X}, \quad u(t) \in \mathcal{U}, \quad \forall t \geq 0
+\end{align}
+
+\noindent where the sets $\mathcal{X}$ and $\mathcal{U}$ are polyhedra.
+These sets can be represented by sets of linear constraints of form Eqns.~(\ref{eq:ch5:hqp})--(\ref{eq:ch5:gqp}), or even as simple bounds (see Sec.~\ref{sec:ch5:polyhedra}).
+These polyhedra constraints are possible for more general forms of linear constraints, such as mixed input and state constraints \cite{Borrelli2015a}.
+
+% new paragraph
+An \lqdo{} formulation with many similar elements is studied by Sideris and Rodriguez~\cite{Sideris2010a} with the notation slightly amended to be consistent with this work:%
+\begin{subequations}%
+\label{eq:ch5:Sideris}
+\begin{align}
+\min_{\bm{u}(t)} \quad& \scalebox{0.94}{$\displaystyle  \int_{t_0}^{t_f} \left( \sum_{i=1}^2 \sum_{j=1}^2 \bm{x}_i\tran \bL_{ij}(t) \bm{x}_j + \sum_{j=1}^2 \bl_j\tran(t) \bm{x}_j \right) dt + \bm{\xi}\tran(t_f)\bm{M}_{55} \bm{\xi}(t_f) +  \bm{\xi}\tran(t_f)\bm{m}_5$} \\
+\text{subject to:} \quad &  \hspace{0.0in} 
+\dot{\bm{\xi}}(t) - \big(  \bm{A}(t) \bm{\xi}(t) + \bm{B}(t) \bm{u}(t) \big) = \bm{0} \\
+& \bm{\xi}(t_0) - \bm{\xi}_0 = \bm{0} \\
+& h = \sum_{j=1}^2 \bm{Y}_{j}(t)\tran \bm{x}_j - \hat{Y}(t) = 0
+\end{align}
+\end{subequations}%
+
+\noindent Here we see an LTV system, an objective function with mixed and linear terms, and mixed linear equality conditions.
+However, there are no inequality constraints nor general boundary conditions. 
+Han et al.~\cite{Han2012a} include inequality constraints and the disturbance, along with most of the problem elements in Prob.~(\ref{eq:ch5:Sideris}).
+From these select examples, we can see a diversity of formulations in the literature, and all fit with the given \lqdo{} framework.

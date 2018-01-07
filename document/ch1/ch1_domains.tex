@@ -1,0 +1,124 @@
+\section{Three Design Domains\label{sec:ch1:domains}}
+
+In this section, we will discuss the classification of the three design domains.
+The purpose of these classifications is to help conceptualize what can we change and how can we handle these decisions in system-level design.
+
+%----------------------------------------------------------
+\subsection{Architecture\label{sec:ch1:architecture}}
+
+In the engineering design context, architecture is defined as the elements contained within a system and their relationships \cite{Crawley2004a}.
+An architecture design problem seeks to optimize some performance measure subject to the necessary constraints by determining both the distribution of the elements and their relationships in the system.
+A complementary use of the architecture representation is during the design process (see Sec.~\ref{sec:ch1:process}) where the elements and their relationships may change for reasons other than optimization of the system's performance.
+The term ``element'' is a very generic but appropriate term as the elements in an architecture can be very different.
+Some dissimilar types of architecture elements include:
+\begin{itemize}[noitemsep]
+\item Choosing between two elements with similar function but differing properties such as motor $A$ vs. motor $B$ from a manufacturer's catalog
+\item Choosing elements with different functions such as a spring vs. a damper
+\item Choosing elements with different assumptions/forms such as an active vs. semi-active actuator, or feedback controller vs. open-loop controller
+\item Choosing elements with different levels of model fidelity such as a linear spring vs. a nonlinear, finite element-based spring
+\end{itemize}
+
+It is important to consider that not all architecture elements are meant to be strict design decisions.
+For example, seeking the best performing architecture by varying elements with similar function but different levels of model fidelity is not particularly useful.
+Therefore, a key point is that an architecture representation used during the design process does not need to be the final, realizable architecture to still be useful.
+There are advantages in using different levels of design representation which will be discussed more in Sec.~\ref{sec:ch1:process}.
+However, the broad definition of architecture used here encompasses the whole of an engineering system and its design representation.
+
+% new paragraph
+Component is a common alternative term for element (and will be used frequently throughout this dissertation).
+Often, an architecture is made up of a particular set of components chosen from a set of discrete choices or a catalog.
+Components in the catalog may be homogeneous (all the same) or heterogeneous (different).
+The relationships between the elements of the architecture can be frequently captured by a graph \cite{Herber2017a}.
+These relationships, or connections, could be physics-based or general information sharing.
+From these definitions, we see that architecture design primarily involves the determination of discrete concepts (rather than the primarily continuous variables used in the remaining two design domains).
+
+% other names
+An alternative term for architecture is topology.
+Topology more commonly refers to the connections between similar elements, while architecture tends to focus on the specifics.
+For example, consider a series-parallel topology for an electrical circuit.
+Traditionally, such a classification implies that replacing a particular component (e.g.,~swapping a capacitor for an inductor) in the circuit would still have the same topology.
+There is even a particular element type that forgos the direct specification of the component known as the general impedance element. 
+However, there are alternative definitions would classify these as different topologies.
+Another domain where topology is frequently used is in structural optimization \cite{Bendsoe2004a, Lohan2016c}.
+In these types of architecture design problems, the elements are typically homogeneous (e.g.,~all are bars in the truss with the same type of area shape), so it does fit the definition of the connections between similar elements.
+Throughout this dissertation, both may still be used interchangeably even though this delineation between architecture and topology might be useful.
+
+% examples
+There are many architectures with heterogeneous components, such as electrical circuits \cite{Macmahon1994a, Lomnicki1972a, Isokawa2016a,manuscript-pm-circuits}, hybrid powertrains \cite{Bayrak2016a}, vehicle suspensions \cite{Herber2017a}, gear trains \cite{Pennestri2015a, Castillo2002a}, and biological networks \cite{Ma2009a} that are represented by colored graphs where the colors (or labels) are the component types.
+There are a large number of geometric architecture problems such as the design of trusses \cite{Bendsoe2004a}, heat spreaders \cite{Lohan2016c}, and soft robotics \cite{Cheney2013a}.
+These problems sometimes have homogeneous elements, but a few have heterogeneous elements such as in soft robotics where the material at different locations can have a different behavior \cite{Cheney2013a}.
+Sometimes, the architecture problem can be approximated with a continuum relaxation, such as with the solid isotropic material with penalization algorithm for structural optimization \cite{Bendsoe2004a, Lohan2016c}.
+However, the final solution still needs discrete values to define a realizable architecture.
+
+%----------------------------------------------------------
+\subsection{Plant\label{sec:ch1:plant}}
+
+The plant design is defined by variables that are generally regarded as time independent.
+Often this implies physical variables such as geometry, but may be other types such as spring stiffness (a lumped quantity).
+Sometimes the distinction is made when comparing between control and plant. Plant (sometimes called the artifact in this domain) are the quantities fixed during the control design. 
+For example, the variables that can modify the dynamic equations without any control present would represent the plant.
+
+% new paragraph
+Frequently, the variables are continuous scalars, but other types are possible. 
+Examples of continuous scalars plant variables include the lengths of the links in a robotic manipulator \cite{Allison2013d} or the cross sectional area of truss elements \cite{Bendsoe2004a}.
+The distributed thickness of a beam could be a part of the plant design (an infinite-dimensional plant variable) \cite{Chilan2017a}.
+Discrete variables are also possible, such as the number of teeth in a gear \cite{Budynas2014a}.
+
+%----------------------------------------------------------
+\subsection{Control\label{sec:ch1:control}}
+
+Control seeks to govern directly the behavior of a dynamic system, i.e.,~one which evolves through time.
+Unlike the other two design domains, control is frequently considered more adjustable for different tasks or conditions, i.e.,~one system may have different control schemes for different scenarios.
+
+Generally speaking, there are two types of control paradigms: closed loop and open loop.
+In \glsfirst{CLC}, there is some type of feedback mechanism where the current state of the system is considered when making decisions about the next action to take.
+In \glsfirst{OLC}, there is no feedback mechanism.
+With no feedback mechanism, open-loop control design variables are typically entire trajectories.
+An example of an OLC variable is the torque trajectory for a rotatory actuator in a robotic manipulator \cite{Allison2013d}.
+For closed-loop control, gains or other variables that modify aspects of the feedback mechanism could be considered the control design.
+An example of CLC is in the infinite-horizon linear-quadratic regulator with full state feedback \cite{Liberzon2012a}.
+
+%----------------------------------------------------------
+\subsection{Ambiguity in These Delineations\label{sec:ch1:}}
+
+While descriptions were provided for each of the three design domains, there is still some ambiguity on how to provide the appropriate classifications.
+There are a number of potential reasons for this vagueness.
+
+% new paragraph, engineers
+One of the primary reasons may simply be legacy design paradigms that treat certain parts of the design as separate \cite{Allison2014a}.
+System engineers may tackle the architecture design while the mechanical and control engineers deal with the plant and control designs, respectively (and what is in their domain is decided by some form of management).
+Therefore, the classification of the design variables may be along the lines of what is traditionally expected for the particular type of engineer to handle during the design process.
+In a system-level design approach, as is preferred in this work, this type of classification is not needed as all domains are considered uniformly.
+
+% new paragraph, optimization
+Another type of delineation is based on variable types.
+Architecture design variables are discrete.
+The plant consists of continuous, time-independent variables and the control is infinite-dimensional trajectories.
+This classification scheme has the advantage of utilizing techniques specifically created to handle each of the variable types.
+However, the discussion above for each design domain demonstrated that the domains contain variables of variety types.
+In a similar way, the general theory or tools may be developed to handle certain parts of the design domains which may provide their own classifications (e.g.,~multidisciplinary design frameworks \cite{Allison2014a}).
+
+% new paragraph, approximations
+Another difficulty comes when the approximations or better representations of design variables in one domain are frequently  classified in another domain.
+Consider the following examples where a design decision in one domain is approximated in another design domain:
+\begin{itemize}
+\item Architecture $\to$ plant: the solid isotropic material with penalization approximation in structural optimization \cite{Bendsoe2004a, Lohan2016c}
+
+\item Architecture $\to$ control: assuming a particular feedback controller form for the power take-off in wave energy conversion so that standard control-design techniques can be applied rather than selecting a specific power take-off architecture \cite{Falnes2002a}
+
+\item Plant $\to$ architecture: using only preferred discrete component values in a circuit (e.g.,~E12 series) rather than continuous values for the inductance and capacitance \cite{Gan2010a}
+
+\item Plant $\to$ control: abstracting the power take-off system in a wave energy converter to an open-loop force trajectory rather than a physical-system with plant variables \cite{Herber2013a, Herber2014a}
+
+\item Control $\to$ plant: tuning a passive system with only physical components such as dampers and springs instead of a full-state feedback controller
+\end{itemize}
+
+\noindent In many of these cases, the designers may not put much importance in their classification but rather treat them as the necessary design variables for the problem at hand.
+
+% new paragraph
+A final point is the concept of plant and control architectures.
+For new systems, it may be beneficial to split up the architecture decisions that are traditionally linked to the plant and control systems \cite{Deshmukh2015a}.
+For example, candidate plant architectures for automotive
+hybrid powertrains include series, parallel, and power-split, among others \cite{Bayrak2015a}.
+For the power-split architecture (and other similar new architectures), the splitting of the power between the energy producing components is a necessary control decision \cite{Bayrak2015a}.
+The specific controller used to make this control decision is the control architecture and may be an open-loop trajectory, a basic feedback controller, or any number of alternatives depending on the stage in the design process or its performance.

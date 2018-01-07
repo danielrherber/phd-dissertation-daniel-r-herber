@@ -1,0 +1,76 @@
+\definecolor{myorange}{HTML}{FA6300}
+\definecolor{myblue}{HTML}{6699CC}
+\definecolor{mygrey}{HTML}{424242}
+
+\begin{figure}
+\centering
+
+\tikzsetnextfilename{mymethods}
+
+\begin{tikzpicture}[
+Meshnode/.style={ellipse, draw=myorange!70, fill=myorange!5, very thick, minimum size=7mm},
+Quadnode/.style={ellipse, draw=myblue!70, fill=myblue!5, very thick, minimum size=7mm},
+Defectnode/.style={ellipse, draw=mygrey!70, fill=mygrey!5, very thick, minimum size=7mm}
+]
+	\begin{scope}[]
+        \matrix[nodes={draw,Quadnode}, column sep=1cm]{
+            \node (CEF) {CEF}; &
+            \node (CTR) {CTR}; &
+            \node (CQHS) {CQHS}; &
+            \node (G) {G}; &
+            \node (CC) {CC}; \\
+        };
+     \end{scope}
+    \begin{scope}[yshift=-1.5cm]
+        \matrix[nodes={draw,Meshnode}, column sep=1cm]{
+            \node (U) {U}; &
+            \node (ED) {ED}; &
+            \node (LGL) {LGL}; &
+            \node (CGL) {CGL}; \\
+            };
+    \end{scope}
+     \begin{scope}[yshift=-3cm]
+        \matrix[nodes={draw,Defectnode}, column sep=1cm]{
+            \node (EF) {EF}; &
+            \node (TR) {TR}; &
+            \node (HS) {HS}; &
+            \node (RK4) {RK4}; &
+            \node (ZO) {ZO}; &
+            \node (PS) {PS}; \\
+        };
+    \end{scope}
+
+\node[] (Defect) [left = 0.5cm of EF] {Defects};
+\node[] (Mesh) [left = 2.7cm of U] {Mesh};
+\node[] (Quad) [left = 0.5cm of CEF] {Quadrature};
+
+
+    
+\foreach \from/\to in {U/CEF, U/CTR, U/CQHS}
+\draw [black] (\to) -- (\from);
+
+\foreach \from/\to in {ED/CEF, ED/CTR, ED/CQHS}
+\draw [black] (\to) -- (\from);
+    
+\foreach \from/\to in {LGL/CEF, LGL/CTR, LGL/CQHS, LGL/G}
+\draw [black] (\to) -- (\from);
+
+\foreach \from/\to in {CGL/CEF, CGL/CTR, CGL/CQHS, CGL/CC}
+\draw [black] (\to) -- (\from);
+
+
+\foreach \from/\to in {EF/U,  TR/U,  HS/U,  RK4/U, ZO/U}
+\draw [black] (\to) -- (\from);
+
+\foreach \from/\to in {EF/ED,  TR/ED,  HS/ED,  RK4/ED, ZO/ED}
+\draw [black] (\to) -- (\from);
+
+\foreach \from/\to in {EF/LGL,  TR/LGL,  HS/LGL,  RK4/LGL, ZO/LGL, PS/LGL}
+\draw [black] (\to) -- (\from);
+
+\foreach \from/\to in {EF/CGL,  TR/CGL,  HS/CGL,  RK4/CGL, ZO/CGL, PS/CGL}
+\draw [black] (\to) -- (\from);
+
+
+\end{tikzpicture}
+\end{figure}

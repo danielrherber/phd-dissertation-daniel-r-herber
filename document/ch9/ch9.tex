@@ -1,0 +1,137 @@
+\mychapter{Conclusions and Future Work\label{ch:9}}
+
+%--- epigraph
+\epigraph{\textit{``Design, on the other hand, is concerned with how things ought to be\dots''}}{\textmd{H.~A.~Simon} \cite[p.~114]{Simon1996a}}
+%--- epigraph
+
+\section{Summary}
+
+% new paragraph
+The design of actively-controlled, dynamic engineering systems is a grand task.
+While there are a number of approaches that can be used to address these design problems, a formal systematic design automation approach can lead to innovations in many different areas. 
+In this dissertation, three design domain classifications were explored: architecture, plant, and control. 
+The necessary theory and tools were developed to handle various aspects of this integrated design paradigm and a number of case studies were provided to illustrate the proposed design process.
+
+% new paragraph
+Chapter~\ref{ch:2} focused on the task of representing and generating (all) candidate architectures for a particular architecture problem class define by colored graphs built from a catalog of components.
+The growth rate of the complete listing was shown to be bounded by the double factorial function on the number of ports, but the practical examples with suitable \glsplural[noindex]{NSC} demonstrated the number of unique, feasible architectures is frequently manageable.
+
+% new paragraph
+The next chapter focused the general co-design problem, or combined plant and control design.
+The dynamic optimization problem formulation and optimality conditions for both the simultaneous and nested solution strategies were presented.
+The test problems in this chapter highlighted a number of key concepts including coupling, the difference between the feasible regions for each strategy, general boundary conditions, inequality path constraints, system-level objectives, the complexity of the closed-form solutions, and nonconvexity.
+Due to a number of challenges associated with the optimality conditions, practical solution considerations were discussed with a focus on the motivating reasons for using \glsname[noindex]{DT} in co-design.
+An investigation was done with scaling in dynamic optimization problems to help manage the complexity and develop design insights.
+The mechanics of scaling are fairly straightforward, but proper utilization of scaling relies heavily on the creativity and intuition of the designer.
+In the simple \glsname[noindex]{SASA} problem, scaling was used to understand observed results from more complete, higher-fidelity design study in Chapter~\ref{ch:7}.
+
+% new paragraph
+A bulk of the next chapter focused on solving a particular subclass of \glsname[noindex]{DO}, namely \glsname[noindex]{LQDO} problems.
+These problems can be approximated with quadratic programs and be constructed and solved efficiently. 
+A class of numerical methods known as DT was utilized to find approximate solutions to the LQDO problem.
+Including a variety of DT methods allowed for direct comparisons between the methods.
+The \glsname[noindex]{PS}-based methods had extremely fast convergence in problems with no path constraints and that were generally smooth.
+When nonsmoothness was present in the optimal solutions, the higher-order \glsname[noindex]{SS} methods performed better, with the \glsname[noindex]{HS} and \glsname[noindex]{RK4} being the best.
+The \glsname[noindex]{CQHS}-based methods generally performed as well as or better than the other SS methods, demonstrating the relative effectiveness of the new quadrature scheme.
+
+% new paragraph
+The first detailed case study undertook the design of passive analog
+circuits through the enumeration of all relevant circuits generated using the methods presented in Chapter~\ref{ch:2}.
+Both presented examples (frequency response matching and low-pass filter realizability) demonstrated that enumeration is feasible for certain commonly-used synthesis problems, but is also a challenge to use for sufficiently demanding synthesis tasks. 
+The results were compared to existing approaches. 
+Enumeration showed that some evolutionary approaches have produced minimum complexity or Pareto-optimal topologies.
+In addition, the results provided initial insights into the computational expense required to solve architecture design problems with enumeration.
+
+% new paragraph
+The second case study tackled a sophisticated co-design problem with the design of SASAs for spacecraft precision pointing and jitter reduction.
+Single-axis slew maneuvers of 7.2 milliradians were achieved for a representative spacecraft model without increasing array mass or reducing array planform area.
+From additional tradeoff studies, a design criteria was revealed for the array structure and control strategy based on the optimal design tradeoff between large array inertia and fast structural dynamics.
+This study also indicated the relative effectiveness of the nested co-design strategy over the simultaneous one for certain design problems.
+
+% new paragraph
+The final case study considered the design of vehicle suspensions with design decisions in all three domains.
+It was shown that changes in the suspension architecture can result in improvements to the suspension quality when compared to the few canonical representations.
+A problem class with combined architecture, plant, and control design using linear physical elements was presented. This class can be solved using the methods in this dissertation, but special attention is still needed to keep the problems manageable.
+The sentiment remains true for any design problem that attempts to determine the optimal architecture, plant, and control.
+
+%--------------------------------------
+\section{Contributions}
+
+\begin{enumerate}
+\item A method for enumerating all architectures represented by colored graphs under certain assumptions was developed.
+This perfect matching-based approach also included a number of enhancements which cover the same set of graphs more efficiently.
+It was shown that reasonably large problems can be enumerated when NSCs and isomorphism checking are included when compared to other approaches such as adjacency matrix enumeration.
+The examples and case studies demonstrated that this approach can provides architectures that are useful in various engineering design studies.
+
+\item Previous work in co-design theory imposed restrictions on the type of problems that could be posed.
+The work in this dissertation lifted many of those restrictions. 
+The problem formulations and optimality conditions for both the simultaneous and nested solution strategies are given, along with a general discussion on the practical solution strategies.
+Three test problems were developed to illustrate the differences between the two co-design strategies. 
+
+\item A unified approach to the scaling of dynamic optimization formulations was developed with a particular focus on how to leverage scaling in design studies. 
+The necessary theory for scaling dynamic optimization formulations was presented, and a number of motivating examples were shown.
+
+\item A unified framework for solving linear-quadratic dynamic
+optimization problems was developed. 
+The considered problem class is very general, covering many previously studied linear-quadratic problems. 
+An automated problem generation procedure is developed that generates the matrices for the quadratic program given a natural structure-based description.
+A new composite quadratic Hermite-Simpson method that uses linear interpolation between node points for each term in the quadratic objective function was developed as one available quadrature scheme.
+
+\item Several engineering design examples were presented.
+Each one of the case studies handles a complex, relevant design problem with some combination of architecture, plant, and control design decisions.
+The code for most of the content in this dissertation is made available in an effort to make these contributions and examples available for replication and as a foundation for future work (see Appendix~\ref{app:D}).
+
+\end{enumerate}
+
+%--------------------------------------
+\section{Future Work}
+
+\begin{itemize}
+
+% new paragraph
+\item \textbf{Design Process for Complete Dynamic System Design}---Many of the contributions in this dissertation support various aspects of the complete dynamic system design process described in Sec.~\ref{sec:ch1:process}.
+However, there are still many gaps that limit the influence of the proposed design process.
+The two case studies that included control are stage 1 studies.
+To create a realizable system, the control architecture (both continuous and digital) need to be developed in a satisfactory way, as well as using sufficiently accurate models and robust problem formulations.
+Additional theory and tools are needed to address the remaining design tasks such as bridging the gap between open-loop and closed-loop control \cite{Deshmukh2015a}.
+Furthermore, compelling examples are needed to provide testimony for the benefits of the prosed approach.
+
+% new paragraph
+\item \textbf{Effective Utilization of Enumerative Methods in Architecture Design}---The perfect matching-based enumerative scheme in Chapter~\ref{ch:2} allowed for the generation of all architectures under certain assumptions.
+However, any enumerative method (with some open-ended nature) will reach a point where too many architectures need to be generated and tested, as was shown in the simple examples and the case studies.
+Therefore, determining when enumeration is appropriate is an important task in any architecture design problem.
+Developing new NSCs that capture real feasibility requirements can help push this limit.
+An alternative is to utilize enumeration in novel ways with strategies that better scale with larger architecture problem sizes, such as evolutionary computation or machine learning. 
+Recent work has employed machine learning strategies to scale to synthesis problems larger than the training data set generated using an enumeration \cite{GuoScitech2018} of spatially defined, uncolored graphs.
+Extending the use of data from enumeration to larger synthesis problems described by general colored graphs is an important topic for future work.
+
+% new paragraph
+\item \textbf{Choosing between Nested and Simultaneous Co-Design Solution Strategies}---The discussion on the two co-design solution strategies in Chapter~\ref{ch:3} was lacking complete information on how to choose between either strategy (or another strategy appropriate for co-design problems).
+Additional work is needed to provide clear guidelines with supporting evidence.
+The development of appropriate test problems could aid in this endeavor.
+General reductions in the computational expense of either strategy will also be important so that fair comparisons can be made.
+
+% new paragraph
+\item \textbf{Future Work in Linear-Quadratic Dynamic Optimization}---In Sec.~\ref{sec:ch5:future:work}, a number of future work items for the automated problem generation procedure for solving linear-quadratic dynamic optimization problems were outlined. 
+This included multiple-interval PS methods, multiphase problems, mesh refinement, costate approximation, additional defect and quadrature methods, customized \glsname[noindex]{QP} solvers, scaling, and quadratically-constrained QPs programs.
+Implementing these can improve the LQDO by providing additional problem types and better quality solutions. 
+
+% new paragraph
+\item \textbf{Combined Architecture, Plant, and Control Design with Linear Physical Elements}---The problem class presented in Chapter~\ref{ch:8} is lacking theory and tools in some areas. 
+An efficient and automated method for generating the state-space equations as an analytical function of the plant design variables should greatly reduce the computational expense over linearization of a block-diagram model.
+This may be possible with advanced bond graph modeling tools \cite{Granda1997a, Kleijn2017a}, or the conversion of the system into an equivalent electrical circuit \cite{SysAnal2004a}.
+Understanding the different problem elements that can be effectively handled would be useful such as frequency domain constraints or certain types of plant constraints.
+Techniques to filter out poor performing topologies before the full inner-loop co-design problem is solved may be possible. 
+
+% new paragraph
+\item \textbf{Further Development of the Case Studies}---The three case studies in this dissertation were constructed to provide the initial design solutions and insights needed to handle the complex nature of their design problems.
+However, additional work is needed so these applications do not remain only in the early stages of development.
+Although seemingly closest to realizability, the design of passive analog circuits should include layout design and restriction of using the preferred component values.
+The design of SASAs has different elements that can be improved. 
+A continuously distributed internal moment is hard to realize on actual hardware, so piecewise constant actuation is preferred.
+Determining design guidelines for this control architecture, such as actuator placement and a suitable (closed-loop) control system that can provide the performance and robustness required for space missions, is essential.
+The final vehicle suspension case study used simplified plant models and a single problem formulation with one road profile. Furthermore, open-loop control was utilized, so a closed-loop controller should be developed.
+The usefulness of the optimal designs at this stage is limited until more suitable design problems are solved.
+Insights from the simpler studies can provide an initial basis for the comprehensive studies. 
+
+\end{itemize}

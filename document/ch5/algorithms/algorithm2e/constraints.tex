@@ -1,0 +1,117 @@
+\begin{vAlgorithm}[!ht]{1\columnwidth}{0em}
+\LinesNumbered
+\DontPrintSemicolon
+
+\SetKwInOut{Require}{Require}
+
+\caption{Create matrices for the additional inequality (or equality) constraints.}\label{alg:ch5:constraints}
+
+\Require{ structure $\mathcal{Z}$ of type \textsf{constraint}}
+
+$\emptyset$ $\gets$ $\mathcal{I}_A$, $\mathcal{I}_B$, $\mathcal{J}_A$, $\mathcal{V}_A$, $\mathcal{V}_B$ \tcc*{initialize sequences}
+
+\For{\xvar{i} $\gets$ $1$ \KwTo $\abs{\mathcal{Z}}$}{
+
+$\xvar{Z}$ $\gets$ $\mathcal{Z}$\myind{\xvar{i}} \tcc*{obtain current substructure}
+
+$\xvar{PathFlag}$ $\gets$ $0$ \tcc*{initialize as a boundary constraint}
+
+\For{\xvar{j} $\gets$ $1$ \KwTo $\abs{\mathcal{Y}}$}{
+
+	\uIf{$\xvar{Z}.\xvar{linear}$\myind{\xvar{j}}$.\xvar{right} < 3$}{
+		$\xvar{PathFlag}$ $\gets$ $0$ \tcc*{set as a path constraint}
+	}
+	\ElseIf{$\xvar{Z}.\xvar{linear}$\myind{\xvar{j}}$.\xvar{matrix}$ is time varying}{
+		$\xvar{PathFlag}$ $\gets$ $0$ \tcc*{set as a path constraint}
+	}
+	\If{$\xvar{Z}.\xvar{b}$ is time varying}{
+		$\xvar{PathFlag}$ $\gets$ $0$ \tcc*{set as a path constraint}
+	}
+}
+
+\xvar{N} $\gets$ $\abs{\mathcal{I}_B}$ \tcc*{current number of constraints}
+
+\uIf{$\xvar{PathFlag}=1$}{
+	 $[\xvar{I}, \xvar{J}, \xvar{V}, \xvar{B}]$ $\gets$ Algorithm~\ref{alg:ch5:path} using $\xvar{Z}$ \tcc*{path constraint}
+
+	$\mathcal{I}_B$ $\gets$ \textsc{combine}($\mathcal{I}_B,\xvar{N}+(1 \text{ to } N_t)$) \tcc*{$N_t$ constraints}
+}
+\Else{
+	 $[\xvar{I}, \xvar{J}, \xvar{V}, \xvar{B}]$ $\gets$ Algorithm~\ref{alg:ch5:boundary} using $\xvar{Z}$ \tcc*{boundary constraint}
+	$\mathcal{I}_B$ $\gets$ \textsc{combine}($\mathcal{I}_B,\xvar{N}+1$) \tcc*{single constraint}
+}
+
+$\mathcal{I}_A$ $\gets$ \textsc{combine}($\mathcal{I}_A, \xvar{I}+\xvar{N}$)
+
+$\mathcal{J}_A$ $\gets$ \textsc{combine}($\mathcal{J}_A, \xvar{J}$)
+
+$\mathcal{V}_A$ $\gets$ \textsc{combine}($\mathcal{V}_A, \xvar{V}$)
+
+$\mathcal{V}_B$ $\gets$ \textsc{combine}($\mathcal{V}_B, \xvar{B}$)
+
+}
+
+$\mathbf{A}_i$ $\gets$ \textsc{sparse}($\mathcal{I}_A, \mathcal{J}_A, \mathcal{V}_A, \abs{\mathcal{I}_B}, n_X$) \tcc*{sparse matrix}
+
+$\mathbf{B}_i$ $\gets$ \textsc{sparse}($\mathcal{I}_B, 1, \mathcal{V}_B, \abs{\mathcal{I}_B}, 1$) \tcc*{sparse matrix}
+
+\textbf{return} $\mathbf{A}_i$, $\mathbf{B}_i$ \tcc*{matrices}
+
+\end{vAlgorithm}
+
+% \begin{algorithm}
+% \caption{Create matrices for the additional inequality (or equality) constraints.}\label{alg:ch5:constraints}
+% \setstretch{0.8}
+% \begin{algorithmic}[1]
+% \Require structure $\mathcal{Z}$ of type \textsf{constraint}
+
+% $\emptyset$ $\gets$ $\mathcal{I}_A$, $\mathcal{I}_B$, $\mathcal{J}_A$, $\mathcal{V}_A$, $\mathcal{V}_B$ \tcc*{initialize sequences}
+
+% \For{\xvar{i} $\gets$ 1 to $\abs{\mathcal{Z}}$} 
+
+% $\xvar{Z}$ $\gets$ $\mathcal{Z}$\myind{\xvar{i}} \tcc*{obtain current substructure}
+
+% $\xvar{PathFlag}$ $\gets$ $0$ \tcc*{initialize as a boundary constraint}
+
+% \For{\xvar{j} $\gets$ 1 to $\abs{\mathcal{Y}}$} 
+
+% 	\If{$\xvar{Z}.\xvar{linear}$\myind{\xvar{j}}$.\xvar{right} < 3$}
+% 		$\xvar{PathFlag}$ $\gets$ $0$ \tcc*{set as a path constraint}
+% 	\ElsIf{$\xvar{Z}.\xvar{linear}$\myind{\xvar{j}}$.\xvar{matrix}$ is time varying}
+% 		$\xvar{PathFlag}$ $\gets$ $0$ \tcc*{set as a path constraint}
+% 	\EndIf
+% 	\If{$\xvar{Z}.\xvar{b}$ is time varying}
+% 		$\xvar{PathFlag}$ $\gets$ $0$ \tcc*{set as a path constraint}
+% 	\EndIf
+% \EndFor
+
+% \xvar{N} $\gets$ $\abs{\mathcal{I}_B}$ \tcc*{current number of constraints}
+
+% \If{$\xvar{PathFlag}=1$}
+% 	 $[\xvar{I}, \xvar{J}, \xvar{V}, \xvar{B}]$ $\gets$ Algorithm~\ref{alg:ch5:path} using $\xvar{Z}$ \tcc*{path constraint}
+
+% 	$\mathcal{I}_B$ $\gets$ \textsc{combine}{$\mathcal{I}_B,\xvar{N}+(1 \text{ to } N_t)$} \tcc*{$N_t$ constraints}
+% \Else
+% 	 $[\xvar{I}, \xvar{J}, \xvar{V}, \xvar{B}]$ $\gets$ Algorithm~\ref{alg:ch5:boundary} using $\xvar{Z}$ \tcc*{boundary constraint}
+% 	$\mathcal{I}_B$ $\gets$ \textsc{combine}{$\mathcal{I}_B,\xvar{N}+1$} \tcc*{single constraint}
+
+% \EndIf
+
+% $\mathcal{I}_A$ $\gets$ \textsc{combine}{$\mathcal{I}_A, \xvar{I}+\xvar{N}$}
+
+% $\mathcal{J}_A$ $\gets$ \textsc{combine}{$\mathcal{J}_A, \xvar{J}$}
+
+% $\mathcal{V}_A$ $\gets$ \textsc{combine}{$\mathcal{V}_A, \xvar{V}$} 
+
+% $\mathcal{V}_B$ $\gets$ \textsc{combine}{$\mathcal{V}_B, \xvar{B}$} 
+
+% \EndFor
+
+% $\mathbf{A}_i$ $\gets$ \textsc{sparse}{$\mathcal{I}_A, \mathcal{J}_A, \mathcal{V}_A, \abs{\mathcal{I}_B}, n_X$} \tcc*{sparse matrix}
+
+% $\mathbf{B}_i$ $\gets$ \textsc{sparse}{$\mathcal{I}_B, 1, \mathcal{V}_B, \abs{\mathcal{I}_B}, 1$} \tcc*{sparse matrix}
+
+% \textbf{return} $\mathbf{A}_i$, $\mathbf{B}_i$ \tcc*{matrices}
+
+% \end{algorithmic}
+% \end{algorithm}

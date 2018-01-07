@@ -1,0 +1,57 @@
+\begin{figure}
+\centering
+\begin{subfigure}[b]{\columnwidth}
+\centering
+\begin{align*}
+% \scalemath{0.7}{
+\scalemath{0.9}{
+\begin{blockarray}{ccccccccc}
+& \xcolor{S} & \xcolor{U} & \xcolor{M} & \xcolor{K} & \xcolor{B} & \xcolor{F} & \xcolor{P} & \xcolor{P} \\
+\begin{block}{c[cccccccc]}
+\xcolor{S} & 1 & \cdot & \cdot & \cdot & \cdot & \cdot & \cdot & \cdot \\
+\xcolor{U} & \hlight{0}{20} & 1 & \cdot & \cdot & \cdot & \cdot & \cdot & \cdot \\
+\xcolor{M} & \hlight{0}{55} & \hlight{0}{55} & 1 & \cdot & \cdot & \cdot & \cdot & \cdot  \\
+\xcolor{K} & 1 & 1 & 1 & \hlight{0}{90} & \cdot & \cdot & \cdot & \cdot  \\
+\xcolor{B} & 1 & 1 & 1 & 1 & \hlight{0}{90} & \cdot & \cdot & \cdot  \\
+\xcolor{F} & 1 & 1 & 1 & 1 & 1 & 1 & \cdot & \cdot  \\
+\xcolor{P} & 1 & 1 & 1 & 1 & 1 & 1 & \hlight{0}{37.5} & \cdot \\
+\xcolor{P} & 1 & 1 & 1 & 1 & 1 & 1 & \hlight{0}{37.5} & \hlight{0}{37.5} \\
+\end{block}
+\end{blockarray}
+}
+\end{align*}
+% \vspace{-0.35in}
+\caption{Reduced potential adjacency matrix $A_R$.\label{fig:ch2:suspension2_1}}
+% \vspace{0.1in}
+\end{subfigure}
+% 
+\begin{subfigure}[b]{\columnwidth}
+\vspace{0.3in}
+\centering
+\begin{align*}
+% \scalemath{0.7}{
+\scalemath{0.9}{
+\begin{blockarray}{cccccccccccccc}
+& \xcolor{S} & \xcolor{U} & \xcolor{M} & \xcolor{M} & \xcolor{K} & \xcolor{K} & \xcolor{B} & \xcolor{B} & \xcolor{F} & \xcolor{P} & \xcolor{P} & \xcolor{P} & \xcolor{P} \\
+\begin{block}{c[ccccccccccccc]}
+\xcolor{S} & \tikzmark{top}{1} & \cdot & \cdot & \cdot & \cdot & \cdot & \cdot & \cdot & \cdot & \cdot & \cdot & \cdot & \cdot \\
+\xcolor{U} & \hlight{0}{20} & 1 & \cdot & \cdot & \cdot & \cdot & \cdot & \cdot & \cdot & \cdot & \cdot & \cdot & \cdot \\
+\xcolor{M} &	\hlight{0}{55} & \hlight{0}{55} & 1 & \cdot & \cdot & \cdot & \cdot & \cdot & \cdot & \cdot & \cdot & \cdot & \cdot \\
+\xcolor{M} &	\hlight{0}{55} & \hlight{0}{55} & 1 & 1 & \cdot & \cdot & \cdot & \cdot & \cdot & \cdot & \cdot & \cdot & \cdot \\
+\xcolor{K} &	1 & 1 & 1 & 1 & 1 & \cdot & \cdot & \cdot & \cdot & \cdot & \cdot & \cdot & \cdot \\
+\xcolor{K} &	1 & 1 & 1 & 1 & \hlight{0}{90} & 1 & \cdot & \cdot & \cdot & \cdot & \cdot & \cdot & \cdot \\
+\xcolor{B} &	1 & 1 & 1 & 1 & 1 & 1 &	1 & \cdot & \cdot & \cdot & \cdot & \cdot & \cdot \\
+\xcolor{B} &	1 & 1 & 1 & 1 & 1 & 1 &	\hlight{0}{90} & 1 & \cdot & \cdot & \cdot & \cdot & \cdot \\
+\xcolor{F} &	1 & 1 & 1 & 1 & 1 & 1 &	1 & 1 & 1 & \cdot & \cdot & \cdot & \cdot \\
+\xcolor{P} &	1 & 1 & 1 & 1 & 1 & 1 &	1 & 1 & 1 & 1 & \cdot & \cdot & \cdot \\
+\xcolor{P} &	1 & 1 & 1 & 1 & 1 & 1 &	1 & 1 & 1 & \hlight{0}{37.5} & 1 & \cdot & \cdot \\
+\xcolor{P} &	1 & 1 & 1 & 1 & 1 & 1 & 1 &	1 & 1 & \hlight{0}{37.5} & \hlight{0}{37.5} & 1 & \cdot \\
+\xcolor{P} &	1 & 1 & 1 & 1 & 1 & 1 & 1 & 1 &	1 & \hlight{0}{37.5} & \hlight{0}{37.5} & \hlight{0}{37.5} & \tikzmark{bottom}{1}\ \\
+\end{block}
+\end{blockarray}
+}
+\end{align*}
+\caption{Potential adjacency matrix.\label{fig:ch2:suspension2_2}}
+\end{subfigure}
+\caption{Suspension case study matrices for \ref{ch2:s5} and the tree search algorithm.\label{fig:ch2:suspension2}}
+\end{figure}

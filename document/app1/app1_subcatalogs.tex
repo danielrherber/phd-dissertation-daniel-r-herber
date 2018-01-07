@@ -1,0 +1,164 @@
+\section{Enumerating Subcatalogs\label{sec:app1:subcatalogs}}
+
+Leveraging some of the properties of the graph structure space and some NSCs, we can break the graph generation procedure into subtasks that more efficiently generate the same graph structure space.
+
+\subsection{Theory}
+
+A candidate architecture in an architecture design space described by $(C,R,P)$ has the following properties \cite{Herber2017a}:
+\begin{enumerate}
+\item A set of component replicates bounded by $(C,R,P)$. This set of component replicates is termed a subcatalog of $(C,R,P)$.
+
+\item  Each port in $(\gls{V}^{\glsfirst{port}},\{\},\gls{L}^P)$, i.e.,~$G^P$ without edges, is connected to another port (this implies an even number of ports).
+\end{enumerate} 
+
+The original tree algorithm in Alg.~\ref{alg:app1:tree} generated all candidate architectures in this architecture design space since the set of \glsfirstplural[noindex]{PM} graphs of $\glsfirst{K}_N$ contains all edge sets for $K_{N-2}$, where $N \geq 4$ \cite{Herber2017a}.
+Instead of relying on this property, an alternative would be an enumeration of all possible subcatalogs of $(C,R,P)$.
+This property is no longer strictly needed since the edge sets of the PMs of $K_N$ for each subcatalog is enough to generate all the desired graphs.
+However, this approach on its own provides no general improvements to the graph generation procedure.
+
+If we require every graph to be a connected graph (\ref{ch2:s1}), we can enforce the following: A feasible graph for a specific subcatalog must have every component replicate connected (i.e.,~all the replicates are mandatory).
+This is due to the tree algorithm being utilized on every subcatalog. 
+Enumerating subcatalogs only provides general improvements to the graph generation procedure if the property that all replicates are mandatory in each subcatalog is effectively utilized.
+
+Two of the previously discussed enhancements utilize this property: 1)
+checking for saturated subgraphs in Sec.~\ref{sec:app1:saturated} and 2) avoiding loops in Sec.~\ref{sec:app1:loops}. A greater proportion of mandatory component types improves the effectiveness of these enhancements.
+Another benefit is isomorphism checks only need to be performed between graphs in their respective subcatalog.
+Since every component type is mandatory in the subcatalog, the colored label sets will be different between graphs in different subcatalogs.
+Therefore, graphs from different subcatalogs are definitely not isomorphic. This reduces the number of isomorphism checks and allows for further parallelization.
+Finally, the generation of graphs for each subcatalog can be performed in parallel. However, each subcatalog will take varying amounts of time to complete so the benefit will vary depending on the particular $(C,R,P)$ and NSCs. 
+The original tree algorithm does not leverage parallelization during the graph generation procedure.
+
+This enhancement also allows for an improved representation of the number of replicates for each component type. Instead of the original vector $R$, where each entry was the maximum number of replicates for the specific component type, minimum and maximum values can be specified. The maximum values, denoted $R_{\glsfoo[noindex]{max}}$, is equivalent to the previous $R$. The minimum values, denoted $R_{\glsfoo[noindex]{min}}$, can naturally capture mandatory components and nonzero lower bounds. Every nonzero element of $R_{\min}$ indicates a mandatory component type. If $R_{\min}$ and $R_{\max}$ for a component type is 2 and 5, then there must be between 2 and 5 replicates in a feasible graph. 
+
+The set of subcatalogs contains all possible combinations of integers values for each component type bounded by $R_{\min}$ and $R_{\max}$.
+Therefore, the total number of subcatalogs is:
+\begin{align}
+N_{\text{subcatalogs}} = \prod_{k=1}^{\abs{R_{\max}}} \big[ R_{\max}(k) - R_{\min}(k) + 1 \big]
+\end{align}
+
+\noindent Some of these subcatalogs may be invalid, e.g.,~the subcatalog has an odd number of ports or is empty.
+
+\subsection{Implementation}
+
+\input{../app1/algorithms/alg-subcatalogs}
+
+Algorithm~\ref{alg:app1:subcatalogs} is the pseudocode for the implementation of this enhancement.
+This enhancement is only called if we require every graph to be a connected graph (\ref{ch2:s1})
+
+First, the potential number of replicates for each component type is stored in a cell array, $\xvar{Rlist}$.
+All subcatalogs are then generated with \texttt{ndgrid} using $\xvar{Rlist}$.
+This function creates a rectangular grid in N-D space \cite{matlab-ndgrid}.
+Next, the subcatalogs are filtered for subcatalogs with an odd number of ports or are empty. Additional user-specified filters can all be applied here. Once all the filters have been applied, the number of subcatalogs is calculated.
+The final step before generating the graphs is to create a local copy of the network structure constraints since they are modified for each subcatalog.
+
+Generating graphs for each subcatalog can now be performed in parallel (see line~\ref{alg:app1:subcatalogs-l7}).
+Before a subcatalog is used, a number of items need to be updated to properly define the subcatalog.
+We find the locations of the nonzero replicates on line~\ref{alg:app1:subcatalogs-l13}.
+Then the colored labels, replicates vector, and ports vector are updated for this subcatalog, only including component types with at least one replicate.
+In addition, both the unique connections vector, reduced potential adjacency matrix, and line-connectivity triples need to be updated to include only the relevant constraints for this subcatalog.
+Some component types may not be present in a particular subcatalog, so any NSCs with these component types are not needed.
+Since all component types are mandatory in this approach, we set each component type as mandatory on line~\ref{alg:app1:subcatalogs-l20}.
+Finally, we generate feasible graphs for this subcatalog using the same method used for a single catalog.
+
+After the feasible graphs have been found, each subcatalog can be analyzed for the set of unique graphs. Again, this task can be performed in parallel as each subcatalog is independent. 
+The final step is to combine all the unique graphs into a single set.
+
+\subsection{Examples}
+
+These examples are tested using this enhancement and the handling of saturated subgraphs in Sec.~\ref{sec:app1:saturated}.
+
+\subsubsection{Example 1\label{sec:app1:subcatalogs-ex1}}
+
+The base three-tuple and NSCs for this example are specified as:
+\begin{align}
+C = \{ \xcolor{X}, \xcolor{Y}\}, \quad R_{\min} = [1\ 0], \quad R_{\max} = [1\ 8], \quad P = [2\ 2]
+\end{align}
+
+\noindent All 9 subcatalogs for this example are shown in Table~\ref{tb:app1:subcatalogs-ex1-1}.
+
+Table~\ref{tb:app1:subcatalogs-ex1} compares the original algorithm with the enhancement for this example. There is a reduction in feasible graphs generated while the number of unique graphs remains the same. The enhancement with 12 threads (12T) and 1 thread (1T) available is shown.
+
+\begin{table}[!ht]
+\centering
+\caption{Subcatalogs for \nameref{sec:app1:subcatalogs-ex1}.\label{tb:app1:subcatalogs-ex1-1}}
+\vspace{-1ex}
+\begin{tabular}{r | l | l | l | l}
+\hline \hline
+\# & $\xvar{r}$ & $\xvar{c}$ & $\xvar{p}$ & Feasible Graphs \\
+\hline
+1 & [1] & $\{ \xcolor{X} \}$ & [2] & 1 \\
+2 & [1 1] & $\{ \xcolor{X}, \xcolor{Y}\}$ & [2 2] & 1 \\
+3 & [1 2] & $\{ \xcolor{X}, \xcolor{Y}\}$ & [2 2] & 1 \\
+4 & [1 3] & $\{ \xcolor{X}, \xcolor{Y}\}$ & [2 2] & 3 \\
+5 & [1 4] & $\{ \xcolor{X}, \xcolor{Y}\}$ & [2 2] & 12 \\
+6 & [1 5] & $\{ \xcolor{X}, \xcolor{Y}\}$ & [2 2] & 60 \\
+7 & [1 6] & $\{ \xcolor{X}, \xcolor{Y}\}$ & [2 2] & 360 \\
+8 & [1 7] & $\{ \xcolor{X}, \xcolor{Y}\}$ & [2 2] & 2520 \\
+9 & [1 8] & $\{ \xcolor{X}, \xcolor{Y}\}$ & [2 2] & 20160 \\
+\hline \hline
+\end{tabular}
+\end{table}
+
+\vspace{-3ex}
+\begin{table}[!ht]
+\centering
+\caption{Comparison (enumerating subcatalogs, \nameref{sec:app1:subcatalogs-ex1}).\label{tb:app1:subcatalogs-ex1}}
+\begin{tabular}{r | c | c | c | c | c}
+\hline \hline
+& Orig & En & En (12T) & Orig/En & Orig/En (12T) \\
+\hline
+Feasible Graphs & 96940 & 23118 & 23118 & 4.19 & 4.19 \\ 
+Unique Graphs & 9 & 9 & 9 & 1 & 1 \\
+Generation Time (s) & 29.857 & 27.385 & 26.371 & 1.09 & 1.13 \\
+Total Time (s) & 39.604 & 29.943 & 29.721 & 1.32 & 1.33 \\
+\hline \hline
+\end{tabular}
+\end{table}
+
+\subsubsection{Example 2\label{sec:app1:subcatalogs-ex2}}
+
+The base three-tuple and NSCs for this example are specified as:
+\begin{align}
+C = \{ \xcolor{W}, \xcolor{X}, \xcolor{Y}, \xcolor{Z}\}, \quad R_{\min} = [1\ 0\ 0\ 0], \quad R_{\max} = [1\ 2\ 3\ 3], \quad P = [1\ 1\ 2\ 3]
+\end{align}
+
+\noindent A select number of the 48 subcatalogs for this example are shown in Table~\ref{tb:app1:subcatalogs-ex2-1}.
+
+Table~\ref{tb:app1:subcatalogs-ex2} compares the original algorithm with the enhancement for this example. There is a reduction of feasible graphs generated while the number of unique graphs remains the same. The enhancement with 12 threads (12T) available is also shown.
+
+\begin{table}[!ht]
+\centering
+\caption{Select subcatalogs for \nameref{sec:app1:subcatalogs-ex2}.\label{tb:app1:subcatalogs-ex2-1}}
+\begin{tabular}{r | l | l | l | l}
+\hline \hline
+\# & $\xvar{r}$ & $\xvar{c}$ & $\xvar{p}$ & Feasible Graphs \\
+\hline
+1 & [1\ 0\ 0\ 0] & $\{ \xcolor{W} \}$ & [1] & $-$ (odd)  \\
+2 & [1\ 1\ 0\ 0] & $\{ \xcolor{W}, \xcolor{X} \}$ & [1\ 1] & 1 \\
+3 & [1\ 2\ 0\ 0] & $\{ \xcolor{W}, \xcolor{X} \}$ & [1\ 1] & $-$ (odd)  \\
+4 & [1\ 0\ 1\ 0] & $\{ \xcolor{W}, \xcolor{Y}\}$ & [1\ 2] & $-$ (odd)  \\
+5 & [1\ 1\ 1\ 0] & $\{ \xcolor{W}, \xcolor{X}, \xcolor{Y}\}$ & [1\ 1\ 2] & 1 \\
+\vdots & \vdots & \vdots & \vdots & \vdots \\
+44 & [1\ 1\ 2\ 3] & $\{ \xcolor{W}, \xcolor{X}, \xcolor{Y}, \xcolor{Z}\}$ & [1\ 1\ 2\ 3] & $-$ (odd) \\
+45 & [1\ 2\ 2\ 3] & $\{ \xcolor{W}, \xcolor{X}, \xcolor{Y}, \xcolor{Z}\}$ & [1\ 1\ 2\ 3] & 1548 \\
+46 & [1\ 0\ 3\ 3] & $\{ \xcolor{W}, \xcolor{Y}, \xcolor{Z}\}$ & [1\ 2\ 3] & 1683 \\
+47 & [1\ 1\ 3\ 3] & $\{ \xcolor{W}, \xcolor{X}, \xcolor{Y}, \xcolor{Z}\}$ & [1\ 1\ 2\ 3] & $-$ (odd) \\
+48 & [1\ 2\ 3\ 3] & $\{ \xcolor{W}, \xcolor{X}, \xcolor{Y}, \xcolor{Z}\}$ & [1\ 1\ 2\ 3] & 11844 \\
+\hline \hline
+\end{tabular}
+\end{table}
+
+\begin{table}[!ht]
+\centering
+\caption{Comparison (enumerating subcatalogs, \nameref{sec:app1:subcatalogs-ex2}).\label{tb:app1:subcatalogs-ex2}}
+\begin{tabular}{r | c | c | c | c | c}
+\hline \hline
+& Orig & En & En (12T) & Orig/En & Orig/En (12T) \\
+\hline
+Feasible Graphs & 45015 & 16235 & 16235 & 2.77 & 2.77 \\ 
+Unique Graphs & 489 & 489 & 489 & 1 & 1 \\
+Generation Time (s) & 8.940 & 12.903 & 11.216 & 0.69 & 0.80 \\
+Total Time (s) & 60.977 & 49.285 & 44.291 & 1.24 & 1.38 \\
+\hline \hline
+\end{tabular}
+\end{table}

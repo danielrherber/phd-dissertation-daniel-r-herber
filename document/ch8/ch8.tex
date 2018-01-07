@@ -1,0 +1,83 @@
+\mychapter{Case Study: Design of Vehicle Suspensions\label{ch:8}}
+
+%--- epigraph
+\epigraph{\textit{``Systems engineering should be, first and foremost, a state of mind and an attitude taken when dealing with complexity.''}}{\textmd{J.-L. Wippler} \cite[p.~208]{Luzeaux2013a}}
+%--- epigraph
+
+%-----------------------------------------
+\section{Introduction\label{sec:ch8:introduction}}
+
+The design of vehicle suspensions has been of considerable interest ever since the invention of the automobile.
+A suspension transfers forces in the system to provide a smooth ride for the passenger and good handling characteristics among other objectives.
+Fundamentally, it is a type of vibration isolator \cite{Kasturi1998a, Hrovat1997a, Hrovat1993a} .
+Different types of suspensions can typically be classified into the three categories of passive \cite{Kasturi1998a, Gobbi2001a, He2005a, Allison2008b, Hrovat1997a, Hrovat1993a}, semi-active \cite{Deshmukh2015a, Koch2014a, Hrovat1993a, Bourmistrova2005a}, or active \cite{Fathy2003a, Alyaqout2007b, Allison2014b, Hrovat1997a, Ulsoy1994a, Hrovat1993a} depending on the external energy flow into the system. 
+There has been considerable research interest in analyzing and optimizing all types of suspensions, particularly utilizing tools from dynamics and controls.
+However, much of this research has focused on a select few canonical suspensions such as the ones shown in Figs.~\ref{fig:ch8:csuspension1}--\ref{fig:ch8:csuspension4}. 
+Here we will consider architecture changes in the suspensions, i.e.,~different components connected in new ways, such as the suspensions shown in Figs.~\ref{fig:ch8:csuspension5}--\ref{fig:ch8:csuspension6}.
+In all the suspensions, an unsprung mass \xcolor{U} is connected to the road profile \gls{road}, and there is some mechanical path between the sprung mass \xcolor{S} and \xcolor{U}.
+
+\begin{figure}
+\centering
+
+\begin{subfigure}[t]{0.33\textwidth}
+\centering
+\includegraphics[scale=0.8]{../ch8/figures/csuspension1}
+\caption{Canonical passive \cite{Allison2008b, Gobbi2001a}.\label{fig:ch8:csuspension1}}
+\end{subfigure}%
+\begin{subfigure}[t]{0.33\textwidth}
+\centering
+\includegraphics[scale=0.8]{../ch8/figures/csuspension2}
+\caption{Pure active \cite{Hrovat1993a, Hrovat1997a}.\label{fig:ch8:csuspension2}}
+\end{subfigure}%
+\begin{subfigure}[t]{0.33\textwidth}
+\centering
+\includegraphics[scale=0.8]{../ch8/figures/csuspension3}
+\caption{Canonical active \cite{Allison2014b, Alyaqout2007b, Fathy2003a, He2005a, Ulsoy1994a}.\label{fig:ch8:csuspension3}}
+\end{subfigure}%
+
+\vspace{0.1in}
+
+\begin{subfigure}[t]{0.33\textwidth}
+\centering
+\includegraphics[scale=0.8]{../ch8/figures/csuspension4}
+\caption{Active with dynamic absorber \cite{Hrovat1993a, Hrovat1997a}.\label{fig:ch8:csuspension4}}
+\end{subfigure}%
+\begin{subfigure}[t]{0.33\textwidth}
+\centering
+\includegraphics[scale=0.8]{../ch8/figures/csuspension5}
+\caption{Active candidate.\label{fig:ch8:csuspension5}}
+\end{subfigure}%
+\begin{subfigure}[t]{0.33\textwidth}
+\centering
+\includegraphics[scale=0.8]{../ch8/figures/csuspension6}
+\caption{Passive candidate.\label{fig:ch8:csuspension6}}
+\end{subfigure}%
+
+\caption{Various vehicle suspension architectures.\label{fig:ch8:suspensions}}
+
+\end{figure}
+
+% new paragraph
+In addition to architecture design changes, both the physical and control system designs will also be considered.
+This leads to a complex, challenging design problem that is typically not treated in a systematic fashion in engineering design practice.
+Here we will describe a particular problem class of combined architecture, plant, and control problems that can leverage a number of previously developed tools to provide solutions to this design problem.
+Due to the breadth of this design study, many simplifying assumptions must be made to keep the problem tractable, but still makes it possible to reveal various design insights.
+It has been observed by experts in the field that even simple suspension models and studies have had a ``profound impact on the practical implementations some 15--20 years later \cite{Hrovat1993a}''.
+In addition, suspension design problems have proven to be an interesting area for research in combined plant and control design or co-design \cite{Allison2014b, Alyaqout2007b, Fathy2003a}.
+It is important to note that the purpose of the early-stage studies proposed in this chapter is not to supplant the detailed, rigorous, robust previous research, but rather seeks to identify new architectures that could be investigated in the same level of detail that the few canonical architectures have received. 
+
+% new paragraph
+The remainder of this chapter is organized as follows.
+Section~\ref{sec:ch8:class} outlines the considered problem class with linear physical elements.
+Section~\ref{sec:ch8:formulation} provides the combined architecture, plant, and control vehicle suspension design problem formulation.
+Section~\ref{sec:ch8:results} presents the results of this case study.
+
+%-----------------------------------------
+
+\input{../ch8/ch8_class}
+
+\input{../ch8/ch8_formulation}
+
+\input{../ch8/ch8_results}
+
+\input{../ch8/ch8_conclusion}

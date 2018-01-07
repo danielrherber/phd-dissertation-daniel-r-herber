@@ -1,0 +1,37 @@
+\tikzsetnextfilename{Moff}
+
+\centering
+\resizebox{1\textwidth}{!}{
+\begin{tikzpicture}[yscale=-1] 
+
+\input{../ch5/sparsity/sparsityM}
+
+%% states off 
+\foreach \k in {1,...,\nx}{
+	\foreach \j in {1,...,\nx}{
+      \pgfmathsetmacro{\kk}{\k-1};
+      \pgfmathsetmacro{\jj}{\j-1};
+      \node () at ( 0.2 + 0.2*\kk*\nt + 0.2*\nu*\nt, 0.2*\nt + 0.2*\jj*\nt + 0.2*\nu*\nt ) {\mytemp};
+      \node () at ( 0.2*\nt + 0.2*\jj*\nt + 0.2*\nu*\nt , 0.2 + 0.2*\kk*\nt + 0.2*\nu*\nt ) {\mytemp};
+} }    
+
+%% parameters off
+\foreach \k in {1,...,\np}{
+	\foreach \j in {1,...,\nx}{
+      \pgfmathsetmacro{\kk}{\k-1};
+      \pgfmathsetmacro{\jj}{\j-1};
+      \node ( ) at (0.2*\nt*\j + 0.2*\nu*\nt, 0.2*\k + 0.2*\nx*\nt + 0.2*\nu*\nt) {\mytemp};
+	  \node ( ) at ( 0.2*\k + 0.2*\nx*\nt + 0.2*\nu*\nt, 0.2*\nt*\j + 0.2*\nu*\nt ) {\mytemp};
+      
+      \node ( ) at ( 0.2*\k + 0.2*\nx*\nt + 0.2*\nu*\nt, 0.2*\nt*\j - 0.2*\nt + 0.2 + 0.2*\nu*\nt ) {\mytemp};
+      
+      \node ( ) at ( 0.2*\nt*\j - 0.2*\nt + 0.2 + 0.2*\nu*\nt , 0.2*\k + 0.2*\nx*\nt + 0.2*\nu*\nt ) {\mytemp};
+	  
+} }
+
+
+
+
+
+\end{tikzpicture}
+}

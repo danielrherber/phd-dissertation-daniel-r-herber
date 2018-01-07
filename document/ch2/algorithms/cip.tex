@@ -1,0 +1,83 @@
+% \IncMargin{1em}
+\RestyleAlgo{algoruled}
+
+\begin{vAlgorithm}[t]{\columnwidth}{0em}
+
+\LinesNumbered
+\SetSideCommentRight 
+\DontPrintSemicolon
+% \SetNoFillComment
+
+% \SetTitleSty{\textsf}{small}
+% \renewcommand{\algorithmcfname}{\small\textbf{\textsf{\MakeUppercase{Algorithm}}}}%
+
+% \SetKwData{Left}{left}\SetKwData{This}{this}\SetKwData{Up}{up}
+\SetKwFunction{cumprod}{cumprod}
+\SetKwFunction{length}{length}
+\SetKwFunction{zeros}{zeros}
+\SetKwFunction{ceil}{ceil}
+\SetKwFunction{mod}{mod}
+\SetKwFunction{mymin}{min}
+\SetKwFunction{detectiso}{isomorphic\_vf2}
+
+\SetKwInOut{Input}{Input}
+\SetKwInOut{Output}{Output}
+
+\caption{Determination of the unique colored graphs given a set of colored graphs. \label{alg:ch2:cip}}
+
+\Input{$\xvar{Graphs}$ -- set of colored graphs \\
+$\xvar{Nbin}$ -- number of bins (for parallel processing)}
+\Output{$\xvar{UniqueGraphs}$ -- set of unique colored graphs}
+\BlankLine
+            
+$\xvar{ind}$ $\leftarrow$ $1$ \tcc*{initialize index for total unique graphs}
+
+$\xvar{bin}(1).\xvar{Graphs}(1)$ $\leftarrow$ $\xvar{Graphs}(1)$  \tcc*{first graph is always unique}
+
+	\For(\tcc*[f]{check remaining graphs}){$\xvar{i}\leftarrow$ $2$ \KwTo $\length(\xvar{Graphs})$ }{
+	
+		$\xvar{G1}$ $\leftarrow$ $\xvar{Graphs}(\xvar{i})$ \tcc*{current graph to check}
+		
+		\For(\textbf{in parallel} \tcc*[f]{check against each nonempty bin}){$\xvar{j}\leftarrow$ $1$ \KwTo $\mymin(\xvar{Nbin},\xvar{ind})$ }{
+		
+			$\xvar{k}$ $\leftarrow$ $\length(\xvar{bin(j).Graphs})$ \tcc*{unique graphs in bin}
+         
+        	$\xvar{IsoFlag}$ $\leftarrow$ $0$ \tcc*{initialize flag, 0 is not isomorphic}
+        
+        \tcc*[f]{while graphs remain and isomorphism not found}
+        
+        	\While(){$(\xvar{k} > 0)$ and $(\xvar{IsoFlag} = 0)$ }{
+        	
+        	$\xvar{G2}$ $\leftarrow$ $\xvar{bin}(\xvar{j}).\xvar{Graphs}(\xvar{k})$ \tcc*{a unique graph}
+        
+        	\If{\text{$\xvar{G1}$ and $\xvar{G2}$ pass preliminary isomorphism checks}}{
+        	
+        	$\xvar{IsoFlag}$ $\leftarrow$ $\detectiso(\xvar{G1},\xvar{G2})$ \tcc*{return 1 if G1 and G2 are isomorphic}
+        	
+        	}
+        	        	
+        	$\xvar{k}$ $\leftarrow$ $\xvar{k} - 1$ \tcc*{decrease index since G2 checked}
+        
+        	} % end while loop
+        	
+			$\xvar{results}(\xvar{j})$ $\leftarrow$ $\xvar{IsoFlag}$ \tcc*{assign result for bin c}
+		
+		} % end for c
+		
+		\If(\tcc*[f]{if no isomorphisms}){\text{all elements of  \xvar{results} are $0$} }{
+		
+        $\xvar{J}$ $\leftarrow$  $\mod(\xvar{ind}, \xvar{Nbin}) + 1$ \tcc*{index for next smallest bin}
+        
+        $\xvar{bin}(\xvar{J}).\xvar{Graphs}(\xvar{end}+1)$ $\leftarrow$ $\xvar{G1}$  \tcc*{assign to a bin}
+        
+        $\xvar{ind}$ $\leftarrow$ $\xvar{ind + 1}$ \tcc*{total unique graphs}
+        
+		
+		} % end if statement
+		
+		
+	} % end for i
+	
+	$\xvar{UniqueGraphs}$ $\leftarrow$  \text{combine graphs in $\xvar{bin}$ into a single set of graphs}
+
+\end{vAlgorithm}

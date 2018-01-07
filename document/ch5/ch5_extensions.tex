@@ -1,0 +1,204 @@
+%-------------------------------------------------------------------
+\section{Extensions} \label{sec:ch5:extensions}
+
+In this section, a number of extensions are described that still fit under the \lqdo{} problem form using either some type of transformation or a simple application of the \apgp.
+
+%-----------------------------------------------------------
+\subsection{Integral Constraints} \label{sec:ch5:integral:constraints}
+
+Due to the equivalence between $\mathcal{L}$ and $\mathcal{M}$, frequently the integral part of Eqn.~(\ref{eq:ch5:NLobj}) is converted to an equivalent dynamic constraint \cite{Bryson1975a, Betts2010a, Stryk1999a}. 
+Since the dynamic constraints are linear in \lqdo, there can only be integral terms with a linear dependence. 
+Therefore, we cannot utilize the transformation with quadratic objective terms and still have a \qp.
+However we still can use this transformation if linear integral constraints are present.
+Consider the following inequality integral constraint \cite{Stryk1999a}:
+\begin{align}
+\int_{t_0}^{t_f} \left[ \bm{I}\tran(t) \tilde{\bm{x}} \right] dt - \hat{I} \leq  0
+\end{align}
+
+\noindent where $\gls{Ib}(t)$ is the integral matrix and $\hat{I}$ is a scalar. We can add an equivalent state $\xi_{n_{\xi}+1} := \xi_{\glsfirst{additional}}$ that has the same rate of change:
+\begin{align}
+\dot{\xi}_+ = \bm{I}\tran(t) \tilde{\bm{x}}
+\end{align}
+
+\noindent Then we add the following initial value equality and final value inequality constraints:
+\begin{align}
+\xi_+(t_0) = 0, \quad \xi_+(t_f) \leq \hat{I} 
+\end{align}
+
+\noindent An similar procedure can be used for an equality constraint and additional states can be added for each linear integral constraint present in the problem.
+
+%-----------------------------------------------------------
+\subsection{Min-Max Objectives} \label{sec:ch5:minmax:objective}
+
+A min-max objective function for Prob.~(\ref{eq:ch5:NLDO}) has the form \cite{Stryk1999a}:
+\begin{align}
+\Psi = \min_{\bm{x}} \max_{t\in[t_0,t_f]} \mathcal{E}\big(t, \bm{\xi}(t), \bu(t), \bp, t_0, \bm{\xi}(t_0), t_f, \bm{\xi}(t_f) \big)
+\end{align}
+
+\noindent where $\gls{extremum}$ is the extremum function.
+We can introduce an additional parameter $p_{n_p+1} := p_+$ to transform this min-max problem into Mayer form by introducing an additional inequality constraint:
+\begin{align}
+\mathcal{E}\big(t, \bm{\xi}(t), \bu(t), \bp, t_0, \bm{\xi}(t_0), t_f, \bm{\xi}(t_f) \big) - p_+ \leq 0
+\end{align}
+
+\noindent and modifying the objective to:
+\begin{align}
+\min_{\bm{x}, p_+}\ p_+
+\end{align}
+
+This type of transformation is one of the common uses of parameters in \lqdo{} problems assuming the extremum function is of the appropriate form.
+This appropriate form of $\mathcal{E}$ (linear terms) was already discussed in Sec.~\ref{sec:ch5:integral:constraints} as we are transforming part of the objective to Mayer form.
+The structure of this transformation also allows for the extremum function to consist of multiple expressions such as the following:
+\begin{align}
+\min_{\bm{x}} \max_{t\in[t_0,t_f]}\ \{ u_1(t), \xi_1(t) + \xi_2(t) \}
+\end{align}
+
+\noindent which would be approximated with two additional constraints using the same parameter (i.e.,~$u_1(t) - p_+ \leq 0$ and $\xi_1(t) + \xi_2(t) - p_+ \leq 0$).
+The requirement only is that each expression in the maximization can be properly written as a linear inequality constraint bounded by the additional parameter.
+
+%-----------------------------------------------------------
+\subsection{Absolute Values in the Objective (and Constraints)} \label{sec:ch5:absolute:values}
+
+Consider the following finite-dimensional optimization problem:%
+\begin{subequations} \label{eq:ch5:absolute}
+\begin{align} 
+\min_{\bm{z}_1, \bm{z}_2 } \quad &\abs*{\mathcal{F}_1(\bm{z}_1)} + \mathcal{F}_2(\bm{z}_2) \label{eq:ch5:absolute_obj} \\
+\text{subject to:} \quad & \bm{g}(\bm{z}_1, \bm{z}_2, \abs*{\mathcal{F}_1(\bm{z}_1)}) \leq \bm{0}
+\end{align}
+\end{subequations}%
+
+\noindent Since the absolute value term is being minimized and contains a distinct set of the optimization variables, we can add an additional parameter $p_{n_p+1} := p_+$ and two inequality constraints to arrive at the following equivalent problem:%
+\begin{subequations}%
+\begin{align}
+\min_{\bm{z}_1, \bm{z}_2, p_+} \quad & p_+ + \mathcal{F}_2(\bm{z}_2) \\
+\text{subject to:} \quad & \bm{g}(\bm{z}_1, \bm{z}_2, p_+ ) \leq \bm{0} \\
+& \mathcal{F}_1(\bm{z}_1) - p_+ \leq 0 \\
+& -\mathcal{F}_1(\bm{z}_1) - p_+ \leq 0
+\end{align}
+\end{subequations}%
+
+\noindent An alternative reformulation utilizes the sum of two positive parameters for the absolute value. % maybe reference?
+As with the previous two extensions, this extension introduces additional constraints that are linear with respect to the added parameter; so as long as $\mathcal{F}_1$ is linear, the additional constraints will be linear.
+For example, $\min\ \abs{\xi_1(t_f) + \xi_2(t_f)}$.
+We can also have $\mathcal{F}_1$ in the Lagrange term, i.e.,~$ \int_{t_0}^{t_f} \abs*{\mathcal{F}_1} dt$.
+Recall that the quadrature approximations for linear terms for all the methods in Sec.~\ref{sec:ch5:dt:objective} are the sum of the products of a positive step size (or weight) and the value at every node point.
+Therefore, each point in the quadrature approximation is in the form of Eqn.~(\ref{eq:ch5:absolute_obj}).
+However, we now need a parameter for each point in time to accurately capture that integral behavior.
+An example objective is $\min \ \int_{t_0}^{t_f} \abs{u_1(t)} dt$.
+
+Absolute value constraints with linear terms can readily be handled as well if they form a convex feasible region. % potentially add a reference
+For example, $\abs{\xi_1(t) + \xi_2(t)} \geq 1$ would not be convex.
+
+%-----------------------------------------------------------
+\subsection{Output Tracking} \label{sec:ch5:output}
+
+Tracking a reference signal, either a set point or reference trajectories, can be a critical measure for control-system performance \cite{Bryson1975a, Anderson2007a}.
+Generally, the tracking error in the reference is computed against an output signal of the following form:
+\begin{align}
+\gls{output}(t) = \gls{Cb}(t) \bm{\xi}(t) + \gls{Db}(t) \bm{u}(t)  + \gls{Vb}(t) \bm{p} + \bm{E}(t)\bm{d}(t)
+\end{align}
+
+\noindent where $\{\bm{C}, \bm{D}, \bm{V}, \bm{E}\}$ are the LTV output matrices.
+The output equation is similar to the dynamics in Eqn.~(\ref{eq:ch5:fdyn}), but no derivatives appear.
+Let us denote the reference signals as $\tilde{\bm{y}} = \tilde{\bm{y}}(t)$, then a suitable output tracking error quadratic objective function is:
+\begin{gather} \Psi =  \int_{t_0}^{t_f} \left[ \left( \bm{y} - \tilde{\bm{y}} \right)\tran \bm{O}(t) \left( \bm{y} - \tilde{\bm{y}} \right) \right] dt
+\end{gather}
+
+\noindent where $\gls{Out}$ is a symmetric weighting matrix. This objective function can be put into the same form as Eqn.~(\ref{eq:ch5:QOFLagrange}):%
+\begin{subequations}
+\begin{gather} \Psi \equiv \int_{t_0}^{t_f} \left[ \bm{x}\tran \bm{L}_{\glsfirst{notoutput}} \bm{x} + \bm{l}_{O}\tran \bm{x} + c_O\right] dt \\
+\text{where:} \qquad 
+\bm{L}_{O} = \begin{bmatrix}
+\bm{C}\tran \bm{O} \bm{C} & \bm{C}\tran \bm{O} \bm{D} & \bm{C}\tran \bm{O} \bm{V} \\
+\bm{D}\tran \bm{O} \bm{C} & \bm{D}\tran \bm{O} \bm{D} & \bm{D}\tran \bm{O} \bm{V}   \\
+\bm{V}\tran \bm{O} \bm{C} & \bm{V}\tran \bm{O} \bm{D} & \bm{V}\tran \bm{O} \bm{V}   \\
+\end{bmatrix} \\
+\bm{l}_{O}\tran =  \left( 2 \tilde{\bm{y}}\tran \bm{O} + 2\bm{d}\tran \bm{E}\tran \bm{O} \right) \begin{bmatrix} \bm{C} \\ \bm{D} \\ \bm{V} \end{bmatrix}\tran, \quad 
+c_O = \tilde{\bm{y}}\tran \bm{O} \tilde{\bm{y}} + \tilde{\bm{y}}\tran \bm{O} \bm{E} \bm{d}
+\end{gather}
+\end{subequations}%
+
+\noindent Therefore, output tracking can be easily incorporated into the previous quadratic objective. 
+Bryson and Ho provide a \glsfoo[noindex]{BVP} solution to a simpler output tracking problem \cite{Bryson1975a}.
+
+%-----------------------------------------------------------
+\subsection{Higher-Order Differential Equations} \label{sec:ch5:higher:order}
+
+Equation~(\ref{eq:ch5:fdyn}) is a first-order linear differential equation. 
+In general, there may be higher-order derivatives present.
+Consider the following third-order differential equation with $E_3(t) \neq 0$:
+\begin{align}
+E_3(t)\dddot{\xi}_1+ E_2(t)\ddot{\xi}_1 + E_1(t)\dot{\xi}_1 = A(t)\xi_1 + B(t) u
+\end{align}
+
+\noindent To convert this into a first-order differential equation, we can add an additional state for each higher-order derivative present \cite{Stryk1999a}.
+The dynamics of these state variables will be state of one order less.
+For the example above, we would have:
+\begin{align}
+\begin{bmatrix}
+\dot{\xi}_1 \\ \dot{\xi}_2 \\ \dot{\xi}_3
+\end{bmatrix}
+=
+\begin{bmatrix}
+0 & 1 & 0 \\
+0 & 0 & 1 \\
+\nicefrac{A}{E_3} & \nicefrac{-E_1}{E_3} & \nicefrac{-E_2}{E_3} \\
+\end{bmatrix}
+\begin{bmatrix}
+\xi_1 \\ \xi_2 \\ \xi_3
+\end{bmatrix}
++ 
+\begin{bmatrix}
+ 0 \\ 0 \\ \nicefrac{B}{E_3}
+\end{bmatrix} u
+\end{align}
+
+\noindent which is in the form of $\bm{f}^{QP}$ and therefore, these types of higher-order differential equations can be readily handled by \lqdo{}.
+
+%-----------------------------------------------------------
+\subsection{Control Rate Constraints}
+
+In some problems, we want to include the rate at which the control changes $\dot{u}$ in our objective function or as a constraint such as \cite{Biegler2010a}:
+\begin{align}
+\dot{u}(t) \leq \dot{u}_{\max}
+\end{align}
+
+\noindent This situation can be handled in a similar manner as the higher-order differential equations in Sec.~\ref{sec:ch5:higher:order}.
+We treat the control as another state variable $\xi_{n_\xi+1} := \xi_+ = u$ with dynamics of $\dot{\xi}_+ = \dot{u}$.
+Now $\dot{u}$ is the independent input the system.
+Both $u$ and $\dot{u}$ can be naturally handled using path constraints, objective function terms, etc.
+This transformation also works with higher-order control derivatives such as $\ddot{u}$.
+
+%-----------------------------------------------------------
+\subsection{Polyhedra Constraints} \label{sec:ch5:polyhedra}
+
+A common constraint in convex optimization is that the optimization variables must lie in some convex region.
+In general, this region cannot be directly handled in \lqdo{}, but an approximation can be constructed with a polyhedron using the convex hull of a finite set of points on the region's boundary.
+This polyhedron is characterized by a set of linear inequality constraints and any point that is found to be feasible in the polyhedron would be feasible in the original region.
+An example is $u_1^2(t) + u_2^2(t) \leq 1$, which is an elliptical region that can be approximated (see Ref.~\cite{matlab-elliptical}).
+Each additional linear constraint would be either a boundary or path constraint, so they would greatly add to the total number of constraints.
+Polyhedral regions are also used in piecewise affine systems (systems with different dynamics depending on the specific location in the state-input space) \cite{Borrelli2015a}.
+
+%-----------------------------------------------------------
+\subsection{Bilevel Optimization and Minimum Time Problems} \label{sec:ch5:mtp}
+
+Bilevel optimization is where one optimization problem is embedded (nested) within another \cite{Colson2007a}.
+In some problems, the embedded problem has the form of \lqdo, such as some nested co-design problem formulations as was discussed in Chapter~\ref{ch:3} \cite{Herber2017b, Chilan2017a}.
+For example, the outer loop may consist of variables that modify the matrices such as $\bm{A}$ and $\bm{B}$ (see Chapters~\ref{ch:7} and \ref{ch:8} for examples that use \lqdo{} and the \apgp{} on a problem with this property).
+
+Minimum time problems directly include $t_0$ and $t_f$ in the objective function.
+For example, if $\mathcal{M} = t_f$, then it might seem possible to treat $t_f$ as an optimization variable and have a linear term in the objective function.
+However, treating $t_f$ as an optimization variable results in nonlinear defect constraints and $\mathcal{L}$ approximations.
+Observing Eqn.~(\ref{eq:ch5:defect:PS}) and Eqn.~(\ref{eq:ch5:ssdefects}), we see direct dependence on $\Delta$ in the defect constraint formulas.
+Therefore, minimum time problems \textit{cannot} be solved directly with a \qp.
+One solution approach for minimum time problems that still uses the \lqdo{} framework is to solve a bilevel (nested) optimization problem.
+The outer loop solves the single variable problem optimization for $t_f$ with the \qp{} formulation (for a fixed value of $t_f$) as the inner-loop solution.
+If we expand to quadratically-constrained {\qp}s (see Sec.~\ref{sec:ch5:QCQP}), we can directly represent some minimum time problems.
+
+%-----------------------------------------------------------
+\subsection{Use in Nonlinear Optimal Control Problems}
+
+In some problems, there might be a quadratic objective but nonlinear dynamics or a nonlinear objective and linear dynamics.
+If certain problem elements fit the \lqdo{} form, then the appropriate matrices can be generated (recall Fig.~\ref{fig:overview} where the algorithms for generating the \qp{} matrices are modular).
+These matrices then can be combined with the nonlinear elements of the problem and solved with nonlinear programming solvers.
+Many of these solvers have special categorizations in order to efficiently leverage the problem structure such as for linear equality or inequality constraints.

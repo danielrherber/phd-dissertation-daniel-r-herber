@@ -1,0 +1,66 @@
+\begin{vAlgorithm}[!ht]{01\columnwidth}{0em}
+
+\LinesNumbered
+\DontPrintSemicolon
+
+\SetKwFunction{cumprod}{cumprod}
+\SetKwFunction{length}{length}
+\SetKwFunction{zeros}{zeros}
+\SetKwFunction{ceil}{ceil}
+\SetKwFunction{mod}{mod}
+\SetKwFunction{mymin}{min}
+\SetKwFunction{find}{find}
+\SetKwFunction{detectiso}{isomorphic\_vf2}
+
+\SetKwInOut{Input}{Input}
+\SetKwInOut{Output}{Output}
+
+\caption{Original tree search algorithm. \label{alg:app1:tree}}
+
+\Input{\xvbox{2mm}{$\xvar{V}$} -- vector of remaining ports for each component replicate \\
+\xvbox{2mm}{$\xvar{E}$} -- vector of edges in sequential pairs, initially empty \\
+\xvbox{2mm}{$\xvar{A}$} -- expanded potential adjacency matrix \\
+$\xvar{cVf}$ -- cumulative sum of the original $\xvar{V}$ plus 1 \\
+$\xvar{SavedGraphs}$ -- set of graphs, initially empty
+} 
+\Output{$\xvar{SavedGraphs}$ -- set of graphs \\
+}
+\BlankLine
+            
+    \xvbox{2mm}{$\xvar{iL}$} $\leftarrow$  $\find(\xvar{V}, \xvar{first})$ \tcc*{find first nonzero entry}
+    
+    \xvbox{2mm}{$\xvar{L}$} $\leftarrow$  $\xvar{cVf}(\xvar{iL})-\xvar{V}(\xvar{iL})$ \tcc*{left port}
+    
+    $\xvar{V}(\xvar{iL})$ $\leftarrow$ $\xvar{V}(\xvar{iL}) - 1$ \tcc*{remove port\label{alg:app1:tree-rmport1}}
+
+    $\xvar{Vallow}$ $\leftarrow$  $\xvar{V} \circ \xvar{A(iL,:)}$ \tcc*{zero infeasible edges\label{alg:app1:tree-Vallow}}
+            
+    \xvbox{2mm}{$\xvar{I}$} $\leftarrow$  $\find(\xvar{Vallow})$ \tcc*{find nonzero entries}  
+    
+	\For(\tcc*[f]{loop through all nonzero entries}){$\xvar{iR}\leftarrow$ $\xvar{I}$}{
+	
+		\xvbox{3mm}{$\xvar{R}$} $\leftarrow$ $\xvar{cVf}(\xvar{iR})-\xvar{V}(\xvar{iR})$ \tcc*{right port}
+
+		\xvbox{3mm}{$\xvar{E2}$} $\leftarrow$ $[\xvar{E},\xvar{L},\xvar{R}]$ \tcc*{combine left, right ports for an edge}
+        
+		\xvbox{3mm}{$\xvar{V2}$} $\leftarrow$ $\xvar{V}$ \tcc*{local remaining ports vector}
+
+        $\xvar{V2}(\xvar{iR})$ $\leftarrow$ $\xvar{V2}(\xvar{iR})-1$ \tcc*{remove port (local copy)}
+	
+        \xvbox{3mm}{$\xvar{A2}$} $\leftarrow$ $\xvar{A}$ \tcc*{local expanded potential adjacency matrix\label{alg:app1:tree-A2}}
+
+		\uIf(\tcc*[f]{recursive call if any remaining vertices}){any element of $\xvar{V2}$ is nonzero\label{alg:app1:tree-if}}{
+		
+            $\xvar{SavedGraphs}$ $\leftarrow$ Algorithm~\ref{alg:app1:tree} (tree) with $\xvar{V2}, \xvar{E2}, \xvar{A2}, \xvar{cVf}, \xvar{SavedGraphs}$ % \tcc*{recursive call}
+            
+        }
+        	
+        \Else(\label{alg:app1:tree-else}){
+      
+            $\xvar{SavedGraphs}\{\xvar{end} + 1\}$  $\leftarrow$ $\xvar{E2}$ \tcc*{save missorted perfect matching}
+        	
+        }
+	
+	} % end for iR
+
+\end{vAlgorithm}

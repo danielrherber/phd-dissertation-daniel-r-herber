@@ -1,0 +1,26 @@
+\tikzsetnextfilename{Hxfxf}
+
+\centering
+\resizebox{1\textwidth}{!}{
+\begin{tikzpicture}[yscale=-1] 
+
+\input{../ch5/sparsity/sparsityH}
+
+%% final states
+\foreach \k in {1,...,\nx}{
+	\foreach \j in {1,...,\nc}{
+		\foreach \i in {1,...,\nt}{ 
+        	\pgfmathsetmacro{\kk}{\k-1};
+            \pgfmathsetmacro{\jj}{\j-1};
+        	\node () at (0.2*\nt + 0.2*\kk*\nt + 0.2*\nu*\nt, 0.2*\i + 0.2*\jj*\nt ) {\mytemp};
+            \node () at ( 0.2*\i + 0.2*\jj*\nt , 0.2*\nt + 0.2*\kk*\nt + 0.2*\nu*\nt ) {\mytemp};
+} } 
+	\foreach \j in {1,...,\np}{
+		\pgfmathsetmacro{\kk}{\k-1};
+        \pgfmathsetmacro{\jj}{\j-1};
+        \node () at ( 0.2*\k + 0.2*\nx*\nt + 0.2*\nu*\nt, 0.2*\nt + 0.2*\jj*\nt + 0.2*\nu*\nt ) {\mytemp};
+        \node () at ( 0.2*\nt + 0.2*\jj*\nt + 0.2*\nu*\nt , 0.2*\k + 0.2*\nx*\nt + 0.2*\nu*\nt ) {\mytemp};
+	}
+}
+\end{tikzpicture}
+}

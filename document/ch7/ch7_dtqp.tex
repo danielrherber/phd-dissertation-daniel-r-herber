@@ -1,0 +1,43 @@
+\subsection{Inner-Loop Structure-Based Description}
+
+Here we present the structure-based description for the \lqdo{} problem.
+The approach from Chapter~\ref{ch:5} is utilized twice, once for each phase.
+Then the LPs created for each phase are linked with linear continuity constraints (see Sec.~\ref{sec:ch5:multipleinterval}) for the states.
+
+The maximum slew objective in Eqn.~(\ref{eq:ch7:obj}) is implemented with a single Mayer term:%
+\begin{gather}
+\mathcal{M}\xind{1}.\xvar{left} = 0, \quad \mathcal{M}\xind{1}.\xvar{right} = 4, \quad \mathcal{M}\xind{1}.\xvar{matrix} = \begin{bmatrix}-1 & \bm{0} \end{bmatrix} 
+\end{gather}
+
+\noindent The initial conditions in Eqn.~(\ref{eq:ch7:init_condition}) are implemented with simple bounds in the first phase:%
+\begin{subequations}%
+\begin{gather}%
+\mathcal{UB}\xind{\cdot}.\xvar{right} = 2, \quad \mathcal{UB}\xind{\cdot}.\xvar{matrix} = \begin{bmatrix} \infty & \bm{0} \end{bmatrix}\tran \\
+\mathcal{LB}\xind{\cdot}.\xvar{right} = 2, \quad \mathcal{LB}\xind{\cdot}.\xvar{matrix} = \begin{bmatrix} -\infty & \bm{0} \end{bmatrix}\tran
+\end{gather}
+\end{subequations}
+
+\noindent The bus angle and angular rate equality constraints in Eqns.~(\ref{eq:ch7:theta_path})--(\ref{eq:ch7:dtheta_path}) are implemented with simple upper and lower bounds only in the second phase:%
+\begin{subequations}%
+\begin{gather}%
+\mathcal{UB}\xind{\cdot}.\xvar{right} = 2, \quad \mathcal{UB}\xind{\cdot}.\xvar{matrix} = \begin{bmatrix} 0 & 0 & \bm{\infty} \end{bmatrix}\tran \\
+\mathcal{LB}\xind{\cdot}.\xvar{right} = 2, \quad \mathcal{UB}\xind{\cdot}.\xvar{matrix} = \begin{bmatrix} 0 & 0 & -\bm{\infty} \end{bmatrix}\tran
+\end{gather}
+\end{subequations}
+
+\noindent The absolute value limits on the voltage in Eqn.~(\ref{eq:ch7:voltage}) are implemented with linear inequality at each test point $x_i$ in both phases:%
+\begin{subequations}%
+\begin{gather}%
+\mathcal{Z}\xind{\cdot}.\xvar{linear}\xind{1}.\xvar{right} = 1, \quad  \mathcal{Z}\xind{\cdot}.\xvar{linear}\xind{1}.\xvar{matrix} = \bm{\gamma}(x_i), \quad \mathcal{Z}\xind{\cdot}.\xvar{b} = V_{\glsfoo[noindex]{max}} c(x_i) \\
+\mathcal{Z}\xind{\cdot}.\xvar{linear}\xind{1}.\xvar{right} = 1, \quad  \mathcal{Z}\xind{\cdot}.\xvar{linear}\xind{1}.\xvar{matrix} = -\bm{\gamma}(x_i), \quad  \mathcal{Z}\xind{\cdot}.\xvar{b} = V_{\max} c(x_i)
+\end{gather}
+\end{subequations}
+
+\noindent The absolute value limits on the strain in Eqn.~(\ref{eq:strain}) are implemented with linear inequality at each test point $x_i$ in both phases:%
+\begin{subequations}%
+\begin{gather}%
+Z = \begin{bmatrix} 0 & 0 & (h_b(x_i) + h_e - h_n(x_i)) \bm{\phi}''(x_i) & \bm{0} \end{bmatrix}\tran \\
+\mathcal{Z}\xind{\cdot}.\xvar{linear}\xind{1}.\xvar{right} = 2, \quad \mathcal{Z}\xind{\cdot}.\xvar{linear}\xind{1}.\xvar{matrix} = Z, \quad \mathcal{Z}\xind{\cdot}.\xvar{b} = \epsilon_{\max} \\
+\mathcal{Z}\xind{\cdot}.\xvar{linear}\xind{1}.\xvar{right} = 2, \quad \mathcal{Z}\xind{\cdot}.\xvar{linear}\xind{1}.\xvar{matrix} = -Z, \quad \mathcal{Z}\xind{\cdot}.\xvar{b} = \epsilon_{\max}
+\end{gather}
+\end{subequations}

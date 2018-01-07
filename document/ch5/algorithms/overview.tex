@@ -1,0 +1,191 @@
+\tikzexternalexportnextfalse
+\begin{figure}
+\centering
+
+\tikzstyle{block} = [rectangle, draw, fill=white, text centered, minimum height=2em, text width=9.5em]
+\tikzstyle{block2} = [rectangle, draw, fill=white, text centered, minimum height=2em, text width=11.4em]
+\tikzstyle{block3} = [rectangle, draw=red, text=red, fill=white, text centered, minimum height=2em, text width=5.5em]
+\tikzstyle{block4} = [rectangle, draw=red, text=red, fill=white, text centered, minimum height=2em, text width=5.5em]
+\tikzstyle{line} = [draw, -latex']
+\tikzstyle{cloud} = [draw, ellipse,fill=white, node distance=3cm,
+    minimum height=2em]
+
+% \tikzset{every loop/.style={min distance=10mm,in=-185,out=-175,looseness=0}}
+
+\tikzsetnextfilename{overview}
+\resizebox{5in}{!}{%
+\begin{tikzpicture}[
+    pre/.style={>=latex',semithick},
+    post/.style={>=latex,shorten >=1pt,>=latex',semithick,line width=1pt},
+    mydouble/.style={<->, >=latex,shorten >=1pt,>=latex',semithick,line width=1pt},
+    node distance = 3cm, auto
+    ]
+     
+    \tikzset{
+  manual input/.style={
+    shape=trapezium,
+    draw,
+    shape border rotate=90,
+    trapezium left angle=90,
+    trapezium right angle=85}}
+
+    % Place nodes
+    
+    % \node [] (solve) {solve};
+    
+    % \node [block, below=0.8cm of solve] (create) {create};
+    \node [cloud] (create) {Problem structure};
+    
+    %
+	\node [block, below=0.8cm of create] (initialize) {Initialize};
+    
+    \node [block2, right=0.8cm of initialize] (createT) {Create $\bm{t}$};
+    
+    \node [block3, manual input, above right=-0.4cm and 1.4cm of createT] (createTmethods) {\scriptsize ED, LGL, CGL, USER};
+    
+    %
+	\node [block, below=0.8cm of initialize] (createH) {Hessian term \\ (see Alg.~\ref{alg:ch5:hessian})};
+        
+    %
+	\node [block, below=0.8cm of createH] (createF) {Gradient term \\ ($\sim$ to Alg.~\ref{alg:ch5:hessian})};   
+   
+    %
+	\node [block, below=0.8cm of createF] (createC) {Constant term \\ ($\sim$ to Alg.~\ref{alg:ch5:hessian})};  
+    
+	\node [block2, above right=-0.0cm and 0.8cm of createF] (Lbig) {$\mathcal{L}^{QP}$ terms (see Alg.~\ref{alg:ch5:Lterms})};
+    
+    \node [block3, manual input, above right=-0.4cm and 1.4cm of Lbig] (Lsmallmethods) {\scriptsize CEF, CTR, CQHS, G, CC};
+    
+	\node [block2, below right=-0.0cm and 0.8cm of createF] (Mbig) {$\mathcal{M}^{QP}$ terms (see Alg.~\ref{alg:ch5:Mterms})};
+    
+
+    %
+	\node [block, below=0.8cm of createC] (createdefects) {Defect constraints \\ (see Algs.~\ref{alg:ch5:SSdefects}--\ref{alg:ch5:PSdefects})};
+    
+    \node [block4, manual input, right=3cm of createdefects] (Defectmethods) {\scriptsize ZOH, EF, TR, HS, RK4, PS};
+    
+    %
+	\node [block, below=0.8cm of createdefects] (createYZ1) {Add. eq. constraints \\ (see Alg.~\ref{alg:ch5:constraints})};
+    
+    % \node [block2, above right=-0.43cm and 0.8cm of createYZ1] (path1) {$\bm{C}$ terms (see Alg.~\ref{})};
+    
+	% \node [block2, below right=-0.43cm and 0.8cm of createYZ1] (boundary1) {$\bm{\phi}$ terms (see Alg.~\ref{})};
+    
+    \node [block2, below right=-0.55cm and 0.8cm of createYZ1] (path) {$\bm{C}$ terms (see Alg.~\ref{alg:ch5:path})};
+    
+    %
+	\node [block, below=0.8cm of createYZ1] (createYZ2) {Inequality constraints \\ (see Alg.~\ref{alg:ch5:constraints})};
+    
+    % \node [block2, above right=-0.43cm and 0.8cm of createYZ2] (path2) {$\bm{C}$ terms (see Alg.~\ref{})};
+    
+	% \node [block2, below right=-0.43cm and 0.8cm of createYZ2] (boundary2) {$\bm{\phi}$ terms (see Alg.~\ref{})};
+       
+	\node [block2, above right=-0.55cm and 0.8cm of createYZ2] (boundary) {$\bm{\phi}$ terms (see Alg.~\ref{alg:ch5:boundary})};
+       
+    \node [block, below=0.8cm of createYZ2] (createBnds) {Simple bounds \\ ($\sim$ to Alg.~\ref{alg:ch5:constraints})};
+    
+    \node [cloud, below=0.8cm of createBnds] (qpsolver) {To QP solver};
+    
+    \node [above right=-1.3cm and 1.4cm of qpsolver] (qp) {\begin{minipage}{0.3\textwidth}\textcolor{black!70}{
+\begin{align*}
+\min_{\mathbf{X}} \qquad& \frac{1}{2}\mathbf{X}\tran \mathbf{H} \mathbf{X} + \mathbf{F}\tran \mathbf{X} + c \\
+\text{subject to:} \qquad& \begin{bmatrix} \mathbf{A}_{e1} \\ \mathbf{A}_{e2} \end{bmatrix}\mathbf{X} = \begin{bmatrix} \mathbf{B}_{e1} \\ \mathbf{B}_{e2} \end{bmatrix} \\
+& \mathbf{A}_{i}\mathbf{X} \leq \mathbf{B}_{i} \\
+& \myunderbar{\mathbf{X}} \leq \mathbf{X} \leq \myoverbar{\mathbf{X}} 
+\end{align*}}
+\end{minipage}};
+    
+    % outputs
+	\node [left=0.8cm of createH] (outputH) {$\mathbf{H}$};
+    
+    \node [left=0.8cm of createF] (outputF) {$\mathbf{F}$};
+    
+    \node [left=0.8cm of createC] (outputC) {$c$};
+    
+    \node [left=0.8cm of createdefects] (outputdefects) {$\mathbf{A}_{e1}, \mathbf{B}_{e1}$};
+    
+    \node [left=0.8cm of createYZ1] (outputYZ1) {$\mathbf{A}_{e2}, \mathbf{B}_{e2}$};
+    
+    \node [left=0.8cm of createYZ2] (outputYZ2) {$\mathbf{A}_{i}, \mathbf{B}_{i}$};
+    
+    \node [left=0.8cm of createBnds] (outputBnds) {$\myunderbar{\mathbf{X}}$, $\myoverbar{\mathbf{X}}$};
+    
+    % boxes
+	\node [dashed,  draw=black, minimum width=12em, minimum height=13.75cm, above=-13.5cm of createH] (method) {};
+    
+    % Draw edges
+    \path [post, line] (createH) -- (outputH);
+    \path [post, line] (createF) -- (outputF);
+    \path [post, line] (createC) -- (outputC);
+    \path [post, line] (createdefects) -- (outputdefects);
+    \path [post, line] (createYZ1) -- (outputYZ1);
+    \path [post, line] (createYZ2) -- (outputYZ2);
+    \path [post, line] (createBnds) -- (outputBnds);
+    
+    % \path [post, line] (initialize) -- (createT);
+    \path [mydouble, draw] (createT) -- (initialize);
+    
+    % \path [post, line] (createH.east) -- (Lbig.170);
+    \path [mydouble, draw] (Lbig.175) -- (createH.east);
+    
+    % \path [post, line] (createH.east) -- (Mbig.170);
+    \path [mydouble, draw] (Mbig.175) -- (createH.east);
+    
+    % \path [post, line] (createF.east) -- (Lbig.west);
+    \path [mydouble, draw] (Lbig.west) -- (createF.east);
+    
+    % \path [post, line] (createF.east) -- (Mbig.west);
+    \path [mydouble, draw] (Mbig.west) -- (createF.east);
+    
+    % \path [post, line] (createC.east) -- (Lbig.190);
+    \path [mydouble, draw] (Lbig.185) -- (createC.east);
+    
+    % \path [post, line] (createC.east) -- (Mbig.190);
+    \path [mydouble, draw] (Mbig.185) -- (createC.east);
+        
+    % \path [post, line] (createYZ1.east) -- (boundary.175);
+    \path [mydouble, draw] (boundary.west) -- (createYZ1.east);
+    
+    % \path [post, line] (createYZ2.east) -- (boundary.185);
+    \path [mydouble, draw] (boundary.west) -- (createYZ2.east);
+    
+    % \path [post, <->, line] (createYZ1.east) -- (path.175);
+    \path [mydouble, draw] (path.west) -- (createYZ1.east);
+    
+    % \path [post, <->, line] (createYZ2.east) -- (path.185);
+    \path [mydouble, draw] (path.west) -- (createYZ2.east);
+
+   % \path [post, line] (Lbigmethods) -- (Lbig);
+    
+	\path [post, line] (Lsmallmethods.west) -- (Lbig.east);
+
+    % \path [post, line] (Lsmallmethods.west) -- (Lsmall.east);
+    
+    % \path [post, line] (Lsmallmethods.west) -- (Lconstant.east);
+    
+    % \path [post, line] (Lconstantmethods) -- (Lconstant);
+    
+    \path [post, line] (Defectmethods.west) -- (createdefects.east);
+    
+    \path [post, line] (createTmethods.west) -- (createT.east);
+    
+
+\draw [decorate,decoration={brace,amplitude=10pt},xshift=-4pt,yshift=0pt]
+(-3.3,-7.7) -- (-3.3,-3.2) node [black,midway,xshift=-0.3cm] 
+{\footnotesize \rotatebox{90}{Objective function}};
+
+\draw [decorate,decoration={brace,amplitude=10pt},xshift=-4pt,yshift=0pt]
+(-4.4,-15.7) -- (-4.4,-9.1) node [black,midway,xshift=-0.3cm] 
+{\footnotesize \rotatebox{90}{Constraints}};
+
+% straight down
+    \path [post, line] (create) -- (initialize);
+    \path [post, line] (initialize.south) -- (method.north);
+    \path [post, line] (method.south) -- (qpsolver.north);
+
+\end{tikzpicture}
+}
+% \vspace{-0.3in}
+\caption{Overview of the automated problem generation procedure.}\label{fig:overview}
+
+\end{figure}

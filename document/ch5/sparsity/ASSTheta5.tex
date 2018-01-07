@@ -1,0 +1,19 @@
+\tikzsetnextfilename{ASSTheta5}
+
+\centering
+\resizebox{1\textwidth}{!}{
+\begin{tikzpicture}[yscale=-1] 
+
+\input{../ch5/sparsity/sparsityA}
+
+%% states and parameters
+\foreach \k in {1,...,\np}{
+	\foreach \j in {1,...,\nx}{
+		\foreach \i in {1,...,\ntm}{ 
+        	\pgfmathsetmacro{\kk}{\k-1};
+            \pgfmathsetmacro{\jj}{\j-1};
+        	\node () at ( 0.2*\k + 0.2*\nx*\nt + 0.2*\nu*\nt, 0.2*\i + 0.2*\jj*\ntm ) {\mytemp};
+} } }
+
+\end{tikzpicture}
+}

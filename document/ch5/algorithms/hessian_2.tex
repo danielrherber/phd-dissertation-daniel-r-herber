@@ -1,0 +1,25 @@
+\begin{algorithm}
+\caption{Create Hessian.}\label{alg:ch5:hessian}
+\setstretch{0.8}
+\begin{algorithmic}[1]
+%
+\Require structures $\mathcal{L}$ and $\mathcal{M}$ of type \xvar{objective}
+
+\State  [$\xvar{IL}, \xvar{JL}, \xvar{VL}$] $\gets$ Algorithm~\ref{alg:ch5:Lterms} using $\mathcal{L}$  \Comment{Lagrange term sequences}
+
+\State [$\xvar{IM}, \xvar{JM}, \xvar{VM}$] $\gets$ Algorithm~\ref{alg:ch5:Mterms} using $\mathcal{M}$ \Comment{Mayer term sequences}
+
+\State $\xvar{I}$ $\gets$ \Call{combine}{\xvar{IL}, \xvar{IM}}
+
+\State $\xvar{J}$ $\gets$ \Call{combine}{ \xvar{JL}, \xvar{JM}}
+
+\State $\xvar{V}$ $\gets$ \Call{combine}{\xvar{VL}, \xvar{VM}}
+
+\State $\xvar{H}$ $\gets$ \Call{sparse}{\xvar{I}, \xvar{J}, \xvar{V}, $n_X$, $n_X$} \Comment{sparse matrix with $n_X$ by $n_X$ size}
+
+\State $\mathbf{H}$ $\gets$ $\xvar{H} + \xvar{H}\tran$ \Comment{make symmetric for $\mathbf{X}\tran \mathbf{H} \mathbf{X}/2$ form}
+
+\State \textbf{return} $\mathbf{H}$ \Comment{Hessian}
+
+\end{algorithmic}
+\end{algorithm}

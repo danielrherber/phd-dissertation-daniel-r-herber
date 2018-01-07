@@ -1,0 +1,78 @@
+% \IncMargin{1em}
+\RestyleAlgo{algoruled}
+
+\begin{vAlgorithm}[t]{\columnwidth}{0em}
+
+\LinesNumbered
+\SetSideCommentRight 
+\DontPrintSemicolon
+% \SetNoFillComment
+
+% \SetTitleSty{\textsf}{small}
+% \renewcommand{\algorithmcfname}{\small\textbf{\textsf{\MakeUppercase{Algorithm}}}}%
+
+% \SetKwData{Left}{left}\SetKwData{This}{this}\SetKwData{Up}{up}
+\SetKwFunction{cumprod}{cumprod}
+\SetKwFunction{length}{length}
+\SetKwFunction{zeros}{zeros}
+\SetKwFunction{ceil}{ceil}
+\SetKwFunction{mod}{mod}
+\SetKwFunction{mymin}{min}
+\SetKwFunction{find}{find}
+\SetKwFunction{detectiso}{isomorphic\_vf2}
+
+\SetKwInOut{Input}{Input}
+\SetKwInOut{Output}{Output}
+
+\caption{Basic tree search algorithm. \label{alg:ch2:simpletree}}
+
+\Input{$\xvar{V}$ -- vector of remaining ports for each component replicate \\
+$\xvar{E}$ -- vector of edges in sequential pairs, initially empty \\
+$\xvar{cVf}$ -- cumulative sum of the original $\xvar{V}$ plus 1 \\
+$\xvar{SavedGraphs}$ -- set of graphs, initially empty \\
+}
+\Output{$\xvar{SavedGraphs}$ -- set of graphs \\
+}
+\BlankLine
+            
+    $\xvar{iL}$ $\leftarrow$  $\find(\xvar{V},\xvar{first})$ \tcc*{find first nonzero entry}
+    
+    $\xvar{L}$ $\leftarrow$  $\xvar{cVf}(\xvar{iL})-\xvar{V}(\xvar{iL})$ \tcc*{left port}
+    
+    $\xvar{V}\big(\xvar{I}(1)\big)$ $\leftarrow$ $\xvar{V}(\xvar{iL}) - 1$ \tcc*{remove port \label{ch2:line3}}
+    
+% \SetSideCommentLeft 
+  %   \tcc*{$\xvar{V}$ $\leftarrow$  $\xvar{A}(\xvar{I}(1),:) \circ \xvar{V}$, naturally enforce \ref{ch2:s5} by using a potential adjacency matrix $\xvar{A}$}
+% \SetSideCommentRight   
+            
+    $\xvar{I}$ $\leftarrow$  $\find(\xvar{V})$ \tcc*{find nonzero entries \label{ch2:line4}}  
+    
+	\For(\tcc*[f]{loop through all nonzero entries}){$\xvar{iR}\leftarrow$ $\xvar{I}$ \label{alg:ch2:cip:5} }{
+	
+        $\xvar{R}$ $\leftarrow$ $\xvar{cVf}(\xvar{iR})-\xvar{V}(\xvar{iR})$ \tcc*{right port}
+
+        $\xvar{E2}$ $\leftarrow$ $[\xvar{E},\xvar{L},\xvar{R}]$ \tcc*{combine left, right ports for an edge }
+
+		$\xvar{V2}$ $\leftarrow$ $\xvar{V}$ \tcc*{local remaining ports vector}
+       
+		% $\xvar{Eo}$ $\leftarrow$ $\xvar{E}$
+               
+        $\xvar{V2}(\xvar{iR})$ $\leftarrow$ $\xvar{V2}(\xvar{iR})-1$ \tcc*{remove port (local copy)}
+	
+		\uIf(\tcc*[f]{recursive call if any remaining vertices}){any element of $\xvar{V2}$ is nonzero}{
+		
+            $\xvar{SavedGraphs}$ $\leftarrow$ Algorithm~\ref{alg:ch2:simpletree} with $\xvar{V2},\xvar{E2},\xvar{cVf},\xvar{SavedGraphs}$
+            
+        }
+        	
+        \Else{
+        	
+            % $\xvar{id}$  $\leftarrow$ $\xvar{id}+1$ \tcc*{increment index of total graphs}
+            
+            $\xvar{SavedGraphs}\{\xvar{end} + 1\}$  $\leftarrow$ $\xvar{E2}$ \tcc*{save missorted perfect matching }
+        	
+        }
+	
+	} % end for i
+
+\end{vAlgorithm}

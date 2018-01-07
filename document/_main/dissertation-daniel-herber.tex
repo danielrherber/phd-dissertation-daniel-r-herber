@@ -1,0 +1,138 @@
+\documentclass[tocnosub, noragright, centerchapter, mixcasechap, 12pt]{../uiucecethesis09}
+
+\pdfmapline{+dummy-space <dummy-space.pfb}
+
+% Use offcenter for the extra .5 inch on the left side. Needed with fullpage and fancy.
+% Use mixcasechap for compatibility with hyperref package, which does NOT like all caps default
+% Use edeposit for the adviser/committee on the title page.
+
+\makeatletter
+
+%--------------------------------------
+% USEPACKAGE COMMANDS
+\input{../_preamble/packages}
+%--------------------------------------
+% CUSTOM COMMANDS
+\input{../_preamble/commands}
+%--------------------------------------
+\addbibresource{../refs/refs-all.bib}
+%--------------------------------------
+
+\phdthesis
+
+\title{Advances in Combined Architecture, Plant, and Control Design}
+\author{Daniel Ronald Herber}
+\department{Systems and Entrepreneurial Engineering}
+\degreeyear{2017}
+\advisor{Assistant Professor James T. Allison}
+
+\committee{Assistant Professor James Allison\\ Professor Yuliy Baryshnikov \\ Associate Professor Carolyn Beck \\ Professor Harrison Kim}
+
+\makeglossaries
+
+\begin{document}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% COPYRIGHT
+%
+%\copyrightpage
+%\blankpage
+%--------------------------------------
+% TITLE
+\maketitle
+\parindent 1em
+%--------------------------------------
+\frontmatter
+\hypersetup{allcolors = blue}
+\setstretch{1.2} % control line spacing
+%--------------------------------------
+% ABSTRACT
+\begin{abstract}
+\input{../_main/abstract}
+\end{abstract}
+%--------------------------------------
+% DEDICATION
+\begin{dedication}
+To Ashley.
+\end{dedication}
+%--------------------------------------
+% ACKNOWLEDGMENTS
+\begin{acknowledgments}
+\input{../_main/acknowledgments}
+\end{acknowledgments}
+%--------------------------------------
+\newgeometry{top = 1.25in, bottom = 1.25in, left = 1in, right = 1in}
+\setstretch{1} % control line spacing
+%--------------------------------------
+% TABLE OF CONTENTS
+\cleardoublepage\phantomsection
+\tableofcontents
+%--------------------------------------
+% LIST OF FIGURES
+\cleardoublepage\phantomsection
+\listoffigures
+%--------------------------------------
+% LIST OF TABLES
+\cleardoublepage\phantomsection
+\listoftables
+%--------------------------------------
+% LIST OF ALGORITHMS
+\cleardoublepage\phantomsection
+\addcontentsline{toc}{chapter}{\textsc{List of Algorithms}}
+\listofalgorithms
+%--------------------------------------
+% LIST OF SYMBOLS
+\cleardoublepage\phantomsection
+\renewcommand*{\glsnamefont}[1]{\textmd{#1}}
+\setglossarystyle{glossymbol} 
+\printglossary[type=symbol]
+%--------------------------------------
+% LIST OF ACRONYMS
+\cleardoublepage\phantomsection
+\renewcommand*{\glsnamefont}[1]{\textbf{#1}}
+\setglossarystyle{glosacronym}
+\printglossary[type=acronym,title={List of Abbreviations}]
+%--------------------------------------
+% LIST OF NOTATIONS
+\cleardoublepage\phantomsection
+\renewcommand*{\glsnamefont}[1]{\textmd{#1}}
+\setglossarystyle{glosnotation}
+\printglossary[type=notation]
+%--------------------------------------
+\mainmatter
+\newgeometry{top = 1.25in, bottom = 1.25in, left = 1in, right = 1in}
+\setstretch{1.2} % control line spacing
+\hypersetup{allcolors = linkcolor}
+
+%--------------------------------------
+% CHAPTERS
+\input{../ch1/ch1} % introduction
+\input{../ch2/ch2} % architecture
+\input{../ch3/ch3} % co-design
+\input{../ch4/ch4} % scaling
+\input{../ch5/ch5} % DT QP
+\input{../ch6/ch6} % PM circuits
+\input{../ch7/ch7} % SASA
+\input{../ch8/ch8} % PM suspensions
+\input{../ch9/ch9} % conclusion
+
+%--------------------------------------
+% APPENDIX
+\appendix
+\input{../app1/app1}
+\input{../app2/app2}
+\input{../app3/app3}
+\input{../app4/app4}
+\backmatter
+%--------------------------------------
+% Bibliography
+\cleardoublepage\phantomsection
+\addcontentsline{toc}{chapter}{\textsc{Bibliography}}
+\setstretch{1} % control line spacing
+\setlength{\emergencystretch}{1em}
+\printbibliography
+
+%--------------------------------------
+% ERRATA
+% \input{errata/errata}
+
+\end{document}

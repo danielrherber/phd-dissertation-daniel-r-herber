@@ -1,0 +1,30 @@
+% notation
+
+% notation table
+\begin{table}[!ht]
+\caption{Notation used in the algorithms. \label{tb:descript}}
+\centering
+\begin{tabular}{ r l }
+\hline \hline 
+Notation & Description \\ 
+\hline 
+$n_X$  & number total \glsname[noindex]{QP} variables, i.e.,~$N_{\glsfoo[noindex]{timesub}}\left( n_{\glsfoo[noindex]{notcontrol}} + n_{\glsfoo[noindex]{notstates}}  \right) + n_{\glsfoo[noindex]{notparameter}}$  \\
+$\emptyset$ & empty sequence \\ 
+$\oplus, \ominus, \odot$ & elementwise summation, difference, and product \\ % (or Hadamard) \\
+$1$ to $n$ & sequence defined by $\big[1, 2, \dots, n \big]$ where $n$ is an integer \\
+$S$\myind{$i$} & $i$th element of the sequence $S$ \\
+$\abs{S}$ & number of elements in $S$ (length or cardinality) \\
+$\textsc{blkdiag}(A,B,\dots)$ & construct block diagonal matrix from input arguments \cite{matlab-blkdiag} \\
+$\textsc{combine}(S, R)$ & concatenation of sequences $S$ and $R$ \\
+$\textsc{eye}(n)$ & $n \times n$ identity matrix \\
+% $\textsc{find}(A)$ & finds nonzero values along with row and column subscripts in array $A$ \\
+$\textsc{kron}(A,B)$  & Kronecker tensor product of matrices $A$ and $B$ \cite{matlab-kron} \\
+$\textsc{ones}(n_1,n_2)$ & $n_1 \times n_2$ matrix of ones \\
+$\textsc{repmat}(A,n_1,n_2)$ & repeat copies of $A$ with $n_1$ row-wise and $n_2$ column-wise copies \\
+$\textsc{rshift}(S)$ & circularly shifts the elements in $S$ by 1 position to the right \\
+$\textsc{sparse}(i,j,v,n,m)$ & sparse matrix $A(i,j) = v$ with size $n$ by $m$  \\
+$\textsc{zeros}(n_1,n_2)$ & $n_1 \times n_2$ matrix of zeros \\
+%  &  \\
+\hline \hline 
+\end{tabular}
+\end{table}

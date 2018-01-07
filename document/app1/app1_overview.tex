@@ -1,0 +1,15 @@
+\section{Overview}
+
+In Chapter~\ref{ch:2}, a tree search algorithm was developed to generate a set of colored graphs covering the graph structure space defined by $(\gls{C},\gls{R},\gls{P})$ and various additional network structure constraints.
+This algorithm is shown in Alg.~\ref{alg:app1:tree} with some minor changes to the variable names and the feasible edge improvement directly included.
+In this appendix, a number of enhancements are proposed to either more efficiently cover the same graph structure space or allow additional network structure constraints to be defined.
+
+\input{../app1/algorithms/alg-tree}
+
+Each one of the enhancements will be discussed in the following format. First, the theory behind the enhancement will be presented with a focus on showing the desired graph structure space is still covered. 
+Second, the implementation of the enhancement will be discussed with pseudocode. 
+Finally, some examples are provided comparing the original algorithm to the enhancement. Both visualizations or other aides and computational tests are provided\footnote{A tests were performed on a personal computer with an i7-6800K at 3.8 GHz (up to 12 threads available), 32 GB DDR4 3200 MHz RAM, \textsc{windows} 10 64-bit, and \textsc{Matlab} 2017a.}.
+\textit{\glsname{En}} is an abbreviation for enhancements included, \textit{\glsname{Orig}} is an abbreviation for original algorithm (see Alg.~\ref{alg:app1:tree}), and \textit{12T} is an abbreviation for 12 threads.
+
+% new paragraph
+There are six enhancements proposed in this report: replicate ordering, avoiding loops, avoiding multi-edges, avoiding line-connectivity constraints, checking for saturated subgraphs, and enumerating subcatalogs. The final section discusses the effect of the enhancements on the case studies in Chapter~\ref{ch:2}.

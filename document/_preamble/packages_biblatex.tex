@@ -1,0 +1,46 @@
+% bibtex_options
+% for references
+
+\usepackage[
+backend = bibtex, 
+bibstyle = ieee, 
+citestyle = numeric-comp,
+backref = true,
+hyperref = true,
+maxcitenames = 3,
+maxbibnames = 3,
+block = none,
+]{biblatex} % for references
+
+% other potential options
+% bibstyle=ieee-alphabetic, 
+% citestyle=alphabetic,
+
+\DefineBibliographyStrings{english}{
+  backrefpage  = {see p\adddot},
+  backrefpages = {see pp\adddot},
+  url = {url},
+  phdthesis = {PhD dissertation},
+}
+
+% remove period at the end of the citations
+\renewcommand*{\finentrypunct}{}
+
+% change font size
+\renewcommand*{\bibfont}{\footnotesize}
+
+% customize the doi field
+\DeclareFieldFormat{doi}{%
+  \printtext{doi}\addcolon\space
+    \ifhyperref
+      {\href{http://dx.doi.org/#1}{\nolinkurl{#1}}}
+      {\nolinkurl{#1}}}
+
+% change isbn field
+\DeclareFieldFormat{isbn}{%
+	\printtext{isbn}\addcolon\space{#1}}
+
+\xpatchbibdriver{online}
+  {\printtext[parens]{\usebibmacro{date}}}
+  {\iffieldundef{year}{}{\printtext[parens]{\usebibmacro{date}}}}
+  {}{}

@@ -1,0 +1,19 @@
+%------------------
+\section{Tree Search Algorithm\label{sec:ch2:treesearch}}
+
+With a better understanding of the colored graph isomorphism problem in the context of architecture design, a tree search algorithm was developed to more efficiently enumerate a graph structure space that contains $\mathcal{G}_3$. This algorithm is based on the idea that for simple components, the port ordering does not matter so we are free to always choose the first port of a component when making edges.
+ 
+Algorithm~\ref{alg:ch2:simpletree} starts with a vector for length $N_C$ where the entries are the number of ports for every component in $G^{CC}$. For example, if $P = [1\ 2]$ and $R=[2\ 3]$, then this vector would be $\xvar{V} = [1\ 1\ 2\ 2\ 2]$ and $\xvar{cVf} = [2\ 3\ 5\ 7\ 9]$. Recursion is then applied to enumerate all possible edge combinations where each recursive step adds an edge. The end result is a set of missorted \mypm{}s, i.e.,~the sequential pairs that define the edges need to be sorted such that they fit the definition of a \mypm{} in Sec.~\ref{sec:ch2:inter} (but no \mypm{} will occur twice and the property of naturally satisfying \ref{ch2:s2} and \ref{ch2:s6} is maintained). The end result is an algorithm that does not produce many \mypm{} graphs that would certainly have a port-type isomorphism. A visualization of the tree-like behavior is in Fig.~\ref{fig:ch2:tree1simple} where each leaf in the tree is a new call of the algorithm and the branches are the loops through the possible remaining edges. Not all leaves have the same number of branches since components become completely connected at different times. Two paths are shown in the figure for a particular architecture design problem, each resulting in a different \mypm{}. Note that the thicker black lines indicate the chosen edge and the gray lines are the other potential edges for the particular leaf instance.
+
+\input{../ch2/figures/tree1simple}
+
+This approach is similar to a number of reported graph enumeration algorithms \cite{Carhart1975a, Colbourn1979a, Snavely1993a, Faulon2003b}.
+The tree algorithm shares some similarities with deletion orderly algorithms \cite{Colbourn1979a}.
+Snavely and Papalambros developed a tree algorithm that only deals with structured components, which limits the design space by the number of components rather than the $(C,R,P)$ notation in this work \cite{Snavely1993a}. 
+Faulon et al. enumerate molecules of a specific signature height with a recursive algorithm, but do not allow for components to be removed. Thus, they do not cover the same architecture design space \cite{Faulon2003b}. 
+Neither of these works make the connection between \mypm{} theory and architecture enumeration which provides a number of insights and practical functions. 
+
+We can further improve on this algorithm by adding a single line between lines~\ref{ch2:line3} and \ref{ch2:line4} that will result in graphs that always satisfy \ref{ch2:s5} (feasible edge constraints). First, expand $A_R$ such that its size is the same as $G^{CC}$ where 0 entries still indicate infeasible edge constraints. The additional line would then be: $\xvar{Vallow}$ $\leftarrow$  $\xvar{A}(\xvar{iL},:) \circ \xvar{V}$. By finding the nonzero entries of $\xvar{Vallow}$ instead of $\xvar{V}$, we limit the for-loop to edges that are feasible. This has the intentional effect that certain branches of the tree will terminate before a feasible \mypm{} is found. Therefore when \ref{ch2:s5} is present, we will utilize this `improved' tree search algorithm to more efficiently enumerate $\mathcal{G}_3$.
+Additional enhancements to the tree search algorithm are discussed in Appendix~\ref{app:A} as well as alternative tree traversal strategies.
+
+\input{../ch2/algorithms/simpletree}

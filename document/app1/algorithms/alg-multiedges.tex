@@ -1,0 +1,37 @@
+\begin{vAlgorithm}[!ht]{0.9\columnwidth}{0em}
+\LinesNumbered
+\DontPrintSemicolon
+
+\SetKwFunction{find}{find}
+\SetKwFunction{eye}{eye}
+\SetKwFunction{length}{length}
+
+\SetKwInOut{Input}{Input}
+\SetKwInOut{Output}{Output}
+
+\caption{Limit potential connections based on multi-edges.\label{alg:app1:multiedges}}
+
+\Input{%
+        \xvbox{2.5mm}{$\xvar{A}$} -- expanded potential adjacency matrix \\
+        \xvbox{2.5mm}{$\xvar{U}$} -- vector indicating if a component replicate requires unique connections\\
+        \xvbox{2.5mm}{$\xvar{iR}$} -- component index for right port \\
+        \xvbox{2.5mm}{$\xvar{iL}$} -- component index for left port \\
+      }
+\Output{%
+        \xvbox{2.5mm}{$\xvar{A}$} -- expanded potential adjacency matrix
+       }
+
+\BlankLine
+
+\If(\tcc*[f]{either component requires unique connections}){$\xvar{U}(\xvar{iL}) \lor \xvar{U}(\xvar{iR})$}{
+	\If(\tcc*[f]{don't do for self loops}){$\xvar{iR} \neq \xvar{iL}$}{
+
+	$\xvar{A}(\xvar{iR}, \xvar{iL})$ $\leftarrow$ $0$ \tcc*{limit this connection\label{alg:app1:multiedges-l3}}
+
+	$\xvar{A}(\xvar{iL}, \xvar{iR})$ $\leftarrow$ $0$ \tcc*{limit this connection\label{alg:app1:multiedges-l4}}
+
+	}
+	
+}
+
+\end{vAlgorithm}

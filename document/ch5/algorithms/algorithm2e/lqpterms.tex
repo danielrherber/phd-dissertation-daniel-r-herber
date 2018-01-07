@@ -1,0 +1,89 @@
+\begin{vAlgorithm}[!ht]{1\columnwidth}{0em}
+\LinesNumbered
+\DontPrintSemicolon
+
+\SetKwInOut{Require}{Require}
+
+\caption{Create sequences for Lagrange terms.}\label{alg:ch5:Lterms}
+
+\Require{ structure $\mathcal{L}$ of type \xvar{objective}}
+
+$\emptyset$ $\gets$ \xvar{I}, \xvar{J}, \xvar{H}, \xvar{Q}, \xvar{Qmid} \tcc*{initialize sequences}
+
+\For{\xvar{k} $\gets$ $1$ \KwTo $\abs{\mathcal{L}}$}{
+
+	\xvar{L} $\gets$ $\mathcal{L}$\myind{\xvar{k}} \tcc*{obtain current substructure }
+
+	\xvar{A} $\gets$ \xvar{L}.\xvar{matrix} \tcc*{obtain current submatrix}
+
+	\xvar{R} $\gets$ \textsc{GetContIndex}(\xvar{L}.\xvar{left}) \tcc*{rows (continuous), see Alg.~\ref{alg:ch5:getindex}}
+
+	\xvar{C} $\gets$ \textsc{GetContIndex}(\xvar{L}.\xvar{right}) \tcc*{columns (continuous), see Alg.~\ref{alg:ch5:getindex}}
+
+	\For{\xvar{i} $\gets$ $1$ \KwTo $\abs{\textsf{R}}$}{
+
+		\For{\xvar{j} $\gets$ $1$ \KwTo $\abs{\textsf{C}}$}{
+
+			\xvar{r} $\gets$ \textsc{GetQPIndex}(\textsf{R}\myind{\textsf{i}}, \xvar{L}.\xvar{left}, $1$ \KwTo $N_t$) \tcc*{rows (QP), see Alg.~\ref{alg:ch5:getindex}}
+
+			\xvar{c} $\gets$ \textsc{GetQPIndex}(\textsf{C}\myind{\textsf{j}}, \xvar{L}.\xvar{right}, $1$ \KwTo $N_t$) \tcc*{columns (QP), see Alg.~\ref{alg:ch5:getindex}}
+
+			$\xvar{I}$ $\gets$ \textsc{combine}($\xvar{I}$, \xvar{r}) \label{line:ch5:lqp_I} \tcc*{rows in main diagonal}
+
+			$\xvar{J}$ $\gets$ \textsc{combine}($\xvar{J}$, \xvar{c}) \tcc*{columns in main diagonal}
+
+			$\xvar{H}$ $\gets$ \textsc{combine}($\xvar{H}$, $\bm{\Delta}$, $0$) \label{line:ch5:lqp_H} \tcc*{vector of time steps}
+
+			$\xvar{Q}$ $\gets$ \textsc{combine}($\xvar{Q}$, evaluate \xvar{A}\myind{\xvar{i},\xvar{j}} on $\bm{t}$) % \tcc*{}
+
+			$\xvar{Qmid}$ $\gets$ \textsc{combine}($\xvar{Qmid}$, evaluate \xvar{A}\myind{\xvar{i},\xvar{j}} on $\bar{\bm{t}}$, $0$) % \tcc*{}
+
+		}
+
+	}
+
+}
+
+$\xvar{IU}$ $\gets$ remove every $N_t$ element from \xvar{I} starting with element $N_t$ \tcc*{rows in upper diagonal}
+
+$\xvar{IL}$ $\gets$ remove every $N_t$ element from \xvar{I} starting with element $1$ \tcc*{rows in lower diagonal}
+
+$\xvar{JU}$ $\gets$ remove every $N_t$ element from \xvar{J} starting with element $1$ \tcc*{columns in upper diagonal}
+
+$\xvar{JL}$ $\gets$ remove every $N_t$ element from \xvar{J} starting with element $N_t$ \tcc*{columns in lower diagonal}
+
+$\xvar{Hoff}$ $\gets$ remove every $N_t$ element from \xvar{H} starting with element $N_t$ \tcc*{remove the added zeros}
+
+$\xvar{Qoff}$ $\gets$ remove every $N_t$ element from \xvar{Qmid} starting with element $N_t$ \tcc*{remove the added zeros}
+
+\xvar{V} $\leftarrow$  $\left( \xvar{H} \oplus \textsc{rshift}(\xvar{H})  \right) \odot \xvar{Q}/6 \oplus
+\left( \xvar{H}\odot \xvar{Qbar}/6  \right) \oplus
+\textsc{rshift}\left( \xvar{H} \odot \xvar{Qbar}/6 \right)
+$ \label{line:ch5:V}
+
+\xvar{Voff} $\gets$ $\xvar{Hoff} \odot \xvar{Qoff}/6$ \label{line:ch5:Voff}
+
+$\mathcal{I}$ $\gets$ \textsc{combine}($\mathcal{I}$, \xvar{I}, \xvar{IU}, \xvar{IL})
+
+$\mathcal{J}$ $\gets$ \textsc{combine}($\mathcal{J}$, \xvar{J}, \xvar{JU}, \xvar{JL})
+
+$\mathcal{V}$ $\gets$ \textsc{combine}($\mathcal{V}$, \xvar{V}, \xvar{Voff}, \xvar{Voff})
+
+\textbf{return} $\mathcal{I}$, $\mathcal{J}$, $\mathcal{V}$ \tcc*{sequences that define Lagrange terms in $\mathbf{H}$}
+
+\vspace*{0.1in}
+\tcc*{
+\begin{tabular}{ c c c }
+% \hline \hline
+method & \xvar{V} (line~\ref{line:ch5:V}) & \xvar{Voff} (line~\ref{line:ch5:Voff}) \\ 
+ \hline
+ CEF & $\xvar{H} \odot \xvar{Q}$ & $\emptyset$ \\  
+ CTR & $\left( \xvar{H} \oplus \textsc{rshift}(\xvar{H}) \right) \odot \xvar{Q}/2$  & $\emptyset$ \\
+ G \& CC & $(\Delta/2) \xvar{W} \odot \xvar{Q}$ & $\emptyset$ \\
+ % \hline \hline
+\end{tabular}
+} 
+
+\tcc*{replace line~\ref{line:ch5:lqp_H} with $\xvar{W}$ $\gets$ \textsc{combine}{$\xvar{W}$, $\bm{w}$} (see Eqn.~(\ref{eq:ch5:gaussian}))}
+
+\end{vAlgorithm}

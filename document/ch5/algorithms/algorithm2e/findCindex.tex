@@ -1,0 +1,59 @@
+\begin{vAlgorithm}[!ht]{1\columnwidth}{0em}
+\LinesNumbered
+\DontPrintSemicolon
+
+\SetKwInOut{Require}{Require}
+
+\SetKwProg{Fn}{function}{}{end}
+
+\caption[Optimization variable index generating functions]{Optimization variable index generating functions (both continuous and discrete problems).} \label{alg:ch5:getindex}
+
+\Fn(\tcc*[f]{index sequence of variable locations in continuous problem})
+{\textsc{GetContIndex}\text{(}\xvar{xtype})}{ % 
+\Switch{\xvar{xtype}}{
+	\uCase(\tcc*[f]{singleton dimension}){$0$ or empty}{
+		\textsf{X} $\gets$ $0$
+	}
+	\uCase(\tcc*[f]{controls}){$1$}{
+		\textsf{X} $\gets$ $1$ \KwTo $n_u$
+	}
+	\uCase(\tcc*[f]{states, initial states, and final states}){$2$ or $4$ or $5$}{
+		\textsf{X} $\gets$ $n_u+1$ \KwTo $n_u+n_{\xi}$
+	}
+	\Case(\tcc*[f]{parameters}){$3$}{
+		\textsf{X} $\gets$ $n_u+n_{\xi}+1$ \KwTo $n_u+n_{\xi}+n_p$
+	}
+}
+
+\textbf{return} $\xvar{X}$ \tcc*{sequence of variable locations}
+
+}
+
+% 
+\Fn(\tcc*[f]{index sequence of variable locations in QP}){\textsc{GetQPIndex}(\xvar{x}, \xvar{xtype}, \xvar{idx})}{ % 
+
+\Switch{\xvar{xtype}}{
+	\uCase(\tcc*[f]{singleton dimension}){$0$ or empty}{
+		\xvar{I} $\gets$ \textsc{ones}(1,$N_t$)
+	}
+	\uCase(\tcc*[f]{states or controls}){$1$ or $2$}{
+		\xvar{I} $\gets$ $(\xvar{x} - 1)N_t + 1$ \KwTo $\xvar{x}N_t$
+	}
+	\uCase(\tcc*[f]{parameters}){$3$}{
+		\xvar{I} $\gets$ $(\xvar{x} + n_u n_t + n_{\xi} n_t)$ \textsc{ones}(1,$N_t$)
+	}
+	\uCase(\tcc*[f]{initial states}){$4$}{
+		\xvar{I} $\gets$ $((\xvar{x} - 1) N_t + 1)$ \textsc{ones}(1,$N_t$)
+	}
+	\Case(\tcc*[f]{final states}){$5$}{
+		\xvar{I} $\gets$ $\xvar{x} N_t$ \textsc{ones}(1,$N_t$)
+	}
+}
+
+\xvar{I} $\gets$ \xvar{I}\myind{\xvar{idx}} \tcc*{extract necessary indices}
+
+\textbf{return} $\xvar{I}$ \tcc*{sequence of variable locations}
+
+}
+
+\end{vAlgorithm}

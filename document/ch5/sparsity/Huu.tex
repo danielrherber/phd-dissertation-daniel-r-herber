@@ -1,0 +1,20 @@
+\tikzsetnextfilename{Huu}
+
+\centering
+\resizebox{1\textwidth}{!}{
+\begin{tikzpicture}[yscale=-1] 
+
+\input{../ch5/sparsity/sparsityH}
+
+%% controls
+\foreach \k in {1,...,\nu}{
+	\foreach \j in {1,...,\nu}{
+		\foreach \i in {1,...,\nt}{ 
+        	\pgfmathsetmacro{\kk}{\k-1};
+            \pgfmathsetmacro{\jj}{\j-1};
+        	\pgfmathsetmacro{\x}{0.2*\i + 0.2*\kk*\nt};
+            \pgfmathsetmacro{\y}{0.2*\i + 0.2*\jj*\nt};
+        	\node () at (\x,\y) {\mytemp};
+} } }
+\end{tikzpicture}
+}

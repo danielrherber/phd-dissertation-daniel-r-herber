@@ -1,0 +1,42 @@
+%----------------------------------------------------------
+\section{Solution Generation Challenges\label{sec:ch1:theorytools}}
+
+There are a number of challenges associated with the design freedom found in combined architecture, plant, and control problems.
+The complexity of individual problems can be quite significant, sometimes even rendering the problem intractable, unless this complexity is handled appropriately.  
+Efficiently automating the key tasks in the solution generation process is essential to arriving at desirable solutions in a practical manner.
+Here we highlight three important generation tasks: candidate architecture generation, model generation, and optimization problem generation.
+
+%----------------------------------------------------------
+\subsection{(Automated) Candidate Architecture Generation\label{sec:ch1:archgen}}
+
+Exploring different architectures requires an appropriate conceptual framework that allows for modifications to the appropriate elements in the architecture.
+A straightforward, commonly used representation is an adjacency matrix where the nonzero entries in the matrix represent connections between elements in the architecture.
+Candidate architectures could be a different set of nonzero values in the adjacency matrix.
+However, not all architecture representations are equally useful.
+Some might produce many infeasible systems or too many candidates.
+Others might produce many architectures with poor performance, or are not amendable to some optimization procedure.
+An example alternative representation framework was developed for electrical circuits where a sequence of low-level instructions are used to generate a circuit \cite{Lohn1999a}.
+These instructions iteratively add new elements to the circuit in  topologically different ways.
+A manual alternative would include experts proposing candidate architectures, which may be appropriate in some cases, but often may not support comprehensive design space exploration.
+In many traditional engineering design problems, the architecture is fixed so this abstract representation is not typically needed.
+
+%----------------------------------------------------------
+\subsection{(Automated) Model Generation\label{sec:ch1:modelgen}}
+
+Given some architecture specification (e.g.,~a graph), we need to create a suitable model (some representation of the architecture that can predict performance and identify if constraints are satisfied) for use in the optimization problems described in Sec.~\ref{sec:ch1:process}.
+Certain modeling methodologies support this task such as bond graph
+modeling \cite{Borutzky2010a} or block diagram-based modeling \cite{matlab-simulink}. 
+Other techniques have been developed for specific types of problems such as solid isotropic material with penalization for structural optimization \cite{Bendsoe2004a} and \glsfirst{MNA} for electrical circuits \cite{Ho1975a}.
+Nevertheless, for many design problems, some investment will be needed to generate models efficiently and in an automated manner.
+In traditional engineering design problems, the model is fixed for the given architecture, but can vary based on the plant/control design variables.
+
+%----------------------------------------------------------
+\subsection{(Automated) Optimization Problem Generation}
+
+For different candidate architectures of the same design problem,  the optimization problem that predicts its performance may vary.
+If the model is different, there may be different plant and control variables.
+Different constraints may be present depending on the components in the architecture (e.g.,~we only need control actuator bounds if the component is present).
+Since all problem elements (e.g.,~number and types of variables, objective function form, constraints, model) could change between architectures, forming and solving the optimization problem automatically is important for solution efficiency.
+Understanding the general optimization problem structure for any candidate architecture is key so that it can be leveraged to find solutions faster and more robustly.
+For some types of optimization problems, such as ones with infinite-dimensional constraints and variables, additional work is need to obtain (approximate) solutions.
+Frequently, only a single optimization problem form needs to be posed and solved in traditional engineering design problems.

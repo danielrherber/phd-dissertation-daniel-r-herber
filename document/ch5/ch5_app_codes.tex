@@ -1,0 +1,178 @@
+\section{Codes} \label{sec:ch5:codes}
+
+\subsection{MATLAB Code for \nameref{sec:ch5:example1}} \label{sec:ex1-code}
+
+\begin{lstlisting}[
+style=Matlab-editor,
+basicstyle=\mlttfamily\scriptsize,
+numbers=none,
+frame = single, 
+xleftmargin=0.25cm,
+xrightmargin=0.25cm,
+linewidth=\textwidth]
+% problem parameters
+p.t0 = 0; p.tf = 20; % time horizon
+p.x0 = -0.5; p.v0 = 1;
+% system dynamics
+A = [0 1;-1 0]; B = [0;1]; 
+% Lagrange term
+L(1).left = 1; L(1).right = 1; L(1).matrix = 1/2; % 1/2*u^2
+% simple bounds
+UB(1).right = 4; UB(1).matrix = [p.x0;p.v0]; % initial states
+LB(1).right = 4; LB(1).matrix = [p.x0;p.v0];
+UB(2).right = 5; UB(2).matrix = [0;0]; % final states
+LB(2).right = 5; LB(2).matrix = [0;0];
+% combine structures
+setup.A = A; setup.B = B; setup.L = L; setup.UB = UB; setup.LB = LB; setup.p = p;
+% solve
+[T,U,Y,P,F,p,opts] = DTQP_solve(setup,[]);
+\end{lstlisting}
+
+\subsection{MATLAB Code for \nameref{sec:ch5:example2}} \label{sec:ex2-code}
+
+\begin{lstlisting}[
+style=Matlab-editor,
+basicstyle=\mlttfamily\scriptsize,
+numbers=none,
+frame = single, 
+xleftmargin=0.25cm,
+xrightmargin=0.25cm,
+linewidth=\textwidth]
+% problem parameters
+p.t0 = 0; p.tf = 1; % time horizon
+p.ell = 1/9;
+% system dynamics
+A = [0 1;0 0]; B = [0;1]; 
+% Lagrange term
+L(1).left = 1; L(1).right = 1; L(1).matrix = 1/2; % 1/2*u^2
+% simple bounds
+UB(1).right = 4; UB(1).matrix = [0;1]; % initial states
+LB(1).right = 4; LB(1).matrix = [0;1];
+UB(2).right = 5; UB(2).matrix = [0;-1]; % final states
+LB(2).right = 5; LB(2).matrix = [0;-1];
+UB(3).right = 2; UB(3).matrix = [p.ell;Inf]; % states
+% combine structures
+setup.A = A; setup.B = B; setup.L = L; setup.UB = UB; setup.LB = LB; setup.p = p;
+% solve
+[T,U,Y,P,F,p,opts] = DTQP_solve(setup,[]);
+\end{lstlisting}
+
+\newpage
+
+\subsection{MATLAB Code for \nameref{sec:ch5:example3}} \label{sec:ex3-code}
+
+\begin{lstlisting}[
+style=Matlab-editor,
+basicstyle=\mlttfamily\scriptsize,
+numbers=none,
+frame = single, 
+xleftmargin=0.25cm,
+xrightmargin=0.25cm,
+linewidth=\textwidth]
+% problem parameters
+p.t0 = 0; p.tf = 1; % time horizon
+p.x0 = 1; p.a = 2;
+g = @(t) t.*cos(20*pi*t) - 1/4;
+% system dynamics
+A = 0; B{1,1} = g;
+% Lagrange term
+L(1).left = 1; L(1).right = 1; L(1).matrix = 1/2; % 1/2*u^2
+% Mayer term
+M(1).left = 5; M(1).right = 5; M(1).matrix = p.a^2/2; % a^2/2*xf^2
+% simple bounds
+UB(1).right = 4; UB(1).matrix = p.x0; % initial state
+LB(1).right = 4; LB(1).matrix = p.x0;
+UB(2).right = 1; UB(2).matrix = 1; % control
+LB(2).right = 1; LB(2).matrix = -1;
+% combine structures
+setup.A=A; setup.B=B; setup.L=L; setup.M=M; setup.UB=UB; setup.LB=LB; setup.p=p;
+% solve
+[T,U,Y,P,F,p,opts] = DTQP_solve(setup,[]);
+\end{lstlisting}
+
+\subsection{MATLAB Code for \nameref{sec:ch5:example4}} \label{sec:ex4-code}
+
+\begin{lstlisting}[
+style=Matlab-editor,
+basicstyle=\mlttfamily\scriptsize,
+numbers=none,
+frame = single, 
+xleftmargin=0.25cm,
+xrightmargin=0.25cm,
+linewidth=\textwidth]
+rng(393872382) % specific random seed
+% problem parameters
+p.ns = 20; p.nu = 10; % number of states and controls
+p.t0 = 0; p.tf = 10; % time horizon
+p.x0 = linspace(-5,5,p.ns)'; % initial states
+% system dynamics
+A = sprand(p.ns,p.ns,0.5,1); B = sprand(p.ns,p.nu,1,1);
+% Lagrange term
+Qi = sprand(p.ns,p.ns,0.2); Qi = (Qi*Qi')/100;
+L(1).left = 1; L(1).right = 1; L(1).matrix = eye(p.nu); % u'*R*u
+L(2).left = 2; L(2).right = 2; L(2).matrix = Qi; % x'*Q*x
+% Mayer term
+M(1).left = 5; M(1).right = 5; M(1).matrix = 10*eye(p.ns); %xf'*M*xf
+% initial states, simple bounds
+UB(1).right = 4; UB(1).matrix = p.x0; % initial states
+LB(1).right = 4; LB(1).matrix = p.x0;
+% combine structures
+setup.A=A; setup.B=B; setup.L=L; setup.M=M; setup.UB=UB; setup.LB=LB; setup.p=p;
+% solve
+[T,U,Y,P,F,p,opts] = DTQP_solve(setup,[]);
+\end{lstlisting}
+
+\newpage
+
+\subsection{MATLAB Code for \nameref{sec:ch5:example5}} \label{sec:ex5-code}
+
+\begin{lstlisting}[
+style=Matlab-editor,
+basicstyle=\mlttfamily\scriptsize,
+numbers=none,
+frame = single, 
+xleftmargin=0.25cm,
+xrightmargin=0.25cm,
+linewidth=\textwidth]
+% problem parameters
+g = @(t) sin(2*pi*t) + 0.5;
+p.t0 = 0; p.tf = 1; % time horizon
+% system dynamics
+A = [-1,2,0,0;3,-4,0,0;1,2,-1,0;1,0,0,0]; B = [1,0;-1,0;0,1/20;0,0]; G = zeros(4,1);
+% Lagrange term
+L(1).left = 1; L(1).right = 1; L(1).matrix = eye(2)/10; % u1^2 + u2^2
+L(2).left = 1; L(2).right = 2; L(2).matrix = [1,1,0,0;0,0,0,0]; % u1*y1 + u1*y2
+L(3).left = 2; L(3).right = 2; L(3).matrix = zeros(4); L(3).matrix(2,2) = 5; % 5*y2^2
+L(4).left = 0; L(4).right = 2; L(4).matrix = {0,@(t) -5*2*g(t),0,0}; % -5*2*g*y2
+L(5).left = 0; L(5).right = 0; L(5).matrix{1} = @(t) 5*(g(t)).^2; % 5*g^2
+% Mayer term
+M(1).left = 0; M(1).right = 3; M(1).matrix = 1; % p1
+% y2(t0)-y2(tf) = 0, equality constraint
+Y(1).linear(1).right = 4; Y(1).linear(1).matrix = [0;1;0;0]; % y2(t0)
+Y(1).linear(2).right = 5; Y(1).linear(2).matrix = [0;-1;0;0]; % -y2(tf)
+Y(1).b = 0;
+% -y1 + u2/12 < 0, inequality constraint
+Z(1).linear(1).right = 2; Z(1).linear(1).matrix = [-1;0;0;0]; % -y1
+Z(1).linear(2).right = 1; Z(1).linear(2).matrix = [0;1/12]; % u2/12
+Z(1).b = 0;
+% y3 < p, inequality constraint
+Z(2).linear(1).right = 2; Z(2).linear(1).matrix = [0;0;1;0]; % y3
+Z(2).linear(2).right = 3; Z(2).linear(2).matrix = -1; % -p1
+Z(2).b = 0;
+% initial states, simple bounds
+UB(1).right = 4; UB(1).matrix = [2;inf;0.5;0];
+LB(1).right = 4; LB(1).matrix = [2;-inf;0.5;0]; 
+% final states, simple bounds
+UB(2).right = 5; UB(2).matrix = [inf;inf;inf;0];
+LB(2).right = 5; LB(2).matrix = -[inf;inf;inf;0];
+% abs(u2) < 10, simple bounds
+UB(3).right = 1; UB(3).matrix = [inf;10];
+LB(3).right = 1; LB(3).matrix = -[inf;10];
+% y2 < g(t), simple bounds
+UB(4).right = 2; UB(4).matrix= {inf;@(t) g(t);inf;inf};
+% combine structures
+setup.A = A; setup.B = B; setup.G = G; setup.L = L; setup.M = M; 
+setup.Y = Y; setup.Z = Z; setup.UB = UB; setup.LB = LB; setup.p = p;
+% solve
+[T,U,Y,P,F,p,opts] = DTQP_solve(setup,[]);
+\end{lstlisting}

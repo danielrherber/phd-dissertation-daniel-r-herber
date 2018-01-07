@@ -1,0 +1,69 @@
+\section{Discussion\label{sec:ch6:discussion}}
+
+In this section we address the motivating questions introduced in Sec.~\ref{sec:ch6:introduction}, and summarize what we have learned about the enumeration-based synthesis methodology.
+
+% new paragraph
+Both of examples in Sec.~\ref{sec:ch6:examples} show that enumeration is feasible for certain commonly-used synthesis problems.
+LPF task \#4, on the other hand, demonstrates that sufficiently demanding synthesis problems can be a challenge to solve with enumeration, primarily due to the required computational cost.
+Even though no acceptable solution was found in task \#4, valuable insights were gained and a number of good circuits were found that nearly satisfy the specifications.
+One way these nearly-feasible designs could be useful is as data for evolutionary computing methods that can leverage known good topologies to improve effectiveness \cite{Goh2001a}.
+
+% new paragraph
+The primary drawback of an enumeration-based synthesis methodology is simply the computational cost and its exponential growth with system size.
+Most of the resource-intensive tasks can be performed in parallel, such as generating the transfer functions and evaluating the circuits.
+All reported costs were for a single machine, but with increasing computational resources, larger and more complex synthesis problems can be solved within an acceptable duration using enumeration than in the past. 
+We acknowledge that while enumeration strategies have clear limits, the methods presented here, based on perfect matching and efficient algorithms that eliminate isomorphisms and topologies that are infeasible with respect to NSCs, can enumerate all unique, feasible topologies for larger synthesis problems than those solved previously via enumeration. 
+Furthermore, reusability is inherent to the proposed methodology, a property not typically associated with evolutionary approaches.
+Only a single set of circuits and associated transfer functions was generated for all the tasks in the \nameref{sec:ch6:lpf} example.
+In addition, we can use results from a previous synthesis task to evaluate a different synthesis study more efficiently, without comprising the enumerative properties of the approach. 
+This was demonstrated in tasks $\#1\to\#2\to\#4$, where only the previous task's feasible circuits were used, greatly reducing the computational cost.
+So even if the initial investment is high, the data and knowledge gained can be used for similar design tasks.
+
+% new paragraph
+Three circuit structure spaces were discussed in this chapter, providing insights into circuit properties that satisfy $(C,P,R)$ specifications.
+The growth for Eqn.~(\ref{eq:ch6:lib3}) is shown in Table~\ref{tb:ch6:nc:feasible:task1}.
+Using an exponential regression on this data, we can predict the number of circuits for larger values of $n_c$.
+From this, for eight and nine components, we predict $\sim$540,320 and $\sim$3,274,300 circuits, respectively.
+
+% new paragraph
+Another compelling result was the observation that a number of previous studies using evolutionary-based approaches did find at least one  minimum complexity or Pareto-optimal circuit.
+Principally, the evolutionary approaches can arrive at such a circuit with a lower computational cost compared to an enumerative approach.
+However, typically only a single solution is presented with an evolutionary approach (or multiple runs are needed), but since all circuits are evaluated in an enumerative approach, a large set of alternatives and a larger set of insights is available to the designer.
+In the \nameref{sec:ch6:freqresponse} example, the Pareto-optimal topology in Fig.~\ref{fig:ch6:ex1:set1}e is the same as the circuit reported in Ref.~\cite{Grimbleby1995a}.
+In the \nameref{sec:ch6:lpf} example, the minimum complexity topology in Fig.~\ref{fig:lpf3_circuitc} is the same as the circuit reported in Ref.~\cite{Das2007a}.
+However, some previous studies produced overly-complex solutions \cite{Lohn1999a}.
+
+% new paragraph
+Another relevant point of discussion is whether circuit sizing is performed simultaneously with or nested within the topology exploration task.
+Many previous approaches utilize simultaneous sizing and synthesis \cite{Das2007a, Lohn1999a}.
+An alternative---employed here, in Refs.~\cite{Grimbleby2000a, Goh2001a}, and on the first generation in Ref.~\cite{Das2007a}---is to nest the optimal circuit component sizing task within synthesis by solving the sizing problem for each candidate topology. 
+Here the sizing problem is solved only for unique, feasible topologies. 
+The nested approach can converge much faster and involve fewer objective function evaluations \cite{Grimbleby2000a}.
+This work also demonstrates that only a few circuits need to be sized if there is a high probability of a feasible topology.
+For a 99.94\% chance of finding a feasible topology, only 20 circuits in task \#1 need to be tested, or 3,200 circuits for task \#2 in the LPF example.
+Enumeration using a nested approach looks even more favorable for certain problems if only \textit{one} satisfactory circuit is desirable.
+Table~\ref{tb:ch6:nc:feasible:task1} is direct evidence that it is easier to satisfy specifications with more components \cite{Grimbleby1995a}.
+
+% new paragraph
+Another use for the circuit generation framework in Sec.~\ref{sec:ch6:enumeration} is to provide diverse starting circuits for other synthesis approaches.
+The perfect-matching graph generation approach can be modified to produce stochastically sampled graphs, even for catalogs where enumeration is impractical \cite{Herber2017a}.
+Many authors state the importance of the initial set of circuits, including properties such as diversity and feasibility that can be assessed using the proposed enumeration method \cite{Das2007a, Gan2010a}.
+The circuits generated from Ref.~\cite{github-pm-architectures-project} are extremely diverse and likely feasible (e.g.,~there will never be an unconnected branch) but stay within a prescribed circuit structure space (such as a maximum number of components).
+Additionally, isomorphic topologies are minimized (or completely removed if checked directly) when compared to circuit sets generated from only random connections or other similar graph generation methods. 
+
+% new paragraph
+Looking forward, enumeration-based approaches could be leveraged to improve existing methods or help define new ones. 
+Enumeration-based results provide a wealth of information for a particular synthesis problem.
+Using a set of results, feature extraction algorithms could be used to develop different metaheuristics that are based less on legacy forms or intuition (descriptive knowledge), but actual results for the problem at hand \cite{Berlingerio2009a} to provide more normative synthesis strategies and accelerate the creation, analysis, and understanding of unprecedented systems.
+Enumeration could also be used in a multi-step process where smaller catalogs are initially explicated. From these results, potentially useful subcircuits could be identified and be used as components in a new circuit structure space or as in done in Fig.~\ref{fig:ch6:subcircuits}.
+
+% new paragraph
+Recent work has employed machine learning strategies to scale to synthesis problems larger than the training data set generated using enumeration \cite{GuoScitech2018}, for the simpler case of non-colored graphs.
+Extending the use of data from enumeration to larger synthesis problems described by colored graphs is an important topic for future work.
+
+% new paragraph
+Finally, there are a number of general improvements that could be made to the proposed methodology.
+Continuous values for $\bm{x}$ were assumed, but there are standardized preferred component values (such as E12 series) that are frequently desirable \cite{Gan2010a}.
+Solving the sizing task using a nested approach will require a different optimization technique than NLS (such as a genetic algorithm \cite{Goh2001a}).
+Further improvements to the graph generation code and the sizing procedure could expand the scope of problems for which enumeration is practical.
+Topologies including active and multi-port components are possible under the graph generating code, but modifications to the model generation and evaluation for these synthesis problems would be needed.

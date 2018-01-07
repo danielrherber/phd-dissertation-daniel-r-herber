@@ -1,0 +1,88 @@
+\begin{algorithm}
+\caption{Create sequences for Lagrange terms.}\label{alg:ch5:Lterms}
+\setstretch{0.8}
+\begin{algorithmic}[1]
+%
+\Require structure $\mathcal{L}$ of type \xvar{objective}
+
+\State $\emptyset$ $\gets$ \xvar{I}, \xvar{J}, \xvar{H}, \xvar{Q}, \xvar{Qmid} \Comment{initialize sequences}
+
+\For{\xvar{k} $\gets$ $1$ to $\abs{\mathcal{L}}$} 
+
+	\State \xvar{L} $\gets$ $\mathcal{L}$\myind{\xvar{k}} \Comment{obtain current substructure }
+
+	\State \xvar{A} $\gets$ \xvar{L}.\xvar{matrix} \Comment{obtain current submatrix}
+
+	\State \xvar{R} $\gets$ \Call{GetContIndex}{\xvar{L}.\xvar{left}} \Comment{rows (continuous), see Alg.~\ref{alg:ch5:getindex}}
+
+	\State \xvar{C} $\gets$ \Call{GetContIndex}{\xvar{L}.\xvar{right}} \Comment{columns (continuous), see Alg.~\ref{alg:ch5:getindex}}
+
+	\For{\xvar{i} $\gets$ $1$ to $\abs{\textsf{R}}$}
+
+		\For{\xvar{j} $\gets$ $1$ to $\abs{\textsf{C}}$}
+
+			\State \xvar{r} $\gets$ \Call{GetQPIndex}{\textsf{R}\myind{\textsf{i}}, \xvar{L}.\xvar{left}, $1$ to $N_t$} \Comment{rows (QP), see Alg.~\ref{alg:ch5:getindex}}
+
+			\State \xvar{c} $\gets$ \Call{GetQPIndex}{\textsf{C}\myind{\textsf{j}}, \xvar{L}.\xvar{right}, $1$ to $N_t$} \Comment{columns (QP), see Alg.~\ref{alg:ch5:getindex}}
+
+			\State $\xvar{I}$ $\gets$ \Call{combine}{$\xvar{I}$, \xvar{r}} \label{line:ch5:lqp_I} \Comment{rows in main diagonal}
+
+			\State $\xvar{J}$ $\gets$ \Call{combine}{$\xvar{J}$, \xvar{c}} \Comment{columns in main diagonal}
+
+			\State $\xvar{H}$ $\gets$ \Call{combine}{$\xvar{H}$, $\bm{\Delta}$, $0$} \label{line:ch5:lqp_H} \Comment{vector of time steps}
+
+			\State $\xvar{Q}$ $\gets$ \Call{combine}{$\xvar{Q}$, evaluate \xvar{A}\myind{\xvar{i},\xvar{j}} on $\bm{t}$} % \Comment{}
+
+			\State $\xvar{Qmid}$ $\gets$ \Call{combine}{$\xvar{Qmid}$, evaluate \xvar{A}\myind{\xvar{i},\xvar{j}} on $\bar{\bm{t}}$, $0$} % \Comment{}
+
+		\EndFor
+
+	\EndFor
+
+\EndFor
+
+\State $\xvar{IU}$ $\gets$ remove every $N_t$ element from \xvar{I} starting with element $N_t$ \Comment{rows in upper diagonal}
+
+\State $\xvar{IL}$ $\gets$ remove every $N_t$ element from \xvar{I} starting with element $1$ \Comment{rows in lower diagonal}
+
+\State $\xvar{JU}$ $\gets$ remove every $N_t$ element from \xvar{J} starting with element $1$ \Comment{columns in upper diagonal}
+
+\State $\xvar{JL}$ $\gets$ remove every $N_t$ element from \xvar{J} starting with element $N_t$ \Comment{columns in lower diagonal}
+
+\State $\xvar{Hoff}$ $\gets$ remove every $N_t$ element from \xvar{H} starting with element $N_t$ \Comment{remove the added zeros}
+
+\State $\xvar{Qoff}$ $\gets$ remove every $N_t$ element from \xvar{Qmid} starting with element $N_t$ \Comment{remove the added zeros}
+
+\State \xvar{V} $\leftarrow$  $\left( \myvar{H} \oplus \textsc{rshift}(\myvar{H})  \right) \odot \myvar{Q}/6 \oplus
+\left( \myvar{H}\odot \myvar{Qbar}/6  \right) \oplus
+\textsc{rshift}\left( \myvar{H} \odot \myvar{Qbar}/6 \right)
+$ \label{line:ch5:V}
+
+\State \xvar{Voff} $\leftarrow$ $\myvar{Hoff} \odot \myvar{Qoff}/6$ \label{line:ch5:Voff}
+
+\State $\mathcal{I}$ $\gets$ \Call{combine}{$\mathcal{I}$, \xvar{I}, \xvar{IU}, \xvar{IL}}
+
+\State $\mathcal{J}$ $\gets$ \Call{combine}{$\mathcal{J}$, \xvar{J}, \xvar{JU}, \xvar{JL}}
+
+\State $\mathcal{V}$ $\gets$ \Call{combine}{$\mathcal{V}$, \xvar{V}, \xvar{Voff}, \xvar{Voff}}
+
+\State \textbf{return} $\mathcal{I}$, $\mathcal{J}$, $\mathcal{V}$ \Comment{sequences that define Lagrange terms in $\mathbf{H}$}
+
+\vspace*{0.1in}
+\Comment{
+\begin{tabular}{ c c c }
+% \hline \hline
+method & \myvar{V} (line~\ref{line:ch5:V}) & \myvar{Voff} (line~\ref{line:ch5:Voff}) \\ 
+ \hline
+ CEF & $\myvar{H} \odot \myvar{Q}$ & $\emptyset$ \\  
+ CTR & $\left( \myvar{H} \oplus \textsc{rshift}(\myvar{H}) \right) \odot \myvar{Q}/2$  & $\emptyset$ \\
+ G \& CC & $(\Delta/2) \myvar{W} \odot \myvar{Q}$ & $\emptyset$ \\
+ % \hline \hline
+\end{tabular}
+} 
+
+\Comment{replace line~\ref{line:ch5:lqp_H} with $\xvar{W}$ $\gets$ \Call{combine}{$\xvar{W}$, $\bm{w}$} (see Eqn.~(\ref{eq:ch5:gaussian}))}
+
+\end{algorithmic}
+\end{algorithm}
+

@@ -1,0 +1,112 @@
+\begin{algorithm}
+\caption{Optimization variable index generating functions (both continuous and discrete problems).} \label{alg:ch5:getindex}
+\setstretch{0.8}
+\begin{algorithmic}[1]
+%
+\Function{GetContIndex}{\xvar{xtype}} \Comment{get index sequence of variable locations in continuous problem}
+
+\Switch{\xvar{xtype}}
+	\Case{$0$ or empty} \Comment{singleton dimension}
+		\State \textsf{X} $\gets$ $0$
+	\EndCase
+	\Case{$1$} \Comment{controls}
+		\State \textsf{X} $\gets$ $1$ to $n_u$
+	\EndCase
+	\Case{$2$ or $4$ or $5$} \Comment{states, initial states, and final states}
+		\State \textsf{X} $\gets$ $n_u+1$ to $n_u+n_{\xi}$
+	\EndCase
+	\Case{$3$} \Comment{parameters}\setstretch{0.8}
+		\State \textsf{X} $\gets$ $n_u+n_{\xi}+1$ to $n_u+n_{\xi}+n_p$
+	\EndCase
+\EndSwitch
+\State \textbf{return} $\xvar{X}$ \Comment{sequence of variable locations}
+\EndFunction
+% 
+\Function{GetQPIndex}{\xvar{x}, \xvar{xtype}, \xvar{idx}} \Comment{get index sequence of variable locations in discrete problem (QP)}
+
+\Switch{\xvar{xtype}}
+	\Case{$0$ or empty} \Comment{singleton dimension}
+		\State \xvar{I} $\gets$ \Call{ones}{1,$N_t$} 
+	\EndCase
+	\Case{$1$ or $2$} \Comment{states or controls}
+		\State \xvar{I} $\gets$ $(\xvar{x} - 1)N_t + 1$ to $\xvar{x}N_t$
+	\EndCase
+	\Case{$3$} \Comment{parameters}
+		\State \xvar{I} $\gets$ $(\xvar{x} + n_u n_t + n_{\xi} n_t)$ \Call{ones}{1,$N_t$}
+	\EndCase
+	\Case{$4$} \Comment{initial states}
+		\State \xvar{I} $\gets$ $((\xvar{x} - 1) N_t + 1)$ \Call{ones}{1,$N_t$}
+	\EndCase
+	\Case{$5$} \Comment{final states}
+		\State \xvar{I} $\gets$ $\xvar{x} N_t$ \Call{ones}{1,$N_t$}
+	\EndCase
+\EndSwitch
+
+\State \xvar{I} $\gets$ \xvar{I}\myind{\xvar{idx}} \Comment{extract necessary indices}
+
+\State \textbf{return} $\xvar{I}$ \Comment{sequence of variable locations}
+
+\EndFunction
+\end{algorithmic}
+% \end{spacing}
+\end{algorithm}
+
+
+% \IncMargin{1em}
+% \RestyleAlgo{algoruled}
+
+% \begin{algorithm}
+% \LinesNumbered
+% \SetSideCommentRight 
+% \DontPrintSemicolon
+% % \SetNoFillComment
+
+% % \SetNlSty{textsf}{}{}
+
+% \SetNlSty{mylineno}{}{}
+
+% \SetArgSty{textrm} 
+
+
+% \SetKwBlock{Other}{otherwise}{}
+
+% % \SetAlgorithmName{Function}{function}{List of Algorithms}
+
+
+% % \SetKwData{Left}{left}\SetKwData{This}{this}\SetKwData{Up}{up}
+% % \SetKwFunction{Union}{Union}
+% \SetKwFunction{findQPindex}{findQPindex}
+% \SetKwFunction{ones}{ones}
+% \SetKwInOut{Input}{Input}
+% \SetKwInOut{Output}{Output}
+
+% \caption{Function \texttt{findCindex} for determining index sequence of variable locations in continuous problem.\label{alg:findCindex}}
+
+% \Input{\myvar{right}}
+% \Output{\myvar{C}}
+% \BlankLine
+
+% \Switch{\myvar{right}}{
+
+% \uCase(\tcc*[f]{singleton dimension}){0 or empty}{
+% \myvar{C} $\leftarrow$ $0$
+% }
+
+% \uCase(\tcc*[f]{controls}){1}{
+% \myvar{C} $\leftarrow$ $1 \ \KwTo \ n_u$
+% }
+
+% \uCase(\tcc*[f]{parameters}){3}{
+% \myvar{C} $\leftarrow$ $n_u + n_{\xi} + 1 \ \KwTo \ n_u + n_{\xi} + n_p$
+% }
+
+% \Other(\tcc*[f]{states (2), initial states (4), and final states (5)}){
+% \myvar{C} $\leftarrow$ $n_u + 1 \ \KwTo \ n_u + n_{\xi}$
+% }
+
+
+% } % end switch statement
+
+
+
+% \end{algorithm}\DecMargin{1em}

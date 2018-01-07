@@ -1,0 +1,373 @@
+%-------------------------------------------------------------------
+\section{Approximate Solutions with Direct Transcription} \label{sec:ch5:formulation}
+
+The method used here to obtain approximate solutions to the \lqdo{} problem is the previously mentioned \glsfoo[noindex]{DT} method.
+A collection of desirable properties make \dt{} a strong candidate for use in solving the \lqdo{} problem over other methods such as Pontryagin's maximum principle, numeric indirect methods, and sequential direct methods (see Sec.~\ref{sec:ch3:approx}).
+Furthermore, \dt{} methods frequently have the order-maintaining property previously described.
+After some preliminaries, a number of common \dt{} methods are described in the context of their ability to approximate certain elements of \lqdo{} problems.
+
+%-------------------------------------------------------------------
+\subsection{Preliminaries}
+
+We start by creating a vector of discretized time values, $\gls{distime}$, such that:
+\begin{align}
+t_0 < t_1 < \cdots < t_{n_t-1} < t_{n_t} = t_f \notag
+\end{align}
+
+\noindent where $N_{\glsfoo[noindex]{timesub}} = n_t+1$ is the number of discrete time points.
+These discrete values of $t$ are also known as node points, and $\bm{t}$ is termed the mesh \cite{Betts2010a, Biegler2010a}.
+There are a variety of methods for determining the values of $\bm{t}$, but certain numerical schemes require a specific class of $\bm{t}$.
+The four mesh schemes considered here are arbitrary user-defined nodes, \glsfirst{ED} nodes, \glsfirst{LGL} nodes \cite{Shen2011a, Herber2015a}, and \glsfirst{CGL} nodes (see Sec.~\ref{sec:app3:ps}) \cite{Fahroo2002a, Herber2015a}.
+The time step for the $k$th segment is denoted $\Delta_k = t_{k+1} - t_{k}$, and the vector of time steps is $\glsfoo[noindex]{stepsize}$. The horizon length is denoted $\Delta = t_f - t_0$. 
+
+% new paragraph
+For clarity, function arguments may be shortened with the presumption that all time-varying quantities are evaluated at the specified time index.
+For example:
+\begin{align}
+\bm{f}_k = \bm{f}(t_k) = \bm{f}(t_k,\bm{\xi}(t_k),\bu(t_k),\bp) \notag
+\end{align}
+
+\noindent Intermediary values of functions between node points will be required and are denoted with a bar:
+\begin{align}
+\myoverbar{\bm{f}}_k = \bm{f}(\bar{t}_k) =  \bm{f}\left(\frac{t_{k}+t_{k+1}}{2}\right) 
+\end{align}
+
+\noindent We define the following matrices that contain some discretized components of Prob.~(\ref{eq:ch5:NLDO}):
+\begin{gather}
+\begin{gathered}
+\gls{disstate} = \begin{bmatrix}
+\bm{\xi}(t_0) \\ \vdots \\ \bm{\xi}(t_{n_t}) \\
+\end{bmatrix} = \begin{bmatrix}
+\xi_1(t_0) & \cdots & \xi_{n_\xi}(t_0) \\
+\vdots & \ddots & \vdots \\
+\xi_{1}(t_{n_t}) & \cdots & \xi_{n_\xi}(t_{n_t})
+\end{bmatrix},
+%
+\
+%
+\gls{discontrol} = \begin{bmatrix}
+\bm{u}(t_0) \\ \vdots \\ \bm{u}(t_{n_t}) \\
+\end{bmatrix} = \begin{bmatrix}
+u_1(t_0) & \cdots & u_{n_u}(t_0) \\
+\vdots & \ddots & \vdots \\
+u_{1}(t_{n_t}) & \cdots & u_{n_u}(t_{n_t})
+\end{bmatrix}
+%
+\\ 
+\bm{p} = \begin{bmatrix}
+p_1 & \cdots & p_{n_p}
+\end{bmatrix},
+% 
+\quad
+%
+\gls{disderivative} = \begin{bmatrix}
+\bm{f}(t_0) \\ \vdots \\ \bm{f}(t_{n_t}) \\
+\end{bmatrix} = \begin{bmatrix}
+{f}_1(t_0) & \cdots & {f}_{n_\xi}(t_0) \\
+\vdots & \ddots & \vdots \\
+{f}_{1}(t_{n_t}) & \cdots & {f}_{n_\xi}(t_{n_t})
+\end{bmatrix}
+\end{gathered}
+\end{gather}
+
+\noindent where $n_{\glsfirst{notstates}}$ is the number of states, $n_{\glsfirst{notcontrol}}$ is the number of controls, and $n_{\glsfirst{notparameter}}$ is the number of parameters.
+Earlier both $\bm{x}$ and $\bm{X}$ were defined as the sets of infinite-dimensional and \qp{} optimization variables, respectively. 
+For convenience when describing the methods, $x_i$ will denote a single variable (i.e.,~a single state, control, or parameter) and $X_i$ will denote the vector containing its corresponding discretization described above.
+Finally, we will need to concatenate matrix columns into a single column vector with the $\mathrm{vec}(\cdot)$ function. 
+
+%-------------------------------------------------------------------
+\subsection{Defect Constraints} \label{sec:ch5:defects}
+
+Following the same order as Sec.~\ref{sec:ch5:lqdoform}, we will begin with \dt{} methods that approximate the linear dynamics in Eqn.~(\ref{eq:ch5:fdyn}). Defect constraints have the general form:
+\begin{align}
+\gls{defect}\left(\bm{t}, \bm{\Xi}, \bm{U}, \bm{p} \right) = \bm{0}
+\end{align}
+
+There is a wide variety of methods to construct the defect constraints including pseudospectral \cite{Becerra2010b, Fahroo2002a, Fahroo2008a, Herber2015a, Patterson2014a, Rao2010a}, multistage \cite{Rao2010a, Betts1998a, Bittner2017a, Pardo2016a, Sonawane2016a}, multistage with centers \cite{Betts1998b, Williams2005a}, multistep \cite{Rao2010a, Betts1998a}, central difference \cite{Becerra2015a}, zero-order hold \cite{Amrit2013a, Hals2011a}, general Hermite-differentiation \cite{Williams2005a, Williams2009a},
+block pulse function \cite{Hwang1986a}, Gegenbauer \cite{Elgindy2013a}, and Fourier-Galerkin \cite{Bacelli2015a}.
+In this chapter, we focus on some of the most commonly used methods that are classified as either \glsfirst{PS} or \glsfirst{SS} methods.
+It remains future work to integrate other \dt{} methods into the general solution method if applicable (see Sec.~\ref{sec:ch5:add:methods}). 
+
+% sometimes termed (Lagrange-differentiation)\cite{Williams2005a}
+\subsubsection{Pseudospectral Methods}
+The PS methods used here are embodied as a literal form of Eqn.~(\ref{eq:ch5:NLdyn}), commonly called the differential form of the defect constraint \cite{Francolin2014a}.
+An accurate representation of the dynamics is ensured by requiring the approximation for the state derivatives to be equal to the true derivative function values given by the dynamics in Eqn.~(\ref{eq:ch5:fdyn}).
+Our approximation for $\dot{\bm{\xi}}$ will come from the derivative of an interpolating polynomial that represents $\bm{\xi}$.
+The interpolating polynomial considered here is defined as:
+\begin{align}\label{eq:ch5:basis}
+\bm{\xi}(t) \approx \bm{P}(t) = \sum_{k=0}^{n_t} \bm{\xi}(t_k) \phi_k(t)
+\end{align}
+
+\noindent where $\phi_k$ are continuous basis polynomials that are typically constructed such that the interpolation property holds \cite{Becerra2015a}.
+Therefore, the polynomial approximation is exact at the node points and an approximation at all other values of $t$.
+Efficiently calculating the derivative of this polynomial (among other considerations) typically requires a specific form of the mesh.
+Here, we utilize a scaled time horizon, $\bm{\tau} \in [-1,1]$, achieved through the following transformation:
+\begin{align}
+\bm{\tau} = \frac{2}{t_{f} - t_0} \bm{t} - \frac{t_{f} + t_0}{t_{f} - t_0} 
+\end{align}
+
+\noindent This is a bijective function for $\bm{t} \to \bm{\tau}$ such that $\xi(t) = \xi(\tau)$ and $\dot{\xi}(t) = \frac{2}{\Delta} \frac{d}{d\tau}{\xi}(\tau)$. Therefore, the approximation of the state derivative at the node points is:
+\begin{align} \label{eq:ch5:ps:state:approx}
+\dot{\xi}(t_k) \approx \frac{2}{\Delta} \frac{d}{d\tau}{P}(\tau_k) = \frac{2}{\Delta} \sum_{i=0}^{n_t} \bm{D}_{ki} \xi(t_i)
+\end{align}
+
+\noindent where the matrix $\gls{Dbm}$ is termed the differentiation matrix.
+This matrix depends only on the values of $\bm{\tau}$ and the type of interpolating polynomial, so we have an approximation for $\dot{\bm{\xi}}$ that depends only on $\bm{\xi}$.
+The defect constraints in matrix form are now constructed as the error between the derivative of $\bm{P}$ and the true derivative function value:
+\begin{align}\label{eq:ch5:defect:PS}
+\bm{\zeta}  =  \mathrm{vec}\left( \frac{2}{\Delta}\bm{D} \bm{\Xi} - \bm{F} \right) = \bm{0}
+\end{align}
+
+\noindent which comprises the linear constraint we will use in Eqn.~(\ref{eq:ch5:Ae}).
+
+The two particular PS schemes considered in this chapter are based on Lagrange basis polynomials.
+The first uses LGL nodes for $\bm{\tau}$ and is described in Refs.~\cite{Fahroo2008a, Becerra2010b, Herber2015a}.
+The second uses CGL nodes and is described in Refs.~\cite{Fahroo2002a, Fahroo2008a, Herber2015a}.
+Section~\ref{sec:app3:ps} provides additional details on both PS schemes.
+Recent work has implemented PS methods as {\qp}s for certain \lqdo{} problems \cite{Williams2004a}.
+
+%-------------------------------------------------------------------
+\subsubsection{Single-Step Methods\label{sec:ch5:ss}}
+
+This class of methods is constructed using information enclosed by $t_{k}$ and $t_{k+1}$.
+The first fundamental theorem of calculus provides the general equation for this class of integration schemes:
+\begin{align} \label{eq:ch5:ssintegral}
+\bm{\xi}(t_{k+1}) = \bm{\xi}(t_{k}) + \int_{t_k}^{t_{k+1}} \bfd\big(s,\bm{\xi}(s),\bu(s), \bp \big) ds
+\end{align}
+
+\noindent With our discretization scheme, the integral term only has values for state and control at the boundaries. Therefore, the SS methods considered here can be written in the following form:
+\begin{align} \label{eq:ch5:ss}
+\bm{\zeta}_k =
+\gls{sstheta}_{1,k} \bm{u}_k\tran + \bm{\theta}_{2,k} \bm{u}_{k+1}\tran +
+\bm{\theta}_{3,k} \bm{\xi}_k\tran + \bm{\theta}_{4,k} \bm{\xi}_{k+1}\tran + 
+\bm{\theta}_{5,k} \bp\tran
+- \gls{ssnu}_k = \bm{0}
+\end{align}
+
+\noindent where $k = 0,1,\dots, n_t - 1$, and when combined into vector form, they form the linear constraint we will use in Eqn.~(\ref{eq:ch5:Ae}). 
+
+A popular family of SS methods is the Runge-Kutta method, which is a class of multistage methods \cite{Betts2010a}.
+Four common schemes are \glsfirst{EF}, \glsfirst{TR}, \glsfirst{HS}, and \glsfirst{RK4} (see Sec.~\ref{sec:app3:ss} for their general formulas).
+Both EF and TR are commonly found in \qp{} formulations \cite{Herber2014a, Betts2010a, Biegler2010a} but in fact, HS and RK4 can be utilized to form {\qp}s as well, specifically for the linear dynamic system of interest.
+The higher-order Runge-Kutta methods require stages at interior points on the time interval.
+For parity with EF and TR controls variables, we will assume the control is piecewise linear\footnote{Multistage methods with centers are also quite common and these methods use additional optimization variables for the controls in the interior of the interval \cite{Betts1998b, Williams2005a}.}:
+\begin{align} \label{eq:ch5:upiece}
+\overbar{\bm{u}}_k = \frac{\bm{u}_{k} + \bm{u}_{k+1}}{2}
+\end{align}
+
+\noindent We could have made the collection of $\overbar{\bm{u}}_k$ as additional optimization variables, but the benefits of these higher-order methods will still be seen with the piecewise linear assumption.
+The Eqn.~(\ref{eq:ch5:ss}) coefficients for all four methods are then:%
+\allowdisplaybreaks[1]%
+\begin{subequations}%
+\small \begin{align}
+\parbox{6em}{\begin{flushright}Euler Forward \\ (EF)\end{flushright}} &\begin{cases}
+\bm{\theta}_{1,k} = -\Delta_k \bm{B}_{k} \\
+\bm{\theta}_{2,k} = \bm{0} \\
+\bm{\theta}_{3,k} = -\bm{I} - \Delta_k \bm{A}_{k} \\
+\bm{\theta}_{4,k} = \bm{I}  \\
+\bm{\theta}_{5,k} = -\Delta_k \bm{G}_{k}  \\
+\bm{\nu}_k  = \Delta_k \bm{d}_{k}
+\end{cases}
+\\
+% 
+% 
+%
+\parbox{6em}{\begin{flushright}Trapezoidal Rule \\ (TR)\end{flushright}} &\begin{cases}
+\bm{\theta}_{1,k} = -\frac{ \Delta_k \bm{B}_{k}}{2} \\
+\bm{\theta}_{2,k} = -\frac{ \Delta_k \bm{B}_{k+1}}{2} \\
+\bm{\theta}_{3,k} = -\bm{I} - \frac{\Delta_k \bm{A}_{k}}{2} \\
+\bm{\theta}_{4,k} = \bm{I} - \frac{\Delta_k \bm{A}_{k+1}}{2} \\
+\bm{\theta}_{5,k} = -\Delta_k \left( \frac{\bm{G}_{k}}{2} + \frac{\bm{G}_{k+1}}{2}  \right) \\
+\bm{\nu}_k = \Delta_k \left( \frac{\bm{d}_{k}}{2} + \frac{\bm{d}_{k+1}}{2} \right)
+\end{cases} 
+%
+%
+%
+\\
+\parbox{6em}{\begin{flushright}Hermite-Simpson\\ (HS)\end{flushright}} &\begin{cases}
+\bm{\theta}_{1,k}  = -\Delta_k \left (\frac{\bm{B}_{k}}{6} + \frac{\overbar{\bm{B}}_k}{3} + \frac{\Delta_k \overbar{\bm{A}}_k \bm{B}_{k}}{12} \right) \\
+\bm{\theta}_{2,k}  = -\Delta_k \left( \frac{\bm{B}_{k+1}}{6} + \frac{\overbar{\bm{B}}_k}{3}  - \frac{\Delta_k \overbar{\bm{A}}_k \bm{B}_{k+1}}{12} \right) \\
+\bm{\theta}_{3,k}  = -\bm{I} - \Delta_k \left( \frac{\bm{A}_{k}}{6} +  \frac{\overbar{\bm{A}}_k}{3} + \frac{\Delta_k \overbar{\bm{A}}_k \bm{A}_{k}}{12} \right) \\
+\bm{\theta}_{4,k}  = \bm{I}  - \Delta_k \left(  \frac{\bm{A}_{k+1}}{6} + \frac{\overbar{\bm{A}}_k}{3} - \frac{\Delta_k \overbar{\bm{A}}_k \bm{A}_{k+1}}{12} \right)  \\
+\bm{\theta}_{5,k} = -\Delta_k \left( \frac{\bm{G}_{k}}{6} + \frac{2 \overbar{\bm{G}}_k}{3} + \frac{\bm{G}_{k+1}}{6} + \frac{\Delta_k \overbar{\bm{A}}_k\bm{G}_{k}}{12} - \frac{\Delta_k \overbar{\bm{A}}_k \bm{G}_{k+1} }{12} \right)  \\
+\bm{\nu}_k  = \Delta_k \left( \frac{\bm{d}_{k}}{6} + \frac{2\overbar{\bm{d}}_k}{3} + \frac{\bm{d}_{k+1}}{6} + \frac{\Delta_k \overbar{\bm{A}}_k\bm{d}_{k}}{12} - \frac{\Delta_k \overbar{\bm{A}}_k \bm{d}_{k+1} }{12} \right)
+\end{cases} \label{eq:ch5:hs}
+%
+%
+%
+\\
+\parbox{6em}{\begin{flushright}Classical\\ 4th-order \\ Runge-Kutta\\ (RK4)\end{flushright}} &\begin{cases}
+\mathcal{F}_1(\bm{Q}) = \Delta_k \left( \frac{\overbar{\bm{Q}}_k}{3} + \frac{\bm{Q}_{k}}{6} + \frac{\Delta_k \overbar{\bm{A}}_k \bm{Q}_{k}}{6} + \frac{\Delta_k  \overbar{\bm{A}}_k \overbar{\bm{Q}}_k}{12} + \frac{\Delta_k  \bm{A}_{k+1} \overbar{\bm{Q}}_k}{12} + \cdots \right. \\
+\qquad \quad \left. \frac{\Delta_k^2 \overbar{\bm{A}}_k^2 \bm{Q}_{k}}{12}  + \frac{\Delta_k^2 \bm{A}_{k+1} \overbar{\bm{A}}_k \overbar{\bm{Q}}_k}{24} + \frac{\Delta_k^3 \bm{A}_{k+1} \overbar{\bm{A}}_k^2 \bm{Q}_{k}}{24} \right)  \\
+\mathcal{F}_2(\bm{Q}) = \Delta_k \left( \frac{\overbar{\bm{Q}}_k}{3} + \frac{\bm{Q}_{k+1}}{6} + \frac{\Delta_k \overbar{\bm{A}}_k \overbar{\bm{Q}}_k}{12} + \frac{\Delta_k \bm{A}_{k+1} \overbar{\bm{Q}}_k}{12} + \frac{ \Delta_k^2 \bm{A}_{k+1} \overbar{\bm{A}}_k \overbar{\bm{Q}}_k}{24} \right) \\
+\bm{\theta}_{1,k}  = -\mathcal{F}_1(\bm{B}) \\
+\bm{\theta}_{2,k}  = -\mathcal{F}_2(\bm{B}) \\
+\bm{\theta}_{3,k}  = -\bm{I} - \mathcal{F}_1(\bm{A}) - \mathcal{F}_2(\bm{A}) \\
+\bm{\theta}_{4,k}  = \bm{I}  \\
+\bm{\theta}_{5,k} = -\mathcal{F}_1(\bm{G}) - \mathcal{F}_2(\bm{G}) \\
+\bm{\nu}_k = \mathcal{F}_1(\bm{d}) + \mathcal{F}_2(\bm{d})
+\end{cases} \label{eq:ch5:rk4}
+\end{align}
+\label{eq:ch5:ssdefects}
+\end{subequations}%
+\allowdisplaybreaks[0]%
+
+Another popular SS method is the \glsfirst{ZOH} \cite{Borrelli2015a}.
+This method assumes the control is piecewise constant,~i.e., $\bu(t) = \bm{u}(t_{k})$ for $t \in [t_k,t_{k+1})$, allowing for $\bm{u}(t_{k})$ to be brought outside of the integral in Eqn.~(\ref{eq:ch5:ssintegral}) and no dependence on $\bm{u}(t_{k+1})$ in $\bm{\zeta}_k$.
+The Eqn.~(\ref{eq:ch5:ss}) coefficients for the ZOH method are then:
+\begin{align}
+\parbox{6em}{\begin{flushright}Zero-Order Hold \\ (ZOH)\end{flushright}} &\begin{cases}
+\bm{\theta}_{1,k} = -\int_{t_k}^{t_{k+1}} e^{ \bm{A}(t_{k+1}-\tau) } \bm{B}(\tau) d\tau  \\
+\bm{\theta}_{2,k} = \bm{0} \\
+\bm{\theta}_{3,k} = -e^{ \bm{A}(t_{k+1}-t_k) } \\
+\bm{\theta}_{4,k} = \bm{I}  \\
+\bm{\theta}_{5,k} = -\int_{t_k}^{t_{k+1}} e^{ \bm{A}(t_{k+1}-\tau) } \bm{G}(\tau) d\tau \\
+\bm{\nu}_k = \int_{t_k}^{t_{k+1}} e^{ \bm{A}(t_{k+1}-\tau) } \bm{d}(\tau) d\tau 
+\end{cases} \label{eq:ch5:ssdefectsZOH}
+\end{align}
+
+\noindent for the special case where $\bm{A}$ is a time-invariant matrix.
+Therefore, the defect constraints are exact for the assumed control scheme.
+It is important to note that the control assumption is fundamentally different than what is used in the other SS and PS methods.
+This defect constraint method is frequently used in discrete-time problems and for model predictive control, typically as {\qp}s \cite{Borrelli2015a, Hals2011a, Han2012a}.
+To the author's knowledge, no software packages support easy comparison between the performance of the ZOH method and other continuous-time methods.
+
+%-------------------------------------------------------------------
+\subsection{Objective Function Terms} \label{sec:ch5:dt:objective}
+
+Some of the general quadratic objective function terms in Eqns.~(\ref{eq:ch5:QOFLagrange})--(\ref{eq:ch5:QOFMayer}) need to be approximated.
+The Mayer terms only depend on boundary values of the discretized components of Prob.~(\ref{eq:ch5:NLDO}), so it may be evaluated exactly by utilizing the appropriate optimization variables.
+The Lagrange terms require quadrature or approximate numerical evaluation of a definite integral \cite{Heath2002a}.
+Three different types of quadrature schemes are now discussed, and each is typically associated with a particular defect constraint approximation method.
+
+%-------------------------------------------------------------------
+\subsubsection{Gaussian Quadrature}
+
+This type of quadrature scheme seeks to maximize the accuracy of the numerical integration by carefully choosing the node points in a specific time horizon (commonly, the previously mentioned scaled time horizon, $\bm{\tau} \in [-1,1]$).
+Then, the form of this quadrature scheme is:
+\begin{align} \label{eq:ch5:gaussian}
+\int_{-1}^{1} \mathcal{L}(\tau) d\tau \approx \sum_{k=0}^{n_t} w_k \mathcal{L}(\tau_k)
+\end{align}
+
+\noindent where $\gls{weights}_k$ are predetermined quadrature weights; note that $\mathcal{L}(\tau_k)$ appears linearly in the approximation.
+These weights depend only on the values of $\bm{\tau}$ and the type of interpolating polynomial.
+For the PS method utilizing LGL nodes, these node points result in orthogonal collocation.
+Therefore, the quadrature approximation is extremely accurate, and is exact for polynomials up to degree $2n_t - 1$ \cite{Rao2010a}. For the values of these weights see Sec.~\ref{sec:app3:sLGL} or Refs.~\cite{Fahroo2008a, Herber2015a}.
+
+%-------------------------------------------------------------------
+\subsubsection{Clenshaw-Curtis Quadrature}
+
+This quadrature scheme is specific for the PS method utilizing CGL nodes and has the same form as Eqn.~(\ref{eq:ch5:gaussian}).
+Although a \glsfirst{Gaussian} quadrature scheme can be constructed for CGL nodes with Lagrange basis polynomials, it suffers from certain numerical issues \cite{Trefethen2008a}.
+Therefore, it is common to use \glsfirst{CleCur} quadrature which is exactly accurate for polynomials up to degree $n_t$ \cite{Trefethen2008a}.
+For the values of these weights see Sec.~\ref{sec:app3:sCGL} or Refs.~\cite{Trefethen2008a, Gong2010a, Herber2015a}.
+
+%-------------------------------------------------------------------
+\subsubsection{Composite Quadrature}
+
+The final quadrature scheme will be motivated by the following transformation:
+\begin{align} \label{eq:ch5:quadtrans}
+\dot{\xi}_0 = \mathcal{L}\left(t,\bm{\xi},\bm{u},\bm{p}\right) \text{ and } \xi_0(t_0) = 0, \ \text{then} \int_{t_0}^{t_f} \mathcal{L}\left(t,\bm{\xi},\bm{u},\bm{p}\right) dt \equiv \xi_0(t_f)
+\end{align}
+
+\noindent This transformation adjoins an additional state variable $\xi_0$ with the dynamics equivalent to $\mathcal{L}$ with an arbitrary initial value for the ODE \cite{Liberzon2012a}.
+Now the final value $\xi_0(t_f)$ can then be included as a Mayer term.
+We can subsequently apply the EF method to the ODE in Eqn.~(\ref{eq:ch5:quadtrans}) and arrive at the following \glsfirst{CEF} quadrature method:
+\begin{align}
+\int_{t_0}^{t_f} \mathcal{L}\left(t\right) dt \approx \sum_{k=0}^{n_t-1} \Delta_k \mathcal{L}(t_k)
+\end{align}
+
+\noindent This is a composite quadrature method since we are using a set of points inside the
+time horizon to better approximate the definite integral \cite{Heath2002a}.
+Similar to Eqn.~(\ref{eq:ch5:gaussian}), the CEF method is linear in $\mathcal{L}(t_k)$.
+We can similarly derive the \glsfirst{CTR} using the TR method.
+Both CEF and CTR are quite commonly used with their corresponding defect constraint methods.
+In addition, the ZOH method typically utilizes CEF even though the controls are only specified as piecewise constant \cite{Borrelli2015a, Hals2011a}.
+
+Continuing with the same line of reasoning, we can use the HS method.
+The composite quadrature formula is then:
+\begin{align}
+\int_{t_0}^{t_f} \mathcal{L}(t) dt \approx \frac{1}{6} \left( \Delta_0 \mathcal{L}_0 +
+\sum_{k=1}^{n_t-1} \left( 4 \Delta_k \myoverbar{\mathcal{L}}_k + \left( \Delta_{k+1} - \Delta_{k} \right) \mathcal{L}_{k} \right) +
+\Delta_{n_t} \mathcal{L}_{n_t} \right)
+\end{align}
+
+\noindent Consequently, we need to approximate $\myoverbar{\mathcal{L}}_k$.
+We can consider the integrand $\mathcal{L} = x_i(t) L(t) x_j(t)$ since $\mathcal{L}$ has at a maximum quadratic terms.
+If $x_i$ is a parameter or boundary value, then $x_{i}(\bar{t}_k)$ is the same throughout the time horizon.
+If $x_i$ is a control, then Eqn.~(\ref{eq:ch5:upiece}) defines piecewise linear controls.
+If $x_i$ is a state, then the HS rule approximates $x_{i}(\bar{t}_k)$ as:
+\begin{align} \label{eq:ch5:xhs}
+x_{i}(\bar{t}_k) = \frac{1}{2} \left( {x}_{i}(t_k) + {x}_{i}(t_{k+1})  \right) + \frac{\Delta_k}{8} \left( {f}_{i}(t_k) - {f}_{i}(t_{k+1}) \right)
+\end{align}
+
+\noindent However, there are some potential issues with directly using Eqn.~(\ref{eq:ch5:xhs}).
+Unlike the CEF and CTR methods, the approximated state would create zeroth and first-order terms and formulas that depend on the particular class of $x_i$ (these are not necessarily an erroneous approximation, but can complicate implementation).
+Here we pose an alternative implementation that still only includes second-order terms by assuming that the states are piecewise linear, same as the controls.
+In the context of Eqn.~(\ref{eq:ch5:xhs}), this approximation becomes more accurate as $\Delta_k$ decreases and as $\abs{{f}_{i}(t_k) - {f}_{i}(t_{k+1})}$ decreases.
+Now using the quadratic integrand, the center term $\myoverbar{\mathcal{L}}_k$ is: 
+\begin{subequations}
+\begin{align}
+\myoverbar{\mathcal{L}}_k &= x_i(\bar{t}_k) L(\bar{t}_k) x_j(\bar{t}_k) \\
+&= \frac{\myoverbar{L}_{k}}{4}  \left( x_i(t_{k}) x_j(t_{k}) + x_i(t_{k}) x_j(t_{k+1}) + x_i(t_{k+1}) x_j(t_{k}) + x_i(t_{k+1}) x_j(t_{k+1}) \right)
+\end{align}
+\end{subequations}
+
+\noindent We note that cross terms such as $x_i(t_{k}) x_j(t_{k+1})$ are present, so this is not a standard quadrature method \cite{Heath2002a}.
+Furthermore, since this requires an additional assumption on the states, we will term this quadrature method as the \glsfirst{CQHS} method as it is primarily applicable to quadratic objective functions.
+To the author's knowledge, this method has not been utilized yet in the literature to construct the Hessian for \lqdo{} problems; its accuracy will be discussed in Sec.~\ref{sec:ch5:examples}.
+It remains future work to implement the \qp{} form of the composite Hermite-Simpson method using Eqn.~(\ref{eq:ch5:xhs}). 
+
+% new paragraph
+It is important to note the differences between the CEF, CTR, and CQHS methods by looking at the conditions for which exact integration occurs over each segment $[t_k,t_{k+1}]$: 
+\begin{center}
+\begin{tabular}{ r l }
+  CEF & Exact if $\mathrm{deg}\left( x_i(t) L(t) x_j(t) \right) = 0$ \\
+  CTR & Exact if $\mathrm{deg}\left( x_i(t) L(t) x_j(t) \right) \leq 1$ \\
+  CQHS & Exact if $\mathrm{deg}\left( x_i(t) \right) \leq 1$, $\mathrm{deg}\left( x_j(t) \right) \leq 1$, and $\mathrm{deg}\left( x_i(t) L(t) x_j(t) \right) \leq 3$
+\end{tabular}
+\end{center}
+
+\noindent where $\mathrm{deg}$ yields the highest degree of its terms (with respect to $t$) when the polynomial is expressed in its canonical form consisting of a linear combination of monomials.
+So, comparatively, we see a higher-order of accuracy for CQHS. We can also try the same procedure using RK4, but this results in the same approximation scheme as the CQHS method since the linear approximation is used.
+
+% new paragraph
+Finally, for quadratic terms with each term having time dependence, the composite quadrature schemes can be nicely summarized as indexed sparse matrices. These quadrature schemes with quadratic terms have the form:  
+\begin{align}
+\int_{t_0}^{t_f} x_i(t) L(t) x_j(t) dt\approx X_i\tran H X_j
+\end{align}
+
+\noindent where ${H}$ is a symmetric $N_t \times N_t$ matrix. Then each of the composite quadrature rules can be written as:%
+\allowdisplaybreaks[1]%
+\begin{subequations}%
+\begin{align}
+\text{CEF}& \qquad  {H}(i,j) = \phantom{\frac{1}{2}} \begin{cases} \Delta_i L_{i}  & i = j \neq n_t \\
+0 & \text{otherwise}
+\end{cases} \\
+% 
+\text{CTR}& \qquad {H}(i,j)  = \frac{1}{2} \begin{cases} \Delta_0 L_0  & i = j = 0 \\
+\Delta_{n_t-1} L_{n_t} & i = j = n_t \\
+\Delta_{i-1} L_{i} + \Delta_{i} L_{i} & i = j \neq \{0, n_t \}  \\
+0 & \text{otherwise}
+\end{cases} \label{eq:ch5:CTR} \\
+% 
+\text{CQHS}& \qquad {H}(i,j) = \frac{1}{6} \begin{cases} \Delta_0 \left( L_0 + \myoverbar{L}_0 \right) & i = j = 0 \\
+\Delta_{n_t-1} \left( \myoverbar{L}_{n_t-1} + L_{n_t}  \right) & i = j = n_t \\
+\Delta_{i-1} \myoverbar{L}_{i-1} & i - j = 1 \\ % lower diagonal
+\Delta_{i} \myoverbar{L}_{i} & i - j = -1 \\ % upper diagonal
+\Delta_{i-1} \left( L_{i} + \myoverbar{L}_{i-1} \right) + \Delta_{i} \left( \myoverbar{L}_{i} + L_{i} \right) & i = j \neq \{0, n_t \} \\
+0 & \text{otherwise}
+\end{cases}
+\end{align}
+\end{subequations}%
+\allowdisplaybreaks[0]%
+
+\noindent These matrix formulas can also be utilized to derive the gradient and constant expressions for linear and constant objective function terms.
+
+%-------------------------------------------------------------------
+\subsection{Additional Linear Constraints}
+
+The additional linear constraints in Eqns.~(\ref{eq:ch5:hqp})--(\ref{eq:ch5:gqp}) are handled by utilizing the discretized components of Prob.~(\ref{eq:ch5:NLDO}).
+Constraints with time dependence (i.e.,~path constraints) are approximated with a set of $N_t$ constraints, one for each node point. 
+However, the satisfaction of the path constraints at time points other than the node points is not guaranteed \cite{Biegler2010a}.
+Boundary constraints only need one constraint for accurate representation as there is no issue with potential infeasibility between node points.

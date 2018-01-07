@@ -1,0 +1,107 @@
+%--------------
+% packages
+\usepackage{lmodern}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[dvipsnames]{xcolor}
+\usepackage[american]{babel}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{float}
+\restylefloat{table}
+\usepackage[noadjust]{cite}
+\usepackage{amssymb}
+\usepackage{bm}
+\usepackage{ltxcmds}
+\usepackage{nicefrac}
+\usepackage[export]{adjustbox}
+\usepackage{mathtools}
+\usepackage{varwidth}
+\usepackage{txfonts}
+\usepackage{relsize}
+\usepackage{tkz-linknodes}
+\usepackage{rotating}
+\usepackage{blindtext}
+\usepackage{hyperref}
+\usepackage{tikz} % for drawings
+\usetikzlibrary{shapes.geometric, arrows, topaths, shapes,decorations.text, positioning,shadows,trees,shapes.arrows, fadings,arrows.meta,graphs,graphs.standard}
+\usetikzlibrary{external}
+\usepackage{algorithm2e} % environment for writing algorithms 
+\usepackage{enumitem}
+\usepackage{ifthen}
+\usepackage{blkarray}
+\usepackage{etoolbox}
+
+%--------------
+% commands
+
+\newcommand{\mypm}{\textit{PM}}
+
+\newtheorem{definition}{Definition}
+
+\definecolor{light-gray}{gray}{0.8}
+
+% \newcommand{\xcolor}[1]{\text{\textsl{\textsf{#1}}}}
+
+\DeclarePairedDelimiter\abs{\lvert}{\rvert}
+
+\newcommand\scalemath[2]{\scalebox{#1}{\mbox{\ensuremath{\displaystyle #2}}}}   
+
+\newcommand*\circled[1]{\tikz[baseline=(char.base)]{
+            \node[shape=circle,draw,inner sep=1pt] (char) {\small #1};}}
+
+\hypersetup{colorlinks=true, allcolors = blue}
+
+%-----------
+% algorithm style/formatting code
+% comment style ()
+\newcommand\mycommfont[1]{\scriptsize\ttfamily\textcolor{blue}{#1}}
+\SetCommentSty{mycommfont}
+\SetAlFnt{\footnotesize}
+\newcommand{\mycapsty}[1]{\small\sffamily\bfseries\MakeUppercase{#1}}
+\SetAlCapSty{mycapsty}
+\newcommand\mynlfont[1]{\scriptsize\sffamily{#1}}
+\SetNlSty{mynlfont}{}{}
+
+% fixed horizontal box (algorithms)
+\newcommand{\myvbox}[2]{\mbox{\begin{minipage}{#2 mm} #1 \end{minipage}}}
+% algorithms
+\newcommand{\myvar}[1]{\textsl{\textsf{#1}}}
+\newcommand{\myind}[1]{$\langle${#1}$\rangle$}
+\newcommand{\mycon}[2]{$\big[ #1 , #2 \big]$}
+\newcommand{\myconn}[3]{$\big[ #1 , #2 , #3 \big]$}
+% adds minipage to inside of algorithms
+\newlength{\tightalgowidth}
+\newlength{\tightalgoremainder}
+% 
+\newenvironment{AlgoVar}[2][]
+{
+\setlength{\tightalgowidth}{#2}
+\setlength{\tightalgoremainder}{\textwidth-2\tightalgowidth}
+\begin{algorithm*}[#1]}
+{\end{algorithm*}}
+% 
+\newenvironment{AlgoVarCol}[2][]
+{
+\setlength{\tightalgowidth}{#2}
+\setlength{\tightalgoremainder}{\linewidth-\tightalgowidth}
+\begin{algorithm}[#1]}
+{\end{algorithm}}
+% 
+\makeatletter
+\patchcmd{\@algocf@start}{%
+\begin{lrbox}{\algocf@algobox}%
+}{%
+\rule{0.5\tightalgoremainder}{\z@}%
+\begin{lrbox}{\algocf@algobox}%
+\begin{minipage}[c]{\tightalgowidth}%
+}{}{}
+\patchcmd{\@algocf@finish}{%
+\end{lrbox}%
+}{%
+\end{minipage}%
+\end{lrbox}%
+}{}{}
+\makeatother

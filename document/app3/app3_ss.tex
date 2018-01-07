@@ -1,0 +1,79 @@
+\subsection{Single-Step Methods\label{sec:app3:ss}}
+
+Here we provide the general forms of the single-step (SS) methods in Sec.~\ref{sec:ch5:ss}.
+
+%--------------------------------------------------
+\subsubsection{Euler Forward}
+The Euler forward method is an explicit first-order method:
+\begin{align}
+\bm{\zeta}(t_k) = \bm{\xi}(t_{k+1}) - \bm{\xi}(t_{k}) - \Delta_k \bm{f}(t_k)
+\end{align}
+
+%--------------------------------------------------
+\subsubsection{Trapezoidal Rule}
+The trapezoidal rule is an implicit second-order method:
+\begin{align}
+\bm{\zeta}(t_k) = \bm{\xi}(t_{k+1}) - \bm{\xi}(t_{k}) - \frac{\Delta_k}{2} \left( \bm{f}(t_k) + \bm{f}(t_{k+1}) \right)
+\end{align}
+
+%--------------------------------------------------
+\subsubsection{Hermite-Simpson}
+The Hermite-Simpson is an implicit third-order method:
+\begin{subequations}
+\begin{align}
+\bm{\zeta}(t_k) &= \bm{\xi}(t_{k+1}) - \bm{\xi}(t_{k}) - \frac{\Delta_k}{6} \left( \bm{f}(t_k) + 4\bm{f}(\bar{t}_k) + \bm{f}(t_{k+1}) \right) \label{eq:app3:hs:zeta}  \\
+\bm{f}(\bar{t}_k) &= \bm{f}\left( \bar{t}_k, \bm{\xi}(\bar{t}_k), \bm{u}(\bar{t}_k), \bm{p} \right) \label{eq:app3:hs:f} \\
+\bm{\xi}(\bar{t}_k) &= \frac{1}{2}\left( \bm{\xi}(t_{k+1}) + \bm{\xi}(t_{k})  \right) + \frac{\Delta_k}{8}\left( \bm{f}(t_k) - \bm{f}(t_{k+1}) \right) \label{eq:app3:hs:xi} \\
+\bm{u}(\bar{t}_k) &= \frac{1}{2} \left( \bm{u}(t_{k+1}) + \bm{u}(t_{k}) \right)
+\end{align}
+\end{subequations}
+
+\noindent \textit{(Derivation of Defect Constraints in LQDO)} Recall that the state dynamics in LQDO is a linear nonhomogeneous differential equation:
+\begin{align}
+\bm{f}(t_k) = \bm{A}_k\bm{\xi}_k + \bm{B}_k \bm{u}_k + \bm{G}_k\bm{p} + \bm{d}_k
+\end{align}
+
+\noindent The intermediate state value using Eqn.~(\ref{eq:app3:hs:xi}) is approximated as:
+\begin{align}
+\bm{\xi}(\bar{t}_k) &= \frac{1}{2}\left( \bm{\xi}_{k+1} + \bm{\xi}_k  \right) + \frac{\Delta_k}{8}\left(\bm{A}_k\bm{\xi}_k + \bm{B}_k \bm{u}_k + \bm{G}_k\bm{p} + \bm{d}_k+ \cdots \right. \\
+& \quad \left. - \bm{A}_{k+1}\bm{\xi}_{k+1} - \bm{B}_{k+1} \bm{u}_{k+1} - \bm{G}_{k+1}\bm{p} - \bm{d}_{k+1} \right) \notag
+\end{align}
+
+\noindent The intermediate derivative function value in Eqn.~(\ref{eq:app3:hs:f}) is approximated with:
+\begin{subequations}
+\begin{align}
+\bm{f}(\bar{t}_k) &= \bar{\bm{A}}_k\bm{\xi}(\bar{t}_k) + \bar{\bm{B}}_k \bm{u}(\bar{t}_k) + \bar{\bm{G}}_k\bm{p} + \bar{\bm{d}}_k \\
+&=  \left( \frac{\bar{\bm{B}}_k}{2} + \frac{\Delta_k}{8}\bar{\bm{A}}_k \bm{B}_{k} \right) \bm{u}_{k} + \left( \frac{\bar{\bm{B}}_k}{2} - \frac{\Delta_k}{8}\bar{\bm{A}}_k \bm{B}_{k+1} \right) \bm{u}_{k+1} + \cdots \notag \\
+& \quad \left( \frac{\bar{\bm{A}}_k}{2} + \frac{\Delta_k}{8} \bar{\bm{A}}_k \bm{A}_k \right) \bm{\xi}_{k} + \left( \frac{\bar{\bm{A}}_k}{2} - \frac{\Delta_k}{8} \bar{\bm{A}}_k \bm{A}_{k+1} \right) \bm{\xi}_{k+1} + \cdots  \notag \\
+& \quad \left( \bar{\bm{G}}_k + \frac{\Delta_k}{8}\bar{\bm{A}}_k\bm{G}_k - \frac{\Delta_k}{8}\bar{\bm{A}}_k\bm{G}_{k+1} \right) \bm{p} + \left( \bar{\bm{d}}_k + \frac{\Delta_k}{8}\bar{\bm{A}}_k \bm{d}_k - \frac{\Delta_k}{8}\bar{\bm{A}}_k \bm{d}_{k+1} \right)
+\end{align}
+\end{subequations}
+
+\noindent Combining this with the HS defect constraint formula in Eqn.~(\ref{eq:app3:hs:zeta}):
+\begin{subequations}
+\footnotesize
+\begin{align}
+\bm{\zeta}(t_k) &= \bm{\xi}(t_{k+1}) - \bm{\xi}(t_{k}) - \frac{\Delta_k}{6} \left( \bm{f}(t_k) + 4\bm{f}(\bar{t}_k) + \bm{f}(t_{k+1}) \right) \\
+%
+&= \left( - \frac{\Delta_k}{6} \bm{B}_{k} - \frac{\Delta_k}{3}\bar{\bm{B}}_k - \frac{\Delta_k^2}{12} \bar{\bm{A}}_k \bm{B}_{k} \right) \bm{u}_{k} + \left( - \frac{\Delta_k}{6} \bm{B}_{k+1} - \frac{\Delta_k}{3}\bar{\bm{B}}_k + \frac{\Delta_k^2}{12} \bar{\bm{A}}_k \bm{B}_{k+1} \right) \bm{u}_{k+1}  + \cdots \notag \\
+&\quad \left( -\bm{I} - \frac{\Delta_k}{3}\bar{\bm{A}}_k - \frac{\Delta_k^2}{12} \bar{\bm{A}}_k \bm{A}_{k} - \frac{\Delta_k}{6} \bm{A}_k \right) \bm{\xi}_{k} + \left( \bm{I} - \frac{\Delta_k}{3}\bar{\bm{A}}_k + \frac{\Delta_k^2}{12} \bar{\bm{A}}_k \bm{A}_{k+1} - \frac{\Delta_k}{6} \bm{A}_{k+1} \right) \bm{\xi}_{k+1} + \cdots \notag \\
+&\quad \left( -\frac{\Delta_k}{6}\bm{G}_k - \frac{2\Delta_k}{3}\bar{\bm{G}}_k - \frac{\Delta_k^2}{12}\bar{\bm{A}}_k\bm{G}_k + \frac{\Delta_k^2}{12}\bar{\bm{A}}_k\bm{G}_{k+1} - \frac{\Delta_k}{6}\bm{G}_{k+1} \right) \bm{p} + \cdots \notag \\
+&\quad \left( -\frac{\Delta_k}{6}\bm{d}_k - \frac{2\Delta_k}{3}\bar{\bm{d}}_k - \frac{\Delta_k^2}{12}\bar{\bm{A}}_k\bm{d}_k + \frac{\Delta_k^2}{12}\bar{\bm{A}}_k\bm{d}_{k+1} - \frac{\Delta_k}{6}\bm{d}_{k+1}  \right) 
+\end{align}
+\end{subequations}
+
+\noindent which is the same equation as the SS step formula in Eqn.~(\ref{eq:ch5:ss}) with the coefficients for the HS method in Eqn.~(\ref{eq:ch5:hs}).
+
+%--------------------------------------------------
+\subsubsection{Classical 4th-Order Runge-Kutta}
+This is another popular explicit scheme given by:
+\begin{subequations}
+\begin{align}
+\bm{\zeta}(t_k) &= \bm{\xi}(t_{k+1}) - \bm{\xi}(t_{k}) - \frac{\Delta_k}{6} \left( \bm{k}_1 + 2\bm{k}_2 + 2\bm{k}_3 + \bm{k}_4 \right) \\
+\bm{k}_1 &= \bm{f}(t_k) \\
+\bm{k}_2 &= \bm{f}\left( \bar{t}_k, \bm{\xi}(t_k) + \frac{\Delta_k}{2} \bm{k}_1, \bm{u}(\bar{t}_k), \bm{p} \right) \\
+\bm{k}_3 &= \bm{f}\left( \bar{t}_k, \bm{\xi}(t_k) + \frac{\Delta_k}{2} \bm{k}_2, \bm{u}(\bar{t}_k), \bm{p} \right) \\
+\bm{k}_4 &= \bm{f}\left( t_{k+1}, \bm{\xi}(t_k) + \Delta_k \bm{k}_3, \bm{u}(t_{k+1}), \bm{p} \right) \\
+\bm{u}(\bar{t}_k) &= \frac{1}{2} \left( \bm{u}(t_{k+1}) + \bm{u}(t_{k}) \right)
+\end{align}
+\end{subequations}

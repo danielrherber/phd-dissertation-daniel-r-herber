@@ -1,0 +1,104 @@
+\begin{algorithm}
+\caption{Create $\mathbf{A}_{e1}$ and $\mathbf{B}_{e1}$ matrices for the defect constraints using a single-step method.}\label{alg:ch5:SSdefects}
+\setstretch{0.8}
+\begin{algorithmic}[1]
+%
+\Require $\bm{A}$, $\bm{B}$, $\bm{G}$ \Comment{matrices that define the dynamics in Eqn.~(\ref{eq:ch5:fdyn})}
+
+\State \xvar{K} $\gets$ $\Call{kron}{\textsc{eye}(n_\xi),\textsc{ones}(n_t,1))$} \label{line:ch5:SSdefects_kron}
+
+\State $\emptyset$ $\gets$ $\mathcal{I}$, $\mathcal{J}$, $\mathcal{V}$ \Comment{initialize sequences}
+
+\For{\xvar{i} $\gets$ 1 to $n_\xi$} \label{line:ch5:SSdefects_for}
+
+\State \xvar{DefectIdx} $\gets$ $(\xvar{i} - 1)n_t + 1$ to $\xvar{i}n_t$ \Comment{current defect constraint row locations}
+
+% controls
+$\triangleright$ controls \Vhrulefill
+
+\State $\xvar{I}$ $\gets$ \Call{repmat}{\xvar{DefectIdx},1,$n_u$} \Comment{current defect constraint row indices}
+
+\State $\xvar{J}$ $\gets$ $1$ to $n_u N_t$ but remove every $N_t$ \Comment{current optimization variable column indices}
+
+\State $\xvar{T}$ $\gets$ $1$ to $n_u N_t$ but remove every $N_t$ \Comment{time indexing vector}
+
+\State $\xvar{H}$ $\gets$ \Call{repmat}{$\bm{\Delta}$,$n_u$,1} \Comment{vector of time steps}
+
+\State $\xvar{B}$ $\gets$ evaluate $\bm{B}$\myind{\xvar{i},:} on $\bm{t}$ \Comment{the form will be $[\bm{B}_{i,1}(t_0), \cdots, \bm{B}_{i,1}(t_{n_t}), \bm{B}_{i,2}(t_0), \cdots, \bm{B}_{i,2}(t_{n_t}), \cdots, \bm{B}_{i,n_u}(t_{n_t})]\tran$ }
+
+\State $\xvar{V3}$ $\gets$ $-\xvar{H}/2 \odot \xvar{B\myind{\xvar{T}}}$ \label{line:ch5:SSdefects_V3} \Comment{$\bm{\theta}_1$ for the TR method}
+\State $\xvar{V4}$ $\gets$ $-\xvar{H}/2 \odot \xvar{B\myind{\xvar{T}$+1$}}$ \label{line:ch5:SSdefects_V4} \Comment{$\bm{\theta}_2$ for the TR method}
+
+\State $\mathcal{I}$ $\gets$ \Call{combine}{$\mathcal{I}$, \xvar{I}, \xvar{I}}
+\State $\mathcal{J}$ $\gets$ \Call{combine}{$\mathcal{J}$, \xvar{J}, \xvar{J}+1}
+\State $\mathcal{V}$ $\gets$ \Call{combine}{$\mathcal{V}$, \xvar{V3}, \xvar{V4}}
+
+% states
+$\triangleright$ states \Vhrulefill
+
+\State $\xvar{I}$ $\gets$ \Call{repmat}{\xvar{DefectIdx},1,$n_\xi$} \Comment{current defect constraint row indices}
+
+\State $\xvar{J}$ $\gets$ $n_u N_t+1$ to $(n_u+n_\xi)N_t$ but remove every $N_t$ \Comment{current optimization variable column indices}
+
+\State $\xvar{T}$ $\gets$ $1$ to $n_\xi N_t$ but remove every $N_t$ \Comment{time indexing vector}
+
+\State $\xvar{H}$ $\gets$ \Call{repmat}{$\bm{\Delta}$,$n_\xi$,1} \Comment{vector of time steps}
+
+\State $\xvar{A}$ $\gets$ evaluate $\bm{A}$\myind{\xvar{i},:} on $\bm{t}$ \Comment{the form will be $[\bm{A}_{i,1}(t_0), \cdots, \bm{A}_{i,1}(t_{n_t}), \bm{A}_{i,2}(t_0), \cdots, \bm{A}_{i,2}(t_{n_t}), \cdots, \bm{A}_{i,n_\xi}(t_{n_t})]\tran$ }
+
+\State $\xvar{V1}$ $\gets$ $-\xvar{K\myind{$:,$i}} \ominus \xvar{H}/2 \odot \xvar{A\myind{T}}$ \label{line:ch5:SSdefects_V1} \Comment{$\bm{\theta}_3$ for the TR method}
+\State $\xvar{V2}$ $\gets$ $\xvar{K\myind{$:,$i}} \ominus \xvar{H}/2 \odot \xvar{A\myind{T$+1$}}$ \label{line:ch5:SSdefects_V2} \Comment{$\bm{\theta}_4$ for the TR method}
+
+\State $\mathcal{I}$ $\gets$ \Call{combine}{$\mathcal{I}$, \xvar{I}, \xvar{I}}
+\State $\mathcal{J}$ $\gets$ \Call{combine}{$\mathcal{J}$, \xvar{J}, \xvar{J}+1}
+\State $\mathcal{V}$ $\gets$ \Call{combine}{$\mathcal{V}$, \xvar{V1}, \xvar{V2}}
+
+% parameters
+$\triangleright$ parameters \Vhrulefill
+
+\State $\xvar{I}$ $\gets$ \Call{repmat}{\xvar{DefectIdx},1,$n_p$} \Comment{current defect constraint row indices}
+
+\State $\xvar{J}$ $\gets$ $\Call{kron}{N_t (n_u+n_\xi)+(1 \text{ to } n_p), \textsc{ones}(1,n_t)}$ \Comment{current optimization variable column indices}
+
+\State $\xvar{T}$ $\gets$ $1$ to $n_p N_t$ but remove every $N_t$ \Comment{time indexing vector}
+
+\State $\xvar{H}$ $\gets$ \Call{repmat}{$\bm{\Delta}$,$n_\xi$,1} \Comment{vector of time steps}
+
+\State $\xvar{G}$ $\gets$ evaluate $\bm{G}$\myind{\xvar{i},:} on $\bm{t}$ \Comment{form will be $[\bm{G}_{i,1}(t_0), \cdots, \bm{G}_{i,1}(t_{n_t}), \bm{G}_{i,2}(t_0), \cdots, \bm{G}_{i,2}(t_{n_t}), \cdots, \bm{G}_{i,n_p}(t_{n_t})]\tran$ }
+
+
+\State $\xvar{V}$ $\gets$ $-\xvar{H}/2$ $\odot$ (\xvar{G\myind{T}} $\oplus$ \xvar{G\myind{T$+1$}}) \Comment{$\bm{\theta}_5$ for the TR method}
+
+\State $\mathcal{I}$ $\gets$ \Call{combine}{$\mathcal{I}$, \xvar{I}}
+\State $\mathcal{J}$ $\gets$ \Call{combine}{$\mathcal{J}$, \xvar{J}}
+\State $\mathcal{V}$ $\gets$ \Call{combine}{$\mathcal{V}$, \xvar{V}}
+
+\EndFor
+
+\State $\mathbf{A}_{e1}$ $\gets$ \Call{sparse}{$\mathcal{I}$, $\mathcal{J}$, $\mathcal{V}$, $n_\xi n_t$, $n_X$} \Comment{sparse matrix}
+
+
+% b 
+\State $\emptyset$ $\gets$ $\mathcal{I}$, $\mathcal{V}$ \Comment{initialize sequences}
+
+\For{\xvar{i} $\gets$ 1 to $n_\xi$} 
+
+\State $\xvar{I}$ $\gets$ $(\xvar{i} - 1)n_t + 1$ to $\xvar{i}n_t$ \Comment{current defect constraint row indices}
+
+\State $\xvar{T}$ $\gets$ $1$ to $n_t$ \Comment{time indexing vector}
+
+\State $\xvar{d}$ $\gets$ evaluate $\bm{d}$\myind{\xvar{i}} on $\bm{t}$
+
+\State $\xvar{V}$ $\gets$ $\xvar{H}/2$ $\odot$ (\xvar{d\myind{T}} $\oplus$ \xvar{d\myind{T$+1$}}) \Comment{$\bm{\nu}$ for the TR method}
+
+\State $\mathcal{I}$ $\gets$ \Call{combine}{$\mathcal{I}$, \xvar{I}}
+\State $\mathcal{V}$ $\gets$ \Call{combine}{$\mathcal{V}$, \xvar{V}}
+
+\EndFor
+
+\State $\mathbf{B}_{e1}$ $\gets$ \Call{sparse}{$\mathcal{I}$, $1$, $\mathcal{V}$, $n_\xi n_t$, 1} \Comment{sparse matrix}
+
+\State \textbf{return} $\mathbf{A}_{e1}$, $\mathbf{B}_{e1}$ \Comment{matrices}
+
+\end{algorithmic}
+\end{algorithm}

@@ -1,0 +1,21 @@
+\tikzsetnextfilename{ASSTheta3}
+
+\centering
+\resizebox{1\textwidth}{!}{
+\begin{tikzpicture}[yscale=-1] 
+
+\input{../ch5/sparsity/sparsityA}
+
+%% controls
+\foreach \k in {1,...,\nu}{
+	\foreach \j in {1,...,\nx}{
+		\foreach \i in {1,...,\ntm}{ 
+        	\pgfmathsetmacro{\kk}{\k-1};
+            \pgfmathsetmacro{\jj}{\j-1};
+        	\pgfmathsetmacro{\x}{0.2*\i + 0.2*\kk*\nt};
+            \pgfmathsetmacro{\y}{0.2*\i + 0.2*\jj*\ntm};
+        	\node () at (\x,\y) {\mytemp};
+} } }
+
+\end{tikzpicture}
+}

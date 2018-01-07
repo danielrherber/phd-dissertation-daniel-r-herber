@@ -1,0 +1,79 @@
+\begin{vAlgorithm}[!ht]{1\columnwidth}{0em}
+\LinesNumbered
+\DontPrintSemicolon
+
+\SetKwInOut{Require}{Require}
+
+\caption{Create sequences for path constraint terms.}\label{alg:ch5:path}
+
+\Require{ structure $\xvar{YZ}$ of type \textsf{constraint}}
+
+$\emptyset$ $\gets$ $\mathcal{I}$, $\mathcal{J}$, $\mathcal{V}$ \tcc*{initialize sequences}
+
+\For{\xvar{j} $\gets$ $1$ \KwTo $\abs{\xvar{YZ}.\xvar{linear}}$}{
+
+\xvar{A} $\gets$ \xvar{YZ}.\xvar{linear}\myind{\xvar{j}}.\xvar{matrix} \tcc*{obtain current submatrix}
+
+\xvar{C} $\gets$ \textsc{GetContIndex}(\xvar{YZ}.\xvar{linear}\myind{\xvar{j}}.\xvar{right}) \tcc*{columns (continuous), see Alg.~\ref{alg:ch5:getindex}}
+
+
+\For{\xvar{i} $\gets$ $1$ \KwTo $\abs{\xvar{C}}$}{ 
+
+	\xvar{r} $\gets$ $1$ \KwTo $N_t$ \tcc*{add $N_t$ rows for a path constraint}
+
+	\xvar{c} $\gets$ \textsc{GetQPIndex}(\xvar{C}\myind{\xvar{i}}, \xvar{YZ}.\xvar{linear}\myind{\xvar{j}}.\xvar{right}, $1$ \KwTo $N_t$)  \tcc*{columns (QP), see Alg.~\ref{alg:ch5:getindex}}
+
+	$\mathcal{I}$ $\gets$ \textsc{combine}($\mathcal{I}, \xvar{r}$)
+
+	$\mathcal{J}$ $\gets$ \textsc{combine}($\mathcal{J}, \xvar{c}$) 
+
+	$\mathcal{V}$ $\gets$ \textsc{combine}($\mathcal{V}$, evaluate $\xvar{A}$\myind{\xvar{i}} on $\bm{t}$) 
+
+}
+
+}
+
+$\mathcal{B}$ $\gets$ evaluate \xvar{YZ}.\xvar{b} on $\bm{t}$
+
+\textbf{return} $\mathcal{I}$, $\mathcal{J}$, $\mathcal{V}$, $\mathcal{B}$ \tcc*{sequences for path constraint terms}
+
+\end{vAlgorithm}
+
+
+% \begin{algorithm}
+% \caption{Create sequences for path constraint terms.}\label{alg:ch5:path}
+% \setstretch{0.8}
+% \begin{algorithmic}[1]
+% \Require structure $\xvar{YZ}$ of type \textsf{constraint}
+
+% $\emptyset$ $\gets$ $\mathcal{I}$, $\mathcal{J}$, $\mathcal{V}$ \tcc*{initialize sequences}
+
+% \For{\xvar{j} $\gets$1 to $\abs{\xvar{YZ}.\xvar{linear}}$} 
+
+% \xvar{A} $\gets$ \xvar{YZ}.\xvar{linear}\myind{\xvar{j}}.\xvar{matrix} \tcc*{obtain current submatrix}
+
+% \xvar{C} $\gets$ \textsc{GetContIndex}{\xvar{YZ}.\xvar{linear}\myind{\xvar{j}}.\xvar{right}} \tcc*{columns (continuous), see Alg.~\ref{alg:ch5:getindex}}
+
+
+% \For{\xvar{i} $\gets$ 1 to $\abs{\xvar{C}}$} 
+
+% 	\xvar{r} $\gets$ $1$ to $N_t$ \tcc*{add $N_t$ rows for a path constraint}
+
+% 	\xvar{c} $\gets$ \textsc{GetQPIndex}{\xvar{C}\myind{\xvar{i}}, \xvar{YZ}.\xvar{linear}\myind{\xvar{j}}.\xvar{right}, $1$ to $N_t$}  \tcc*{columns (QP), see Alg.~\ref{alg:ch5:getindex}}
+
+% 	$\mathcal{I}$ $\gets$ \textsc{combine}{$\mathcal{I}, \xvar{r}$}
+
+% 	$\mathcal{J}$ $\gets$ \textsc{combine}{$\mathcal{J}, \xvar{c}$} 
+
+% 	$\mathcal{V}$ $\gets$ \textsc{combine}{$\mathcal{V}$, evaluate $\xvar{A}$\myind{\xvar{i}} on $\bm{t}$} 
+
+% \EndFor
+
+% \EndFor
+
+% $\mathcal{B}$ $\gets$ evaluate \xvar{YZ}.\xvar{b} on $\bm{t}$
+
+% \textbf{return} $\mathcal{I}$, $\mathcal{J}$, $\mathcal{V}$, $\mathcal{B}$ \tcc*{sequences for path constraint terms}
+
+% \end{algorithmic}
+% \end{algorithm}

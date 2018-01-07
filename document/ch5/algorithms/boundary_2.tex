@@ -1,0 +1,37 @@
+\begin{algorithm}
+\caption{Create sequences for boundary constraint terms.}\label{alg:ch5:boundary}
+\setstretch{0.8}
+\begin{algorithmic}[1]
+\Require structure $\xvar{YZ}$ of type \textsf{constraint}
+
+\State $\emptyset$ $\gets$ $\mathcal{I}$, $\mathcal{J}$, $\mathcal{V}$ \Comment{initialize sequences}
+
+\For{\xvar{j} $\gets$1 to $\abs{\xvar{YZ}.\xvar{linear}}$} 
+
+\State \xvar{A} $\gets$ \xvar{YZ}.\xvar{linear}\myind{\xvar{j}}.\xvar{matrix} \Comment{obtain current submatrix}
+
+\State \xvar{C} $\gets$ \Call{GetContIndex}{\xvar{YZ}.\xvar{linear}\myind{\xvar{j}}.\xvar{right}} \Comment{columns (continuous), see Alg.~\ref{alg:ch5:getindex}}
+
+
+\For{\xvar{i} $\gets$ 1 to $\abs{\xvar{C}}$} 
+
+	\State \xvar{r} $\gets$ $1$ \Comment{add $1$ row for a boundary constraint}
+
+	\State \xvar{c} $\gets$ \Call{GetQPIndex}{\xvar{C}\myind{\xvar{i}}, \xvar{YZ}.\xvar{linear}\myind{\xvar{j}}.\xvar{right}, $1$}  \Comment{columns (QP), see Alg.~\ref{alg:ch5:getindex}}
+
+	\State $\mathcal{I}$ $\gets$ \Call{combine}{$\mathcal{I}, \xvar{r}$}
+
+	\State $\mathcal{J}$ $\gets$ \Call{combine}{$\mathcal{J}, \xvar{c}$} 
+
+	\State $\mathcal{V}$ $\gets$ \Call{combine}{$\mathcal{V}$, $\xvar{A}$\myind{\xvar{i}}}
+
+\EndFor
+
+\EndFor
+
+\State $\mathcal{B}$ $\gets$ $\xvar{YZ}.\xvar{b}$
+
+\State \textbf{return} $\mathcal{I}$, $\mathcal{J}$, $\mathcal{V}$, $\mathcal{B}$ \Comment{sequences for boundary constraint terms}
+
+\end{algorithmic}
+\end{algorithm}

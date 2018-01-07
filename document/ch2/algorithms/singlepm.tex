@@ -1,0 +1,63 @@
+% \IncMargin{1em}
+\RestyleAlgo{algoruled}
+
+\begin{vAlgorithm}[t]{\textwidth}{0em}
+
+\LinesNumbered
+\SetSideCommentRight 
+\DontPrintSemicolon
+% \SetNoFillComment
+
+% \SetTitleSty{\textsf}{small}
+% \renewcommand{\algorithmcfname}{\small\textbf{\textsf{\MakeUppercase{Algorithm}}}}%
+
+% \SetKwData{Left}{left}\SetKwData{This}{this}\SetKwData{Up}{up}
+\SetKwFunction{cumprod}{cumprod}
+\SetKwFunction{length}{length}
+\SetKwFunction{zeros}{zeros}
+\SetKwFunction{ceil}{ceil}
+
+\SetKwInOut{Input}{Input}
+\SetKwInOut{Output}{Output}
+
+\caption{Creation of edge set for a specific perfect matching number. \label{alg:ch2:singlepm}}
+
+\Input{$\xvar{N}$  -- number of vertices (should be even) \\ $\xvar{I}$ -- perfect matching number, integer between 1 and $(\xvar{N}-1)!!$}
+\Output{$\xvar{E}$ -- vector of edges in sequential pairs}
+\BlankLine
+    
+	\glsfirst{variable}
+
+   $\xvar{J}$ $\leftarrow$ $\big[ 1,3,5,\dots,\xvar{N}-1 \big]$ \tcc*{odd numbers from 1 to N-1}
+   
+   $\xvar{P}$ $\leftarrow$ $\big[ 1 , \cumprod(\xvar{J}) \big]$ \tcc*{cumulative double factorial}
+    
+   $\xvar{V}$ $\leftarrow$ $\big[ 1,2,\dots,\xvar{N}\big]$ \tcc*{create initial list of available vertices}
+    
+%    $\xvar{A}$ $\leftarrow$ $\zeros(1,\xvar{N})$ \tcc*{initialize output matrix}
+
+        
+		\For{$\xvar{j}\leftarrow$ $\xvar{J}$ }{
+		
+		    $\xvar{q}$ $\leftarrow$ $(\xvar{N}+1-\xvar{j})/2$ \tcc*{index for 2nd to last entry in P}
+		           
+            $\xvar{I}$ $\leftarrow$ $\ceil\big(\xvar{I}/\xvar{P}(\xvar{q})\big)$ \tcc*{calculate smaller vertex index}
+            
+            $\xvar{E}(\xvar{j})$ $\leftarrow$ $\xvar{v}(\xvar{end})$ \tcc*{assign largest remaining value}
+            
+            \text{remove element} $\xvar{V}(\xvar{end})$ \tcc*{remove largest remaining value}
+            
+            $\xvar{E}(\xvar{j}+1)$ $\leftarrow$ $\xvar{V}(\xvar{i})$ \tcc*{assign smaller selected value}
+            
+            \text{remove element} $\xvar{V}(\xvar{i})$ \tcc*{remove the smaller selected value}
+            
+            $\xvar{I}$ $\leftarrow$ $\xvar{I} - \big( (\xvar{i} - 1) \times \xvar{P} (\xvar{q}) \big)$ \tcc*{get index in subgraph with 2 vertices removed}
+		
+		
+	} % end for j
+
+	% $\xvar{A}(\xvar{N}-1)$  $\leftarrow$ $\xvar{V}(\xvar{end})$  \tcc*{final entries}
+	
+	% $\xvar{A}(\xvar{N})$  $\leftarrow$ $\xvar{V}(1)$
+		
+\end{vAlgorithm}

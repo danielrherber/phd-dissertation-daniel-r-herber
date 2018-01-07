@@ -1,0 +1,29 @@
+%-------------------------------------------------------------------
+\section{Introduction}
+
+For more than half a century, dynamic optimization, or optimization with time-varying quantities, has played an integral role in the advancement of many designed systems, including applications in chemical engineering \cite{Biegler2010a}, aerospace engineering \cite{Betts2010a}, wave energy conversion \cite{Faedo2017a}, and finance/economics \cite{Deissenberg2005a}.
+\Glsfirst{NLDO} represents the most general class of problems \cite{Betts2010a, Biegler2010a, Bryson1975a}.
+A subclass of NLDO is \glsfirst{LQDO} where certain elements of the formulation are limited to quadratic and linear functions \cite{Bryson1975a, Anderson2007a, Liberzon2012a}. 
+Frequently, \lqdo{} formulations used in the literature are only a subclass of the general \lqdo{} problem.
+The key feature shared between the \lqdo{} formulations is that solutions may be found via an appropriate \glsfoo[noindex]{QP}, a particular class of finite-dimensional mathematical programs \cite{Boyd2009a}.
+Here we present a unified framework for \lqdo{} that can be solved as {\qp}s.
+
+% new paragraph
+In addition to providing a clear delineation of the general \lqdo{} problem class, we develop an \glsfirst{APGP} to form the {\qp}s that represent \lqdo{} problems.
+Here we define an \apgp{} as a procedure in which, given a natural and manageable description of the problem, one can obtain a numerical solution with little or no user expertise.
+A key to minimizing the amount of knowledge needed by the user is an automated and efficient implementation of the various solution methods.
+Such procedures are available for DO (e.g.,~\textsc{gpops-ii} \cite{Patterson2014a}, \textsc{psopt} \cite{Becerra2015a}, \textsc{propt} \cite{Rutquist2010a}, \textsc{sos} \cite{SOS2015a}, and \textsc{dircol} \cite{Stryk1999a}) but typically are developed for the more general NLDO problems and therefore cannot effectively leverage the structure of \lqdo.
+For the {\apgp}s that handle \lqdo{} problems, they are limited to specific solution methods and problem formulations (e.g.,~\textsc{mpt3} \cite{Herceg2013a} and \textsc{mpc toolbox} \cite{matlab-mpc}).
+Manual implementation of these solution methods is still quite prevalent in the literature, perhaps due to the lack of the necessary tools which sufficiently address the challenges of the particular class of problems.
+Additionally, a wide variety of competing solution methods exist, and comparisons between them cannot typically be performed efficiently (especially if a manual implementation is needed).
+These issues limit productivity and the general reach of \lqdo, but can be addressed using an \apgp{} under a unified framework for \lqdo. 
+In addition, this unified framework also provides additional insights into the \lqdo{} problem class and led to additional developments in the solution methods. 
+
+% new paragraph
+The remainder of the chapter is structured as follows.
+Section~\ref{sec:ch5:lqdo} presents the general problem formulation for \lqdo.
+Next, Sec.~\ref{sec:ch5:lqdo} discusses formulating \lqdo{} problems as {\qp}s with direct transcription methods. 
+Section~\ref{sec:ch5:algorithm} details the \apgp{} which takes a natural and manageable description of the problem and forms the \qp.
+Section~\ref{sec:ch5:extensions} outlines some extensions to the original \lqdo{} problem formulation.
+Section~\ref{sec:ch5:examples} assesses the \apgp{} with a number of numerical examples.
+Section~\ref{sec:ch5:future:work} discusses various future work items.

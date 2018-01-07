@@ -1,0 +1,67 @@
+\section{Introduction\label{sec:ch6:introduction}}
+
+% new paragraph
+Synthesis of analog electric circuits is a complex and resource-intensive task.
+Circuit-level synthesis involves two major attributes: 1) the topology (i.e.,~what components are present and how they are connected or the circuit structure) and 2) sizing (i.e.,~the selection of the component values).
+Both attributes are required for a fully-defined circuit.
+While there exist many computer-aided tools for performing network analysis and simulation \cite{Grimbleby1995a} as well as circuit sizing \cite{Das2007a}, there is still a need for high-quality synthesis methods that perform well on a variety of circuit synthesis problems.
+
+% new paragraph
+Any synthesis method must navigate the immense potential design space present in circuit synthesis design problems \cite{Mitea2011a}.
+Often this vast design space leads to the reliance on experts and domain-specific knowledge \cite{Gan2010a}.
+Alternatively, formal design methodologies have been developed for specific problem classes (e.g.,~linear frequency-domain filters) \cite{Grimbleby2000a}.
+While these human-focused and specific formal approaches can be suitable for some applications, they often fail at finding desirable solutions for unfamiliar and complex design problems.
+To address some of these issues, there has been considerable research to try to leverage existing design knowledge by formally incorporating heuristics \cite{Sussman1975a} and knowledge bases \cite{Harjani1989a} into various tools.
+
+% new paragraph
+More recent efforts have moved toward methods with minimal initial design knowledge \cite{Das2007a,  Grimbleby1995a, Gan2010a, Das2008a,  Lohn1999a}.
+Methods that adopt this principle can better generate truly novel topologies and nonexperts can more easily parse the required inputs for the automation tool \cite{Das2007a, Grimbleby1995a, Goh2001a, Grimbleby2000a, Lohn1999a}.
+Both evolutionary computation \cite{Das2007a, Das2008a, Gan2010a, Grimbleby1995a, Goh2001a, Grimbleby2000a, Koza1997a, Lohn1999a} and simulated annealing \cite{Ochotta1996a} are concepts that have been utilized to generate and select fully-defined circuits with minimal knowledge.
+Evolutionary-based methods, in particular, have received significant attention due to their relative success at balancing between minimal initial knowledge, design space freedom, and computational expense \cite{Das2007a}.
+
+% new paragraph
+In evolutionary computation, an initial population (set of candidate solutions) is generated and iteratively updated through metaheuristics and stochastic operators \cite{Eiben2003a}.
+While these approaches  can produce `semi-optimal' solutions \cite{Das2007a}, they still have some drawbacks. 
+First, the underlying algorithms have a number of parameters that must be selected (e.g.,~crossover probability and population size) \cite{Eiben2003a, Grimbleby1995a, Goh2001a, Koza1997a, Lohn1999a}.
+Often values are given, but the sensitivity of these parameters is not thoroughly investigated, or better yet, optimal recommendations.
+Secondly, a poor initial population can result in delayed convergence \cite{Das2007a}.
+Since these approaches are inherently stochastic, robustness is an important issue.
+Even with a favorable initial population, using standard metaheuristics can be inefficient (although some recent work has started to address this issue with custom genetic algorithms \cite{Das2007a}).
+It has also been observed that overly complex solutions (i.e.,~too many components) are often selected \cite{Goh2001a, Grimbleby1995a, Grimbleby2000a}. 
+In general, a target response is more easily satisfied with a complex circuit than a simple one \cite{Grimbleby1995a}.
+Finally, the global solution is not guaranteed, and it is hard to determine how far we are from the global optimum.
+Addressing these shortcomings could lead to a truly efficient and effective synthesis tool.
+
+% new paragraph
+All of the previously mentioned synthesis methods have aimed to navigate the vast design space by selectively sampling from the complete design space.
+An infrequently utilized approach is to actually test all topologies. %  (for good reason). 
+In an enumerative synthesis approach, we generate and evaluate a complete listing of all possible circuit topologies under certain specifications.
+Then we can simply select the best one with confidence in its optimality.
+The obvious reason to not test all topologies is the rate at which such a complete listing grows with the number of candidate system components. Here we make a case for the proposed enumeration-based synthesis methodology to solve certain types of synthesis problems, as well as to generate knowledge that could aid more general and scalable solution of synthesis problems.
+
+% new paragraph
+Enumeration has been utilized previously for electrical circuit design.
+Macmahon, among others, have considered the enumeration of series-parallel networks \cite{Macmahon1994a, Lomnicki1972a, Isokawa2016a}.
+Foster provided the enumeration of geometrical circuits classified according to their nullity and rank \cite{Foster1932a}.
+Bruccoleri et al.~systematically generated all the wide-band amplifier circuits with two MOS transistors \cite{Bruccoleri2001a, Klumperink1997a}. 
+Enumeration has also been useful in other synthesis problems such hybrid powertrains \cite{Bayrak2016a}, gear trains \cite{Castillo2002a}, and biological networks \cite{Ma2009a}.
+
+% new paragraph
+Before the enumeration-based methodology is described, it is important to visit the main motivations for this work, including the questions:
+\begin{itemize}
+\item Under what specifications/complexity is enumeration still feasible?
+
+\item Have previous methods found the ``best'' circuit? How close was the found circuit to the ``best'' circuit?
+
+\item What are the properties of the complete circuit structure space (e.g.,~how many unique circuits are there with up to a certain number of components)?
+
+\item Are stochastically sampled (rather than enumerative) topologies generated with the proposed approach more useful for initial populations due to their structural properties?
+
+\item Can a complete listing of circuits (both good and bad) be used to adapt an evolutionary approach to better address the synthesis task, perhaps through online learning or new metaheuristics?
+
+\end{itemize}
+
+\noindent These points will be addressed in Sec.~\ref{sec:ch6:discussion}.
+
+% new paragraph
+The remainder of the chapter is organized as follows. Section~\ref{sec:ch6:enumeration} describes the proposed enumeration-based synthesis methodology. Section~\ref{sec:ch6:examples} provides some examples for both frequency response and low-pass filter synthesis problems. Section~\ref{sec:ch6:discussion} is a discussion of the results and methodology. Section~\ref{sec:ch6:conclusion} provides the conclusions.

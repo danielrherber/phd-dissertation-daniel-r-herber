@@ -1,0 +1,106 @@
+\section{Future Work} \label{sec:ch5:future:work}
+
+The proposed \apgp{} and unified \lqdo{} problem description can provide a strong basis for a number of future developments that could improve the effectiveness and the user experience.
+
+%-----------------------------------------------------------
+\subsection{Multiple-Interval Pseudospectral Methods and Multiphase Problems} \label{sec:ch5:multipleinterval}
+
+The current implementation of the PS methods utilizes a single interpolating polynomial over the entire time horizon to approximate the states and controls.
+Since the interpolating polynomials are continuous basis functions, approximated quantities at the time values between node points may contain significant inaccuracy with any of discontinuity or non-smoothness imposed in the optimal function shape.
+In addition, since the particular PS method requires a specific form of the mesh (e.g.,~LGL or CGL meshes), which is stretched in the middle range, having enough resolution at certain location enforces excessive resolution in both end regions.
+
+These problems could be addressed by implementing multiple intervals in our computational domain \cite{Herber2015a, Darby2009b, Patterson2014a}.
+Each interval in the time horizon would contain an interpolating polynomial and continuity between the states would be ensured with the following continuity constraint:
+\begin{align} \label{eq:ch5:continuity}
+\bm{\xi}^{(i-1)}(t^{(i-1)}_f) = \bm{\xi}^{(i)}(t^{(i)}_0), \qquad \text{where:  } t^{(i-1)}_f = t^{(i)}_0
+\end{align}
+
+\noindent which is a linear equality constraint; thus, is possible in \lqdo.
+This multiple-interval approach can also be implemented along with the \textit{hp}-adaptive mesh refinement technique described the following section \cite{Gong2008a, Darby2009b, Fujikawa2014a}.
+
+% new paragraph
+Conceptually similar, multiphase problems could be proposed \cite{Patterson2014a}.
+In a multiphase problem, various continuity constraints (which need not be the same form as Eqn.~(\ref{eq:ch5:continuity})) are present to ensure consistency across the phases.
+The problem elements between the phases may be different (e.g.,~different constraints present or the dynamics change).
+Unlike the multiple-interval approximation method, multiphase problems can be solved with all the methods listed here.
+
+%-----------------------------------------------------------
+\subsection{Mesh Refinement} \label{sec:ch5:meshrefinement}
+
+The accuracy assessments in Sec.~\ref{sec:ch5:examples} were performed on problems with known exact solutions.
+However, for many \lqdo{} problems, such solutions are unavailable (and is a primary reason for using \dt{}).
+Resolution of mesh nodes and location of each node affect the overall solution accuracy and mesh refinement (iteratively solving the problem on a specific mesh and then updating the mesh with changes in the mesh resolution and node locations) is a viable technique for obtaining high accuracy solutions to continuous-time dynamic optimization problems \cite{Betts1998b, Darby2009b}.
+Such techniques are particularly useful when there is discontinuity or non-smoothness in the solution (e.g.,~when path constraints change activity).
+
+% new paragragh
+There are two common types of mesh refinement: \textit{h}- and \textit{p}-adaptive methods \cite{zhao2017a}.
+For the SS methods, the \textit{h}-adaptive methods could be employed to minimize the local and global discretization error \cite{Betts1998b, Betts2000a, Jain2008a}.
+For the multiple-interval PS methods, the combined \textit{hp}- or \textit{ph}-adaptive methods could be applied to get the benefit of spectral convergence within local time interval while accommodating discontinuities between neighboring time intervals \cite{Darby2009b, Darby2011a, Fujikawa2014a, Patterson2015a}.
+Since mesh refinement is performed offline (not when solving the \qp), it can readily be incorporated into the \apgp.
+
+%-----------------------------------------------------------
+\subsection{Costate Approximation and First-Order Necessary Conditions}
+
+Alternative methods to \dt{} are the indirect methods which derive a set of first-order necessary conditions for optimality for the DO problem (e.g.,~these conditions were used to derive the BVP in \nameref{sec:ch5:example4}).
+Even though there are a number of challenges associated with using indirect methods \cite{Betts2010a, Biegler2010a, Bryson1975a, Herber2014a}, it still can be useful to utilize the concepts from the indirect methods.
+For example, the costate variables are the time-varying multipliers associated with the dynamics in the augmented Hamiltonian.
+Similar to the states and controls, these have optimal values as well.
+Errors in the costates can be assessed in a similar manner to states and controls to help determine the convergence properties of each of the methods.
+In addition, computing the Hamiltonian given the \dt{} solution can help verify the quality of the solution.
+
+% new paragraph
+Determining the values of the costates and other multipliers is done through a mapping from the \glsfoo[noindex]{KKT} multipliers of the finite-dimensional optimization problem \cite{Garg2011a, Francolin2014a}.
+Estimations of costate have been studied for finite and infinite time horizons with direct optimal control methods \cite{Garg2011a, Francolin2014a, Darby2011b, Schori2015a}.
+Approximating costates with discontinuous trajectories requires a jump condition between discontinued segments \cite{Darby2011b, Schori2015a} and is especially important when the multiple intervals are considered for problems with discontinuous dynamic behavior, described in Sec.~\ref{sec:ch5:multipleinterval}.
+Various dynamic optimization software tools have provided these estimates \cite{Patterson2014a, Becerra2015a}.
+Computing these estimates for \lqdo{} would be no different than the general NLDO problems and might, in fact, be simpler due to the structured form of the objective and dynamics.
+
+%-----------------------------------------------------------
+\subsection{Additional Methods} \label{sec:ch5:add:methods}
+
+A large number of methods to construct the defect constraints were listed in Sec.~\ref{sec:ch5:defects}.
+Only a small subset of these available methods have been implemented, and it remains future work to implement (as long as they are order-maintaining methods) and assess the effectiveness of these methods in \lqdo.
+Different quadrature schemes may also be considered, such as  the true HS quadrature scheme that uses Eqn.~(\ref{eq:ch5:xhs}).
+
+%-----------------------------------------------------------
+\subsection{Customized {QP} Solvers}
+
+The numerical results in Sec.~\ref{sec:ch5:examples} were found using one solver available in \textsc{Matlab}.
+There are a number of other \qp{} solvers available (e.g.,~\textsc{ooqp} \cite{Gertz2003a} and \textsc{cvx} \cite{Grant2008a}) that may be more suitable for this class of problems (both in computational efficiency and convergence).
+An effective solver should be able to handle large matrices, the specific sparsity patterns, and ill-conditioned matrices.
+Perhaps a custom \qp{} solver could be created that handles this type of ill-conditioned problems \cite{Torsti1972a, Gould2000a, Donoghue2013a, Ghadimi2015a}.
+Some recent \qp{} methods have used \lqdo{} problems with specific \dt{} methods as one of their test problems \cite{ Donoghue2013a, Ghadimi2015a}.
+
+% new paragraph
+Some of these numerical difficulties were illustrated in the results using the LGL-PS-G (7) scheme.
+This scheme typically exhibited a tendency of divergence after exponential convergence up to a specific polynomial order.
+A rapid growth of condition number along with a growth of the differential operator order causes this instability, which makes the problem nonconvex and may sacrifice the expected spectral accuracy of the solution \cite{Wang2014a, Trefethen1987a}.
+
+%-----------------------------------------------------------
+\subsection{Scaling}
+
+It has been established that properly-scaled optimization problems are easier to solve than a poorly-scaled problem \cite{Rao2010a}.
+In general, this is embodied by the constraints and optimization variables being close to $\mathcal{O}(1)$ \cite{Gill1981a}.
+Affine transformations of both the optimization variables and time horizon can be utilized to accomplish this task \cite{Herber2017c, Rao2010a}.
+An example of this type of transformation is the similarity transform applied to linear systems \cite{Chen1999a}.
+The constraints can be directly scaled by the row norms of the matrices \cite{Rao2010a}. 
+Systematic preconditioning methods have been developed for linear constraints \cite{Bergamaschi2004a, Benzi2002a}.
+Properly-scaled defect constraints are particularly important to ensure the accuracy of the approximation \cite{Herber2017c}.
+Using these concepts, among other techniques, automatic scaling procedures have been developed for DO problems \cite{Rao2010a}.
+
+%-----------------------------------------------------------
+\subsection{Quadratically-Constrained Quadratic Programs} \label{sec:ch5:QCQP}
+
+A more general class of optimization problems that includes {\qp}s as a special case are \glsfirst{QCQP} \cite{Boyd2009a}.
+The objective is the same as in Eqn.~(\ref{eq:ch5:qpH}), but we now include constraints with up to quadratic dependence:%
+\begin{subequations} \label{eq:ch5:QCQP}
+\begin{align}
+\frac{1}{2}\mathbf{X}\tran\mathbf{P}_{e}\mathbf{X}  + \mathbf{A}_{e}\mathbf{X} = \mathbf{B}_{e} \\
+\frac{1}{2}\mathbf{X}\tran\mathbf{P}_{i}\mathbf{X}  + \mathbf{A}_{i}\mathbf{X} \leq \mathbf{B}_{i}
+\end{align}
+\end{subequations}%
+
+\noindent In general, a QCQP is an NP-hard problem \cite{So2011a}.
+However, if all inequality constraints are convex and only linear equality constraints are present, then the QCQP can be solved with semidefinite programming or second-order cone programming \cite{Boyd2009a}.
+Modifying the algorithms in Sec.~\ref{sec:ch5:algorithm} to generate QCQPs and understanding the structural properties of the generated matrices is future work. 
+There are many interesting items that could be represented with QCQPs, including quadratic terms in the dynamics \cite{Sun2016a}, MTPs, simple co-design problems (e.g.,~$\dot{\xi} = k \xi$, where $k$ is also an optimization variable) \cite{Herber2017b}, power and energy terms (e.g.,~$\xi u$) \cite{Herber2014a, Faedo2017a}, and the conversion of quadratic Lagrange terms to Mayer form as quadratic equality constraints (discussed in Sec.~\ref{sec:ch5:integral:constraints}).

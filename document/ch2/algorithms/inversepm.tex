@@ -1,0 +1,57 @@
+% \IncMargin{1em}
+\RestyleAlgo{algoruled}
+
+\begin{vAlgorithm}[t]{\columnwidth}{0em}
+
+\LinesNumbered
+\SetSideCommentRight 
+\DontPrintSemicolon
+% \SetNoFillComment
+
+% \SetTitleSty{\textsf}{small}
+% \renewcommand{\algorithmcfname}{\small\textbf{\textsf{\MakeUppercase{Algorithm}}}}%
+
+% \SetKwData{Left}{left}\SetKwData{This}{this}\SetKwData{Up}{up}
+\SetKwFunction{cumprod}{cumprod}
+\SetKwFunction{length}{length}
+\SetKwFunction{zeros}{zeros}
+\SetKwFunction{ceil}{ceil}
+
+\SetKwInOut{Input}{Input}
+\SetKwInOut{Output}{Output}
+
+\caption{Determination of the perfect matching number for a specific edge set. \label{alg:ch2:inversepm}}
+
+\Input{$\xvar{E}$ -- vector of edges in sequential pairs, should be properly ordered and even length}
+\Output{$\xvar{I}$ -- perfect matching number, integer between 1 and $(\xvar{N}-1)!!$}
+\BlankLine
+   
+	$\xvar{N}$ $\leftarrow$ $\length(\xvar{E})$ \tcc*{total number of vertices}
+	
+	$\xvar{P}$ $\leftarrow$ \text{reverse elements of} $\cumprod( [1,3,5,\cdots \xvar{N}-3 ] )$  \tcc*{array flip, cumulative double factorial}
+	
+	$\xvar{V}$ $\leftarrow$ $\big[ 1,2,\dots,\xvar{N}\big]$ \tcc*{create initial list of available vertices}
+
+    $\xvar{I}$ $\leftarrow$ $1$ \tcc*{initialize perfect matching index}
+    
+
+    
+	\For{$\xvar{j}\leftarrow$ $1$ \KwTo $\xvar{N}/2-1$ }{
+	
+	
+		$\xvar{q}$  $\leftarrow$ 	$\xvar{E}\big( 2 \xvar{j} - 1 \big)$ \tcc*{index of largest remaining vertex}
+
+        $\xvar{V}( \xvar{q} )$ $\leftarrow$ $0$ \tcc*{zero entry, removing it}
+        
+       $\xvar{i}$ $\leftarrow$ \text{find index of $\xvar{E}(2\xvar{j})$ in the vector of nonzero elements of $\xvar{V}$} % \tcc*{i.e. V has 0s removed}
+        
+       %  $\xvar{i}$ $\leftarrow$ find(nonzeros(V)==E(2*\xvar{j})) \tcc*{return first (and only) entry}
+        
+        $\xvar{V}\big(\xvar{E}(2 \xvar{j}) \big)$ $\leftarrow$ $0$ \tcc*{zero entry, removing it}
+        
+        $\xvar{I}$ $\leftarrow$ $\xvar{I} + \big( (\xvar{i}-1)\times \xvar{P}(\xvar{j}) \big)$ \tcc*{sum to get build up the index}
+	
+		
+	} % end for j 
+
+\end{vAlgorithm}

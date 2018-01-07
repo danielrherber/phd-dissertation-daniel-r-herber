@@ -1,0 +1,18 @@
+\tikzsetnextfilename{Hxx}
+
+\centering
+\resizebox{1\textwidth}{!}{
+\begin{tikzpicture}[yscale=-1] 
+
+\input{../ch5/sparsity/sparsityH}
+
+%% states
+\foreach \k in {1,...,\nx}{
+	\foreach \j in {1,...,\nx}{
+		\foreach \i in {1,...,\nt}{ 
+        	\pgfmathsetmacro{\kk}{\k-1};
+            \pgfmathsetmacro{\jj}{\j-1};
+        	\node () at (0.2*\i + 0.2*\kk*\nt + 0.2*\nu*\nt, 0.2*\i + 0.2*\jj*\nt + 0.2*\nu*\nt) {\mytemp};
+} } }
+\end{tikzpicture}
+}

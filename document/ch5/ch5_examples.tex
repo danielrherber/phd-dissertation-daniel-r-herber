@@ -1,0 +1,27 @@
+%-------------------------------------------------------------------
+\section{Numerical Examples} \label{sec:ch5:examples}
+
+In this section, we will use five numerical examples to demonstrate the efficacy of the proposed \apgp.
+The first four examples have known solutions that can be used to compute the optimal trajectories and objective function value to high precision.
+Therefore, we can directly compare the different solution methods based on their deviation from the known solution.
+The errors are reported as local maximum/minimum values (i.e.,~as a forward-looking moving maximum/minimum) in order to discuss the converge behavior independent of fortuitous meshes (e.g.,~the nodes points happen to be exactly at the time value where a path constraint should change activity).
+In addition to comparing the absolute error, we will look at the time to create the \qp{} with the \apgp{} and the total \qp{} time (creation plus solver time).
+Other performance metrics include local and global error, robustness to initial guess\footnote{The chosen solver does not require an initial guess.}, and problem size or memory needed \cite{Williams2005a, Wang2009a}.
+Please see Refs.~\cite{Williams2005a, Wang2009a, Faedo2017a} for numerical comparisons between some of the \dt{} methods.
+It remains future work to perform these additional comparisons.
+
+% new paragraph
+All tests were performed on a personal computer with an i7-6800K at 3.8 GHz (up to 12 threads available), 32 GB DDR4 3200 MHz RAM, \textsc{Windows} 10 64-bit, and \textsc{Matlab} 2017a.
+The \qp{} solver used was the standard solver \textsc{quadprog} in \textsc{Matlab} using the \xvar{interior-point-convex} algorithm \cite{matlab-quadprog}.
+All tolerances were set to $10\epsilon$, where $\epsilon$ is the machine precision number, in order to obtain the best solution possible for a particular \qp.
+The complete set of codes from the \apgp{} and examples are available at Ref.~\cite{github-dt-qp-project}.
+
+\input{../ch5/ch5_ex1}
+
+\input{../ch5/ch5_ex2}
+
+\input{../ch5/ch5_ex3}
+
+\input{../ch5/ch5_ex4}
+
+\input{../ch5/ch5_ex5}

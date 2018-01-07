@@ -1,0 +1,137 @@
+\section{Avoiding Multi-Edges\label{sec:app1:multiedges}}
+
+Under specific NSCs, we can exclude multi-edges during the graph generation process. A multi-edge is two or more edges that are incident to the same two vertices \cite[p.~25]{Diestel2000a}.
+
+\subsection{Theory}
+
+Consider when each edge is required to be unique (\ref{ch2:s7}).
+Due to the sequential nature of the tree algorithm, a single edge must be added between two components before a second edge is added; thus, creating a multi-edge.
+Therefore, when the first edge is added between two components, we can utilize the expanded potential adjacency matrix to disallow any further connections between the components.
+Since a feasible graph would not have any multi-edges when each edge is required to be unique, the tree algorithm with this enhancement will continue generating the desired graph structure space.
+
+This enhancement should not be applied on loops since loops are occasionally needed to remove components (see Sec.~\ref{sec:app1:loops} for the handling of loops). Also, this is not a general enhancement since it requires specific NSCs.
+
+\subsection{Implementation}
+
+\input{../app1/algorithms/alg-multiedges}
+
+Algorithm~\ref{alg:app1:multiedges} is the pseudocode for the implementation of this enhancement.
+The implementation is centered around modifying the expanded potential adjacency matrix ($\xvar{A}$) when a new edge is created.
+This enhancement is only called if either component replicate in the edge requires unique connections.
+Additionally, this enhancement is only called if the edge is not a loop (see Sec.~\ref{sec:app1:loops} for the handling of loops).
+If both of these conditions are met, then the corresponding entries in the expanded potential adjacency matrix are zeroed in lines~\ref{alg:app1:multiedges-l3} and \ref{alg:app1:multiedges-l4}.
+
+This enhancement is inserted between lines~\ref{alg:app1:tree-A2} and \ref{alg:app1:tree-if} of Alg.~\ref{alg:app1:tree} using the local copy $\xvar{A2}$.
+
+\subsection{Example}
+
+The base three-tuple and NSCs for this example are specified as:
+\begin{align}
+C = \{ \xcolor{W}, \xcolor{X}, \xcolor{Y}, \xcolor{Z} \}, \quad R = [1\ 1\ 1\ 1], \quad P = [3\ 3\ 3\ 3], \quad S_6 \text{ with } U = [1\ 1\ 1\ 1]
+\end{align}
+
+\definecolor{forestgreen}{RGB}{0,155,85}
+\definecolor{brickred}{RGB}{182,50,28}
+
+\newcommand{\rhilght}[1]{\cancel{#1}}
+\newcommand{\ghilght}[1]{#1}
+
+\noindent Consider one path during the graph generation process when the  reduced potential adjacency matrix is initially all ones:
+\begin{align*}
+\begin{aligned}
+& \underbrace{
+\begin{blockarray}{ccccc}
+& \xcolor{W} & \xcolor{X} & \xcolor{Y} & \xcolor{Z} \\
+\begin{block}{c[cccc]}
+\xcolor{W} & 1 & 1 & 1 & 1 \\
+\xcolor{X} & 1 & 1 & 1 & 1 \\
+\xcolor{Y} & 1 & 1 & 1 & 1 \\
+\xcolor{Z} & 1 & 1 & 1 & 1 \\
+\end{block}
+\end{blockarray}
+}_{\textstyle \text{Iter.~0, }\xvar{V} = [3\ 3\ 3\ 3] }
+\rightarrow
+\underbrace{
+\begin{blockarray}{ccccc}
+& \xcolor{W} & \xcolor{X} & \xcolor{Y} & \xcolor{Z} \\
+\begin{block}{c[cccc]}
+\xcolor{W} & 1 & \bm{0} & 1 & 1 \\
+\xcolor{X} & \bm{0} & 1 & 1 & 1 \\
+\xcolor{Y} & 1 & 1 & 1 & 1 \\
+\xcolor{Z} & 1 & 1 & 1 & 1 \\
+\end{block}
+\end{blockarray}
+}_{\textstyle \text{Iter.~1, }\xvar{V} = [\bar{2}\ \bar{\ghilght{2}}\ \ghilght{3}\ \ghilght{3}] }
+\rightarrow
+\underbrace{
+\begin{blockarray}{ccccc}
+& \xcolor{W} & \xcolor{X} & \xcolor{Y} & \xcolor{Z} \\
+\begin{block}{c[cccc]}
+\xcolor{W} & 1 & 0 & \bm{0} & 1 \\
+\xcolor{X} & 0 & 1 & 1 & 1 \\
+\xcolor{Y} & \bm{0} & 1 & 1 & 1 \\
+\xcolor{Z} & 1 & 1 & 1 & 1 \\
+\end{block}
+\end{blockarray}
+}_{\textstyle \text{Iter.~2, }\xvar{V} = [\bar{1}\ \rhilght{2}\ \bar{\ghilght{2}}\ \ghilght{3}] }
+\rightarrow
+\\
+%
+\rightarrow
+& \underbrace{
+\begin{blockarray}{ccccc}
+& \xcolor{W} & \xcolor{X} & \xcolor{Y} & \xcolor{Z} \\
+\begin{block}{c[cccc]}
+\xcolor{W} & 1 & 0 & 0 & \bm{0} \\
+\xcolor{X} & 0 & 1 & 1 & 1 \\
+\xcolor{Y} & 0 & 1 & 1 & 1 \\
+\xcolor{Z} & \bm{0} & 1 & 1 & 1 \\
+\end{block}
+\end{blockarray}
+}_{\textstyle \text{Iter.~3, }\xvar{V} = [\bar{0}\ \rhilght{2}\ \rhilght{2}\ \bar{\ghilght{2}}] }
+\rightarrow
+\underbrace{
+\begin{blockarray}{ccccc}
+& \xcolor{W} & \xcolor{X} & \xcolor{Y} & \xcolor{Z} \\
+\begin{block}{c[cccc]}
+\xcolor{W} & 1 & 0 & 0 & 0 \\
+\xcolor{X} & 0 & 1 & \bm{0} & 1 \\
+\xcolor{Y} & 0 & \bm{0} & 1 & 1 \\
+\xcolor{Z} & 0 & 1 & 1 & 1 \\
+\end{block}
+\end{blockarray}
+}_{\textstyle \text{Iter.~4, }\xvar{V} = [0\ \bar{1}\ \bar{\ghilght{1}}\ \ghilght{2}] }
+\rightarrow
+\underbrace{
+\begin{blockarray}{ccccc}
+& \xcolor{W} & \xcolor{X} & \xcolor{Y} & \xcolor{Z} \\
+\begin{block}{c[cccc]}
+\xcolor{W} & 1 & 0 & 0 & 0 \\
+\xcolor{X} & 0 & 1 & 0 & \bm{0} \\
+\xcolor{Y} & 0 & 0 & 1 & 1 \\
+\xcolor{Z} & 0 & \bm{0} & 1 & 1 \\
+\end{block}
+\end{blockarray}
+}_{\textstyle \text{Iter.~5, }\xvar{V} = [0\ \bar{0}\ \rhilght{1}\ \bar{\ghilght{1}}] }
+\end{aligned}
+\end{align*}
+
+\noindent where the matrix above represents $\xvar{A}$, $\bar{\Box}$ indicates this component was selected for an edge, and $\cancel{\Box}$ indicates the connection was disallowed. Each iteration added a pair of zeros to the potential adjacency matrix.
+
+Table~\ref{tb:app1:multiedge-ex1} compares the original algorithm with the enhancement for this example.
+There is a reduction in candidate graphs generated while the number of unique graphs remains the same.
+
+\begin{table}[!ht]
+\centering
+\caption{Comparison (multi-edge).\label{tb:app1:multiedge-ex1}}
+\begin{tabular}{r | c | c | c}
+\hline \hline
+& Orig & En & Orig/En \\
+\hline
+Candidate Graphs & 211 & 46 & 4.59 \\ 
+Unique Graphs & 1 & 1 & 1 \\
+Generation Time (s) & 0.0086 & 0.0037 & 2.32 \\
+Total Time (s) & 0.015 & 0.0070 & 2.14 \\
+\hline \hline
+\end{tabular}
+\end{table}

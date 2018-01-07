@@ -1,0 +1,75 @@
+\begin{vAlgorithm}[!ht]{1\columnwidth}{0em}
+\LinesNumbered
+\DontPrintSemicolon
+
+\SetKw{Continue}{continue}
+
+\SetKwFunction{find}{find}
+\SetKwFunction{mysum}{sum}
+\SetKwFunction{ismember}{ismember}
+\SetKwFunction{any}{any}
+
+\SetKwInOut{Input}{Input}
+\SetKwInOut{Output}{Output}
+
+\caption{Handle saturated subgraphs.\label{alg:app1:saturated}}
+
+\Input{%
+        \xvbox{2.5mm}{$\xvar{V}$} -- vector of remaining ports for each component replicate \\
+        \xvbox{2.5mm}{$\xvar{E}$} -- vector of edges in sequential pairs \\
+        \xvbox{2.5mm}{$\xvar{Vf}$} -- initial vector of ports available for each component replicate \\
+        \xvbox{2.5mm}{$\xvar{M}$} -- vector indicating if all replicates of the component type must be present \\
+        $\xvar{cVf}$ -- cumulative sum of the original $\xvar{V}$ plus 1 \\
+        $\xvar{SavedGraphs}$ -- set of graphs \\
+      }
+\Output{%
+        $\xvar{SavedGraphs}$ -- set of graphs
+       }
+
+\BlankLine
+
+\If(){there are any necessary components}{
+    
+$\xvar{iNonSat}$ $\leftarrow$ $\find(\xvar{V})$ \tcc*{find the nonsaturated components}
+
+\If(\tcc*[f]{check for saturated subgraph\label{alg:app1:saturated-l3}}){$\xvar{V}(\xvar{iNonSat}) = \xvar{Vf}(\xvar{iNonSat})$ }{
+
+$\xvar{nUncon}$ $\leftarrow$ $\mysum(\xvar{M}(\xvar{iNonSat}))$ \tcc*{\# of mandatory comps not in saturated subgraph}
+
+  \uIf(\tcc*[f]{all mandatory components are in saturated subgraph}){$\xvar{nUncon} = 0$}{
+
+  \For(\tcc*[f]{add remaining edges in arbitrary order\label{alg:app1:saturated-l6}}){ $\xvar{j}$ $\leftarrow$ $1$ \KwTo $\mysum(\xvar{V})$}{
+
+  {$\xvar{k}$} $\leftarrow$ $\find(\xvar{V},1)$ \tcc*{find first nonzero entry}
+
+  {$\xvar{LR}$} $\leftarrow$ $\xvar{cVf}(\xvar{k})-\xvar{V}(\xvar{k})$ % \tcc*{port}
+
+  {$\xvar{V}(\xvar{k})$} $\leftarrow$ $\xvar{V}(\xvar{k})-1$ \tcc*{remove port}
+
+  {$\xvar{E}$} $\leftarrow$ $[\xvar{E},\xvar{LR}]$ \tcc*{add port}
+
+  }
+
+  $\xvar{SavedGraphs}\{\xvar{end}+1\}$ $\leftarrow$ $\xvar{E}$ \tcc*{missorted perfect matching}
+
+  \Continue \tcc*{stop iteration, graph has been added \label{alg:app1:saturated-l13}}
+
+}
+
+\uElseIf(\tcc*[f]{no mandatory comps are in saturated subgraph\label{alg:app1:saturated-l14}}){$\xvar{nUncon} = \mysum(M)$}{
+
+  \tcc{continue with this iteration}
+
+}
+
+\Else(\tcc*[f]{some but not all mandatory components are in saturated subgraph\label{alg:app1:saturated-l15}}){
+
+  \Continue  \tcc*{stop iteration, this graph is infeasible\label{alg:app1:saturated-l16}}
+
+}
+
+}
+
+}
+
+\end{vAlgorithm}

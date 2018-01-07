@@ -1,0 +1,56 @@
+\begin{algorithm}
+\caption{Create matrices for the additional inequality (or equality) constraints.}\label{alg:ch5:constraints}
+\setstretch{0.8}
+\begin{algorithmic}[1]
+\Require structure $\mathcal{Z}$ of type \textsf{constraint}
+
+\State $\emptyset$ $\gets$ $\mathcal{I}_A$, $\mathcal{I}_B$, $\mathcal{J}_A$, $\mathcal{V}_A$, $\mathcal{V}_B$ \Comment{initialize sequences}
+
+\For{\xvar{i} $\gets$ 1 to $\abs{\mathcal{Z}}$} 
+
+\State $\xvar{Z}$ $\gets$ $\mathcal{Z}$\myind{\xvar{i}} \Comment{obtain current substructure}
+
+\State $\xvar{PathFlag}$ $\gets$ $0$ \Comment{initialize as a boundary constraint}
+
+\For{\xvar{j} $\gets$ 1 to $\abs{\mathcal{Y}}$} 
+
+	\If{$\xvar{Z}.\xvar{linear}$\myind{\xvar{j}}$.\xvar{right} < 3$}
+		\State $\xvar{PathFlag}$ $\gets$ $0$ \Comment{set as a path constraint}
+	\ElsIf{$\xvar{Z}.\xvar{linear}$\myind{\xvar{j}}$.\xvar{matrix}$ is time varying}
+		\State $\xvar{PathFlag}$ $\gets$ $0$ \Comment{set as a path constraint}
+	\EndIf
+	\If{$\xvar{Z}.\xvar{b}$ is time varying}
+		\State $\xvar{PathFlag}$ $\gets$ $0$ \Comment{set as a path constraint}
+	\EndIf
+\EndFor
+
+\State \xvar{N} $\gets$ $\abs{\mathcal{I}_B}$ \Comment{current number of constraints}
+
+\If{$\xvar{PathFlag}=1$}
+	\State  $[\xvar{I}, \xvar{J}, \xvar{V}, \xvar{B}]$ $\gets$ Algorithm~\ref{alg:ch5:path} using $\xvar{Z}$ \Comment{path constraint}
+
+	\State $\mathcal{I}_B$ $\gets$ \Call{combine}{$\mathcal{I}_B,\xvar{N}+(1 \text{ to } N_t)$} \Comment{$N_t$ constraints}
+\Else
+	\State  $[\xvar{I}, \xvar{J}, \xvar{V}, \xvar{B}]$ $\gets$ Algorithm~\ref{alg:ch5:boundary} using $\xvar{Z}$ \Comment{boundary constraint}
+	\State $\mathcal{I}_B$ $\gets$ \Call{combine}{$\mathcal{I}_B,\xvar{N}+1$} \Comment{single constraint}
+
+\EndIf
+
+\State $\mathcal{I}_A$ $\gets$ \Call{combine}{$\mathcal{I}_A, \xvar{I}+\xvar{N}$}
+
+\State $\mathcal{J}_A$ $\gets$ \Call{combine}{$\mathcal{J}_A, \xvar{J}$}
+
+\State $\mathcal{V}_A$ $\gets$ \Call{combine}{$\mathcal{V}_A, \xvar{V}$} 
+
+\State $\mathcal{V}_B$ $\gets$ \Call{combine}{$\mathcal{V}_B, \xvar{B}$} 
+
+\EndFor
+
+\State $\mathbf{A}_i$ $\gets$ \Call{sparse}{$\mathcal{I}_A, \mathcal{J}_A, \mathcal{V}_A, \abs{\mathcal{I}_B}, n_X$} \Comment{sparse matrix}
+
+\State $\mathbf{B}_i$ $\gets$ \Call{sparse}{$\mathcal{I}_B, 1, \mathcal{V}_B, \abs{\mathcal{I}_B}, 1$} \Comment{sparse matrix}
+
+\State \textbf{return} $\mathbf{A}_i$, $\mathbf{B}_i$ \Comment{matrices}
+
+\end{algorithmic}
+\end{algorithm}

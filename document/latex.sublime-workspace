@@ -1,0 +1,1427 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+			[
+				"hsp",
+				"\\hspace{length}                                   \tlatex-document"
+			],
+			[
+				"beginmini",
+				"\\begin{minipage}{width}                           \tlatex-document"
+			],
+			[
+				"vspace",
+				"\\vspace{length}                                   \tlatex-document"
+			],
+			[
+				"begintab",
+				"\\begin{tabular}{cols}                             \tlatex-document"
+			],
+			[
+				"begintable",
+				"\\begin{table}                                     \tlatex-document"
+			],
+			[
+				"beginbm",
+				"\\begin{bmatrix}                                   \tamsmath"
+			],
+			[
+				"begintabul",
+				"\\begin{tabular}[pos]{cols}                        \tlatex-document"
+			],
+			[
+				"newcom",
+				"\\newcommand{cmd}{def}                             \tlatex-document"
+			],
+			[
+				"usepackage",
+				"\\usepackage{package}                              \tlatex-document"
+			],
+			[
+				"beginsub",
+				"\\begin{subequations}                              \tamsmath"
+			],
+			[
+				"include",
+				"\\includegraphics[options]{name}                   \tlatex-document"
+			],
+			[
+				"foonote",
+				"\\footnote[number]{text}                           \tlatex-document"
+			],
+			[
+				"in",
+				"\\input{file}                                      \tlatex-document"
+			],
+			[
+				"usep",
+				"\\usepackage{package}                              \tlatex-document"
+			],
+			[
+				"ad",
+				"adj1"
+			]
+		]
+	},
+	"buffers":
+	[
+		{
+			"file": "_main/dissertation-daniel-herber.tex",
+			"settings":
+			{
+				"buffer_size": 4027,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "_preamble/commands.tex",
+			"settings":
+			{
+				"buffer_size": 6897,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		}
+	],
+	"build_system": "Packages/LaTeXTools/LaTeX.sublime-build",
+	"build_system_choices":
+	[
+		[
+			[
+				[
+					"Packages/LaTeXTools/LaTeX.sublime-build",
+					""
+				],
+				[
+					"Packages/LaTeXTools/LaTeX.sublime-build",
+					"Traditional"
+				],
+				[
+					"Packages/LaTeXTools/LaTeX.sublime-build",
+					"PdfLaTeX"
+				],
+				[
+					"Packages/LaTeXTools/LaTeX.sublime-build",
+					"XeLaTeX"
+				],
+				[
+					"Packages/LaTeXTools/LaTeX.sublime-build",
+					"LuaLaTeX"
+				],
+				[
+					"Packages/LaTeXTools/LaTeX.sublime-build",
+					"Basic Builder"
+				],
+				[
+					"Packages/LaTeXTools/LaTeX.sublime-build",
+					"Basic Builder - PdfLaTeX"
+				],
+				[
+					"Packages/LaTeXTools/LaTeX.sublime-build",
+					"Basic Builder - XeLaTeX"
+				],
+				[
+					"Packages/LaTeXTools/LaTeX.sublime-build",
+					"Basic Builder - LuaLaTeX"
+				],
+				[
+					"Packages/LaTeXTools/LaTeX.sublime-build",
+					"Script Builder"
+				]
+			],
+			[
+				"Packages/LaTeXTools/LaTeX.sublime-build",
+				"Basic Builder"
+			]
+		]
+	],
+	"build_varint": "",
+	"command_palette":
+	{
+		"height": 357.0,
+		"last_filter": "delete",
+		"selected_items":
+		[
+			[
+				"delete",
+				"LaTeXTools: Delete temporary files"
+			],
+			[
+				"compare",
+				"Sublimerge: Compare to View..."
+			],
+			[
+				"compar",
+				"Sublimerge: Compare to View..."
+			],
+			[
+				"",
+				"Boxy Theme: Configuration"
+			],
+			[
+				"d",
+				"LaTeXTools: Delete temporary files"
+			],
+			[
+				"dele",
+				"LaTeXTools: Delete temporary files"
+			],
+			[
+				"del",
+				"LaTeXTools: Delete temporary files"
+			],
+			[
+				"dle",
+				"LaTeXTools: Delete temporary files"
+			],
+			[
+				"dleet",
+				"LaTeXTools: Delete temporary files"
+			],
+			[
+				"compare to view",
+				"Sublimerge: Compare to View..."
+			],
+			[
+				"de",
+				"LaTeXTools: Delete temporary files"
+			],
+			[
+				"delet",
+				"LaTeXTools: Delete temporary files"
+			],
+			[
+				"title",
+				"Convert Case: Title Case"
+			],
+			[
+				"packag",
+				"Package Control: Remove Package"
+			],
+			[
+				"build",
+				"Disable/Enable buildview for this window"
+			],
+			[
+				"build ",
+				"Disable/Enable buildview for this window"
+			],
+			[
+				"package",
+				"Package Control: Install Package"
+			],
+			[
+				"markdown pre",
+				"Markdown Preview: Preview in Browser"
+			],
+			[
+				"instal",
+				"Package Control: Install Package"
+			],
+			[
+				"check",
+				"LaTeXTools: Check system"
+			],
+			[
+				"check sy",
+				"LaTeXTools: Check system"
+			],
+			[
+				"boxy",
+				"Boxy Theme: Configuration"
+			],
+			[
+				"latextools",
+				"LaTeXTools: Check system"
+			],
+			[
+				"color",
+				"Color Picker"
+			],
+			[
+				"mark",
+				"Markdown Preview: Preview in Browser"
+			],
+			[
+				"boxt",
+				"Boxy Theme: Activation"
+			],
+			[
+				"remove",
+				"Package Control: Remove Package"
+			],
+			[
+				"insta",
+				"Package Control: Install Package"
+			],
+			[
+				"latex",
+				"LaTeXTools: View TeX package documentation"
+			],
+			[
+				"smart",
+				"Convert Case: Smart Title Case"
+			],
+			[
+				"install",
+				"Package Control: Install Package"
+			],
+			[
+				"git",
+				"Git: Commit"
+			],
+			[
+				"in",
+				"Package Control: Install Package"
+			],
+			[
+				"colo",
+				"Color Picker"
+			],
+			[
+				"inst",
+				"Package Control: Install Package"
+			],
+			[
+				"quick",
+				"Build: Primary Quick Build"
+			],
+			[
+				"package control : instal",
+				"Package Control: Install Package"
+			],
+			[
+				"sft",
+				"SFTP: Browse Server…"
+			]
+		],
+		"width": 553.0
+	},
+	"console":
+	{
+		"height": 342.0,
+		"history":
+		[
+			"clc",
+			"clear",
+			"j",
+			"view.encoding()",
+			"view.encoding",
+			"import urllib.request,os,hashlib; h = 'eb2297e1a458f27d836c04bb0cbaf282' + 'd0e7a3098092775ccb37ca9d6b2e4b7d'; pf = 'Package Control.sublime-package'; ipp = sublime.installed_packages_path(); urllib.request.install_opener( urllib.request.build_opener( urllib.request.ProxyHandler()) ); by = urllib.request.urlopen( 'http://packagecontrol.io/' + pf.replace(' ', '%20')).read(); dh = hashlib.sha256(by).hexdigest(); print('Error validating download (got %s instead of %s), please try manual install' % (dh, h)) if dh != h else open(os.path.join( ipp, pf), 'wb' ).write(by)"
+		]
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"expanded_folders":
+	[
+		"/A/google-drive/Projects/ID043-phd-dissertation-daniel-r-herber/dissertation-document-github",
+		"/A/google-drive/Projects/ID043-phd-dissertation-daniel-r-herber/dissertation-document-github/_main"
+	],
+	"file_history":
+	[
+		"/A/google-drive/Projects/ID043-phd-dissertation-daniel-r-herber/phd-dissertation-daniel-r-herber/dissertation-document-github/_main/acknowledgments.tex",
+		"/A/google-drive/Projects/ID043-phd-dissertation-daniel-r-herber/phd-dissertation-daniel-r-herber/dissertation-document-github/ch7/ch7_content.tex",
+		"/A/google-drive/Projects/ID043-phd-dissertation-daniel-r-herber/phd-dissertation-daniel-r-herber/dissertation-document-github/ch7/ch7.tex",
+		"/A/google-drive/Projects/ID043-phd-dissertation-daniel-r-herber/phd-dissertation-daniel-r-herber/dissertation-document-github/ch7/ch7_dtqp.tex",
+		"/A/google-drive/Projects/ID043-phd-dissertation-daniel-r-herber/phd-dissertation-daniel-r-herber/dissertation-document-github/gls/acronyms.tex",
+		"/A/google-drive/Projects/ID043-phd-dissertation-daniel-r-herber/phd-dissertation-daniel-r-herber/dissertation-document-github/gls/notation.tex",
+		"/A/google-drive/Projects/ID043-phd-dissertation-daniel-r-herber/phd-dissertation-daniel-r-herber/dissertation-document-github/gls/symbols.tex",
+		"/A/google-drive/Projects/ID043-phd-dissertation-daniel-r-herber/phd-dissertation-daniel-r-herber/dissertation-document-github/_preamble/AlgorithmStyle.tex",
+		"/A/google-drive/Projects/ID043-phd-dissertation-daniel-r-herber/phd-dissertation-daniel-r-herber/dissertation-document-github/_preamble/commands.tex",
+		"/A/google-drive/Projects/ID043-phd-dissertation-daniel-r-herber/phd-dissertation-daniel-r-herber/dissertation-document-github/_preamble/commands_algorithms.tex",
+		"/A/google-drive/Projects/ID043-phd-dissertation-daniel-r-herber/phd-dissertation-daniel-r-herber/dissertation-document-github/_preamble/packages_biblatex.tex",
+		"/A/google-drive/Projects/ID043-phd-dissertation-daniel-r-herber/phd-dissertation-daniel-r-herber/dissertation-document-github/_preamble/packages.tex",
+		"/A/google-drive/Projects/ID043-phd-dissertation-daniel-r-herber/phd-dissertation-daniel-r-herber/dissertation-document-github/_preamble/packages_tikz.tex",
+		"/A/google-drive/Projects/ID043-phd-dissertation-daniel-r-herber/phd-dissertation-daniel-r-herber/dissertation-document-github/_preamble/packages_hyperref.tex",
+		"/A/google-drive/Projects/ID043-phd-dissertation-daniel-r-herber/phd-dissertation-daniel-r-herber/dissertation-document-github/_preamble/vAlgorithm.tex",
+		"/A/google-drive/Projects/ID043-phd-dissertation-daniel-r-herber/phd-dissertation-daniel-r-herber/dissertation-document-github/app1/app1.tex",
+		"/A/google-drive/Projects/ID043-phd-dissertation-daniel-r-herber/phd-dissertation-daniel-r-herber/dissertation-document-github/app1/app1_examples.tex",
+		"/A/google-drive/Projects/ID043-phd-dissertation-daniel-r-herber/phd-dissertation-daniel-r-herber/dissertation-document-github/app1/app1_lines.tex",
+		"/A/google-drive/Projects/ID043-phd-dissertation-daniel-r-herber/phd-dissertation-daniel-r-herber/dissertation-document-github/app1/app1_loops.tex",
+		"/A/google-drive/Projects/ID043-phd-dissertation-daniel-r-herber/phd-dissertation-daniel-r-herber/dissertation-document-github/app1/app1_multiedges.tex",
+		"/A/google-drive/Projects/ID043-phd-dissertation-daniel-r-herber/phd-dissertation-daniel-r-herber/dissertation-document-github/app1/app1_ordering.tex",
+		"/A/google-drive/Projects/ID043-phd-dissertation-daniel-r-herber/phd-dissertation-daniel-r-herber/dissertation-document-github/app1/app1_overview.tex",
+		"/A/google-drive/Projects/ID043-phd-dissertation-daniel-r-herber/phd-dissertation-daniel-r-herber/dissertation-document-github/app1/app1_saturated.tex",
+		"/A/google-drive/Projects/ID043-phd-dissertation-daniel-r-herber/phd-dissertation-daniel-r-herber/dissertation-document-github/app1/app1_subcatalogs.tex",
+		"/A/google-drive/Projects/ID043-phd-dissertation-daniel-r-herber/phd-dissertation-daniel-r-herber/dissertation-document-github/app1/app1_tree.tex",
+		"/A/google-drive/Projects/ID043-phd-dissertation-daniel-r-herber/phd-dissertation-daniel-r-herber/dissertation-document-github/app2/app2.tex",
+		"/A/google-drive/Projects/ID043-phd-dissertation-daniel-r-herber/phd-dissertation-daniel-r-herber/dissertation-document-github/app3/app3.tex",
+		"/A/google-drive/Projects/ID043-phd-dissertation-daniel-r-herber/phd-dissertation-daniel-r-herber/dissertation-document-github/app3/app3_methods.tex",
+		"/A/google-drive/Projects/ID043-phd-dissertation-daniel-r-herber/phd-dissertation-daniel-r-herber/dissertation-document-github/app3/app3_ps.tex",
+		"/A/google-drive/Projects/ID043-phd-dissertation-daniel-r-herber/phd-dissertation-daniel-r-herber/dissertation-document-github/app3/app3_ss.tex",
+		"/A/google-drive/Projects/ID043-phd-dissertation-daniel-r-herber/phd-dissertation-daniel-r-herber/dissertation-document-github/app4/app4.tex",
+		"/A/google-drive/Projects/ID043-phd-dissertation-daniel-r-herber/phd-dissertation-daniel-r-herber/dissertation-document-github/ch1/ch1.tex",
+		"/A/google-drive/Projects/ID043-phd-dissertation-daniel-r-herber/phd-dissertation-daniel-r-herber/dissertation-document-github/ch1/ch1_domains.tex",
+		"/A/google-drive/Projects/ID043-phd-dissertation-daniel-r-herber/phd-dissertation-daniel-r-herber/dissertation-document-github/ch1/ch1_overview.tex",
+		"/A/google-drive/Projects/ID043-phd-dissertation-daniel-r-herber/phd-dissertation-daniel-r-herber/dissertation-document-github/ch1/ch1_example.tex",
+		"/A/google-drive/Projects/ID043-phd-dissertation-daniel-r-herber/phd-dissertation-daniel-r-herber/dissertation-document-github/ch1/ch1_theorytools.tex",
+		"/A/google-drive/Projects/ID043-phd-dissertation-daniel-r-herber/phd-dissertation-daniel-r-herber/dissertation-document-github/ch1/ch1_process.tex",
+		"/A/google-drive/Projects/ID043-phd-dissertation-daniel-r-herber/phd-dissertation-daniel-r-herber/dissertation-document-github/ch2/ch2.tex",
+		"/A/google-drive/Projects/ID043-phd-dissertation-daniel-r-herber/phd-dissertation-daniel-r-herber/dissertation-document-github/ch2/ch2_candidate.tex",
+		"/A/google-drive/Projects/ID043-phd-dissertation-daniel-r-herber/phd-dissertation-daniel-r-herber/dissertation-document-github/ch2/ch2_casestudies.tex",
+		"/A/google-drive/Projects/ID043-phd-dissertation-daniel-r-herber/phd-dissertation-daniel-r-herber/dissertation-document-github/ch2/ch2_conclusion.tex",
+		"/A/google-drive/Projects/ID043-phd-dissertation-daniel-r-herber/phd-dissertation-daniel-r-herber/dissertation-document-github/ch2/ch2_discussion.tex",
+		"/A/google-drive/Projects/ID043-phd-dissertation-daniel-r-herber/phd-dissertation-daniel-r-herber/dissertation-document-github/ch2/ch2_introduction.tex",
+		"/A/google-drive/Projects/ID043-phd-dissertation-daniel-r-herber/phd-dissertation-daniel-r-herber/dissertation-document-github/ch2/ch2_tree.tex",
+		"/A/google-drive/Projects/ID043-phd-dissertation-daniel-r-herber/phd-dissertation-daniel-r-herber/dissertation-document-github/ch2/ch2_unique.tex",
+		"/A/google-drive/Projects/ID043-phd-dissertation-daniel-r-herber/phd-dissertation-daniel-r-herber/dissertation-document-github/ch3/ch3_content.tex",
+		"/A/google-drive/Projects/ID043-phd-dissertation-daniel-r-herber/phd-dissertation-daniel-r-herber/dissertation-document-github/ch3/ch3.tex",
+		"/A/google-drive/Projects/ID043-phd-dissertation-daniel-r-herber/phd-dissertation-daniel-r-herber/dissertation-document-github/ch3/ch3_nomenclature.tex",
+		"/A/google-drive/Projects/ID043-phd-dissertation-daniel-r-herber/phd-dissertation-daniel-r-herber/dissertation-document-github/_main/dissertation-daniel-herber.tex",
+		"/A/google-drive/Projects/ID043-phd-dissertation-daniel-r-herber/phd-dissertation-daniel-r-herber/dissertation-document-github/ch4/ch4.tex",
+		"/A/google-drive/Projects/ID043-phd-dissertation-daniel-r-herber/phd-dissertation-daniel-r-herber/dissertation-document-github/ch4/ch4_content.tex",
+		"/A/google-drive/Projects/ID043-phd-dissertation-daniel-r-herber/phd-dissertation-daniel-r-herber/dissertation-document-github/ch4/ch4_nomenclature.tex",
+		"/A/google-drive/Projects/ID043-phd-dissertation-daniel-r-herber/phd-dissertation-daniel-r-herber/dissertation-document-github/ch4/ch4_extra.tex",
+		"/A/google-drive/Projects/ID043-phd-dissertation-daniel-r-herber/phd-dissertation-daniel-r-herber/dissertation-document-github/ch5/algorithms/PSdefectsA_2.tex",
+		"/A/google-drive/Projects/ID043-phd-dissertation-daniel-r-herber/phd-dissertation-daniel-r-herber/dissertation-document-github/ch5/algorithms/boundary_2.tex",
+		"/A/google-drive/Projects/ID043-phd-dissertation-daniel-r-herber/phd-dissertation-daniel-r-herber/dissertation-document-github/ch5/algorithms/constraints_2.tex",
+		"/A/google-drive/Projects/ID043-phd-dissertation-daniel-r-herber/phd-dissertation-daniel-r-herber/dissertation-document-github/ch5/algorithms/findCindex_2.tex",
+		"/A/google-drive/Projects/ID043-phd-dissertation-daniel-r-herber/phd-dissertation-daniel-r-herber/dissertation-document-github/ch5/algorithms/hessian_2.tex",
+		"/A/google-drive/Projects/ID043-phd-dissertation-daniel-r-herber/phd-dissertation-daniel-r-herber/dissertation-document-github/ch5/algorithms/lqpterms_2.tex",
+		"/A/google-drive/Projects/ID043-phd-dissertation-daniel-r-herber/phd-dissertation-daniel-r-herber/dissertation-document-github/ch5/algorithms/mqpterms_2.tex",
+		"/A/google-drive/Projects/ID043-phd-dissertation-daniel-r-herber/phd-dissertation-daniel-r-herber/dissertation-document-github/ch5/algorithms/notation.tex",
+		"/A/google-drive/Projects/ID043-phd-dissertation-daniel-r-herber/phd-dissertation-daniel-r-herber/dissertation-document-github/ch5/algorithms/overview.tex",
+		"/A/google-drive/Projects/ID043-phd-dissertation-daniel-r-herber/phd-dissertation-daniel-r-herber/dissertation-document-github/ch5/algorithms/path_2.tex",
+		"/A/google-drive/Projects/ID043-phd-dissertation-daniel-r-herber/phd-dissertation-daniel-r-herber/dissertation-document-github/ch5/algorithms/structure.tex",
+		"/A/google-drive/Projects/ID043-phd-dissertation-daniel-r-herber/phd-dissertation-daniel-r-herber/dissertation-document-github/ch5/algorithms/SSdefectsA_2.tex",
+		"/A/google-drive/Projects/ID043-phd-dissertation-daniel-r-herber/phd-dissertation-daniel-r-herber/dissertation-document-github/ch5/sparsity/figsparsityAPS_2.tex",
+		"/A/google-drive/Projects/ID043-phd-dissertation-daniel-r-herber/phd-dissertation-daniel-r-herber/dissertation-document-github/ch5/sparsity/ASSTheta5.tex",
+		"/A/google-drive/Projects/ID043-phd-dissertation-daniel-r-herber/phd-dissertation-daniel-r-herber/dissertation-document-github/ch5/sparsity/ASSTheta4.tex",
+		"/A/google-drive/Projects/ID043-phd-dissertation-daniel-r-herber/phd-dissertation-daniel-r-herber/dissertation-document-github/ch5/sparsity/ASSTheta3.tex",
+		"/A/google-drive/Projects/ID043-phd-dissertation-daniel-r-herber/phd-dissertation-daniel-r-herber/dissertation-document-github/ch5/sparsity/ASSTheta2.tex",
+		"/A/google-drive/Projects/ID043-phd-dissertation-daniel-r-herber/phd-dissertation-daniel-r-herber/dissertation-document-github/ch5/sparsity/ASSTheta1.tex",
+		"/A/google-drive/Projects/ID043-phd-dissertation-daniel-r-herber/phd-dissertation-daniel-r-herber/dissertation-document-github/ch5/sparsity/APS4.tex",
+		"/A/google-drive/Projects/ID043-phd-dissertation-daniel-r-herber/phd-dissertation-daniel-r-herber/dissertation-document-github/ch5/sparsity/APS3.tex",
+		"/A/google-drive/Projects/ID043-phd-dissertation-daniel-r-herber/phd-dissertation-daniel-r-herber/dissertation-document-github/ch5/sparsity/APS1.tex",
+		"/A/google-drive/Projects/ID043-phd-dissertation-daniel-r-herber/phd-dissertation-daniel-r-herber/dissertation-document-github/ch5/sparsity/figsparsityAPS.tex",
+		"/A/google-drive/Projects/ID043-phd-dissertation-daniel-r-herber/phd-dissertation-daniel-r-herber/dissertation-document-github/ch5/sparsity/figsparsityASS.tex",
+		"/A/google-drive/Projects/ID043-phd-dissertation-daniel-r-herber/phd-dissertation-daniel-r-herber/dissertation-document-github/ch5/sparsity/figsparsityASS_2.tex",
+		"/A/google-drive/Projects/ID043-phd-dissertation-daniel-r-herber/phd-dissertation-daniel-r-herber/dissertation-document-github/ch5/sparsity/figsparsityHcqhs.tex",
+		"/A/google-drive/Projects/ID043-phd-dissertation-daniel-r-herber/phd-dissertation-daniel-r-herber/dissertation-document-github/ch5/sparsity/figsparsityHcqhs_2.tex",
+		"/A/google-drive/Projects/ID043-phd-dissertation-daniel-r-herber/phd-dissertation-daniel-r-herber/dissertation-document-github/ch5/sparsity/figsparsityHmayer.tex",
+		"/A/google-drive/Projects/ID043-phd-dissertation-daniel-r-herber/phd-dissertation-daniel-r-herber/dissertation-document-github/ch5/sparsity/figsparsityHmayer_2.tex",
+		"/A/google-drive/Projects/ID043-phd-dissertation-daniel-r-herber/phd-dissertation-daniel-r-herber/dissertation-document-github/ch5/sparsity/figsparsityHSS.tex",
+		"/A/google-drive/Projects/ID043-phd-dissertation-daniel-r-herber/phd-dissertation-daniel-r-herber/dissertation-document-github/ch5/sparsity/figsparsityHSS_2.tex",
+		"/A/google-drive/Projects/ID043-phd-dissertation-daniel-r-herber/phd-dissertation-daniel-r-herber/dissertation-document-github/ch5/sparsity/Hoff.tex",
+		"/A/google-drive/Projects/ID043-phd-dissertation-daniel-r-herber/phd-dissertation-daniel-r-herber/dissertation-document-github/ch5/sparsity/Hcqhs.tex",
+		"/A/google-drive/Projects/ID043-phd-dissertation-daniel-r-herber/phd-dissertation-daniel-r-herber/dissertation-document-github/ch5/sparsity/Hpp.tex",
+		"/A/google-drive/Projects/ID043-phd-dissertation-daniel-r-herber/phd-dissertation-daniel-r-herber/dissertation-document-github/ch5/sparsity/Huu.tex",
+		"/A/google-drive/Projects/ID043-phd-dissertation-daniel-r-herber/phd-dissertation-daniel-r-herber/dissertation-document-github/ch5/sparsity/Hx0x0.tex",
+		"/A/google-drive/Projects/ID043-phd-dissertation-daniel-r-herber/phd-dissertation-daniel-r-herber/dissertation-document-github/ch5/sparsity/Hxfxf.tex",
+		"/A/google-drive/Projects/ID043-phd-dissertation-daniel-r-herber/phd-dissertation-daniel-r-herber/dissertation-document-github/ch5/sparsity/Hxx.tex",
+		"/A/google-drive/Projects/ID043-phd-dissertation-daniel-r-herber/phd-dissertation-daniel-r-herber/dissertation-document-github/ch5/sparsity/Moff.tex",
+		"/A/google-drive/Projects/ID043-phd-dissertation-daniel-r-herber/phd-dissertation-daniel-r-herber/dissertation-document-github/ch5/sparsity/Mpp.tex",
+		"/A/google-drive/Projects/ID043-phd-dissertation-daniel-r-herber/phd-dissertation-daniel-r-herber/dissertation-document-github/ch5/sparsity/Mx0x0.tex",
+		"/A/google-drive/Projects/ID043-phd-dissertation-daniel-r-herber/phd-dissertation-daniel-r-herber/dissertation-document-github/ch5/sparsity/Mxfxf.tex",
+		"/A/google-drive/Projects/ID043-phd-dissertation-daniel-r-herber/phd-dissertation-daniel-r-herber/dissertation-document-github/ch5/sparsity/sparsityA.tex",
+		"/A/google-drive/Projects/ID043-phd-dissertation-daniel-r-herber/phd-dissertation-daniel-r-herber/dissertation-document-github/ch5/sparsity/sparsityAPS.tex",
+		"/A/google-drive/Projects/ID043-phd-dissertation-daniel-r-herber/phd-dissertation-daniel-r-herber/dissertation-document-github/ch5/sparsity/sparsityH.tex",
+		"/A/google-drive/Projects/ID043-phd-dissertation-daniel-r-herber/phd-dissertation-daniel-r-herber/dissertation-document-github/ch5/sparsity/sparsityM.tex",
+		"/A/google-drive/Projects/ID043-phd-dissertation-daniel-r-herber/phd-dissertation-daniel-r-herber/dissertation-document-github/ch5/sparsity/APS2.tex",
+		"/A/google-drive/Projects/ID043-phd-dissertation-daniel-r-herber/phd-dissertation-daniel-r-herber/dissertation-document-github/ch5/ch5_introduction.tex",
+		"/A/google-drive/Projects/ID043-phd-dissertation-daniel-r-herber/phd-dissertation-daniel-r-herber/dissertation-document-github/ch5/ch5_futurework.tex",
+		"/A/google-drive/Projects/ID043-phd-dissertation-daniel-r-herber/phd-dissertation-daniel-r-herber/dissertation-document-github/ch5/ch5_formulation.tex",
+		"/A/google-drive/Projects/ID043-phd-dissertation-daniel-r-herber/phd-dissertation-daniel-r-herber/dissertation-document-github/ch5/ch5.tex",
+		"/A/google-drive/Projects/ID043-phd-dissertation-daniel-r-herber/phd-dissertation-daniel-r-herber/dissertation-document-github/ch5/ch5_algorithm.tex",
+		"/A/google-drive/Projects/ID043-phd-dissertation-daniel-r-herber/phd-dissertation-daniel-r-herber/dissertation-document-github/ch5/ch5_extensions.tex",
+		"/A/google-drive/Projects/ID043-phd-dissertation-daniel-r-herber/phd-dissertation-daniel-r-herber/dissertation-document-github/ch5/ch5_app_algorithms.tex",
+		"/A/google-drive/Projects/ID043-phd-dissertation-daniel-r-herber/phd-dissertation-daniel-r-herber/dissertation-document-github/ch5/ch5_examples.tex",
+		"/A/google-drive/Projects/ID043-phd-dissertation-daniel-r-herber/phd-dissertation-daniel-r-herber/dissertation-document-github/ch5/ch5_ex5.tex",
+		"/A/google-drive/Projects/ID043-phd-dissertation-daniel-r-herber/phd-dissertation-daniel-r-herber/dissertation-document-github/ch5/ch5_app_codes.tex",
+		"/A/google-drive/Projects/ID043-phd-dissertation-daniel-r-herber/phd-dissertation-daniel-r-herber/dissertation-document-github/ch5/ch5_ex4.tex",
+		"/A/google-drive/Projects/ID043-phd-dissertation-daniel-r-herber/phd-dissertation-daniel-r-herber/dissertation-document-github/ch5/ch5_app_sparsity.tex",
+		"/A/google-drive/Projects/ID043-phd-dissertation-daniel-r-herber/phd-dissertation-daniel-r-herber/dissertation-document-github/ch5/ch5_appalgorithms.tex",
+		"/A/google-drive/Projects/ID043-phd-dissertation-daniel-r-herber/phd-dissertation-daniel-r-herber/dissertation-document-github/ch5/ch5_ex3.tex",
+		"/A/google-drive/Projects/ID043-phd-dissertation-daniel-r-herber/phd-dissertation-daniel-r-herber/dissertation-document-github/ch5/ch5_conclusion.tex",
+		"/A/google-drive/Projects/ID043-phd-dissertation-daniel-r-herber/phd-dissertation-daniel-r-herber/dissertation-document-github/ch5/ch5_dt.tex",
+		"/A/google-drive/Projects/ID043-phd-dissertation-daniel-r-herber/phd-dissertation-daniel-r-herber/dissertation-document-github/ch5/ch5_ex1.tex",
+		"/A/google-drive/Projects/ID043-phd-dissertation-daniel-r-herber/phd-dissertation-daniel-r-herber/dissertation-document-github/ch5/ch5_ex2.tex",
+		"/A/google-drive/Projects/ID043-phd-dissertation-daniel-r-herber/phd-dissertation-daniel-r-herber/dissertation-document-github/ch6/ch6_lowpassfilter.tex",
+		"/A/google-drive/Projects/ID043-phd-dissertation-daniel-r-herber/phd-dissertation-daniel-r-herber/dissertation-document-github/ch6/ch6_introduction.tex",
+		"/A/google-drive/Projects/ID043-phd-dissertation-daniel-r-herber/phd-dissertation-daniel-r-herber/dissertation-document-github/ch6/ch6_generate.tex",
+		"/A/google-drive/Projects/ID043-phd-dissertation-daniel-r-herber/phd-dissertation-daniel-r-herber/dissertation-document-github/ch6/ch6_frequencyresponse.tex",
+		"/A/google-drive/Projects/ID043-phd-dissertation-daniel-r-herber/phd-dissertation-daniel-r-herber/dissertation-document-github/ch6/ch6_examples.tex",
+		"/A/google-drive/Projects/ID043-phd-dissertation-daniel-r-herber/phd-dissertation-daniel-r-herber/dissertation-document-github/ch6/ch6.tex",
+		"/A/google-drive/Projects/ID043-phd-dissertation-daniel-r-herber/phd-dissertation-daniel-r-herber/dissertation-document-github/ch6/ch6_conclusion.tex",
+		"/A/google-drive/Projects/ID043-phd-dissertation-daniel-r-herber/phd-dissertation-daniel-r-herber/dissertation-document-github/ch6/ch6_discussion.tex",
+		"/A/google-drive/Projects/ID043-phd-dissertation-daniel-r-herber/phd-dissertation-daniel-r-herber/dissertation-document-github/ch8/ch8_results.tex",
+		"/A/google-drive/Projects/ID043-phd-dissertation-daniel-r-herber/phd-dissertation-daniel-r-herber/dissertation-document-github/ch8/ch8_conclusion.tex",
+		"/A/google-drive/Projects/ID043-phd-dissertation-daniel-r-herber/phd-dissertation-daniel-r-herber/dissertation-document-github/ch8/ch8_formulation.tex"
+	],
+	"find":
+	{
+		"height": 26.0
+	},
+	"find_in_files":
+	{
+		"height": 141.0,
+		"where_history":
+		[
+			""
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": true,
+		"find_history":
+		[
+			"array_parameters",
+			"h7:parameters",
+			"bus_parameters",
+			"subtable",
+			"fig:ch6:ex1:set1",
+			"\\JTA",
+			"sec:",
+			"lqr",
+			"upiece",
+			"\\gls{P}",
+			"\\gls{M}",
+			"architecture",
+			"candidate",
+			"{min}",
+			"gls",
+			"the time hori",
+			"stepsize",
+			"gls",
+			"QP",
+			"dynamic opti",
+			"makegloss",
+			"makeglossaries",
+			"\\bm{y}",
+			"\\newglossaryentry{output}{",
+			"output",
+			"{O}",
+			"J^*",
+			"\\theta",
+			"\\tau",
+			"_p",
+			"_u",
+			"phi",
+			"Phi",
+			"\\bL",
+			"\\bm{E}",
+			"myunderbar",
+			"\\bm{h}",
+			"ensuremath{u}",
+			"KKT",
+			"able",
+			"tau",
+			"but",
+			"cite",
+			"leaf",
+			"\\textbf",
+			"subequation",
+			"toc",
+			"figures",
+			"listalgorithmname",
+			"equality constraints",
+			"JJJ",
+			"NNN",
+			"OOO",
+			"III",
+			"BBB",
+			"ZZZ",
+			"UUU",
+			"XXX",
+			"HHH",
+			"MMM",
+			"TTT",
+			"SSS",
+			"KKK",
+			"LLL",
+			"PPP",
+			"RRR",
+			"CCC",
+			"AAA",
+			"EEE",
+			"VVV",
+			"GGG",
+			"FFF",
+			"error",
+			"LPF",
+			"frequency",
+			"error",
+			"DDD",
+			"mode",
+			"matlab",
+			"component",
+			"$n$",
+			"x",
+			"NSC",
+			"sort = !,",
+			"mass",
+			"problemclass",
+			"\\bm{h}",
+			"time",
+			"feasible",
+			"design",
+			"function",
+			"}{\n",
+			"design",
+			"state",
+			"var",
+			"_{m}",
+			"psi",
+			"width",
+			"{p}",
+			"\\mu",
+			"q",
+			"gamma",
+			"phi",
+			"eta",
+			"\\eta",
+			"length",
+			"\\theta",
+			"\\tran",
+			"contents",
+			"toc",
+			"is a \\",
+			"is a",
+			"scale=0.7",
+			" - ",
+			"\t",
+			"dynamic optimization problems",
+			"General Notation",
+			"\\ref{app:B}",
+			"\\xprog{matlab}",
+			"Eqn~",
+			"\\textsc{matlab}",
+			"with more matrix",
+			"higher order",
+			"Higher Order",
+			"JTA"
+		],
+		"highlight": true,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": false,
+		"replace_history":
+		[
+			"\\Psi^*",
+			"Jzz",
+			"Nzz",
+			"Ozz",
+			"Izz",
+			"Bzz",
+			"Zzz",
+			"Uzz",
+			"Zzz",
+			"Hzz",
+			"Mzz",
+			"Tzz",
+			"Szz",
+			"Kzz",
+			"Lzz",
+			"Pzz",
+			"Rzz",
+			"Czz",
+			"Azz",
+			"Ezz",
+			"Vzz",
+			"Gzz",
+			"Fzz",
+			"Dzz",
+			"sort = zz!,",
+			"_{e}",
+			"{m}",
+			"scale=0.8",
+			" $-$ ",
+			" & ",
+			"\\xprog{Matlab}",
+			"\\textsc{Matlab}",
+			"higher-order",
+			"Higher-Order"
+		],
+		"reverse": false,
+		"show_context": true,
+		"use_buffer2": true,
+		"whole_word": false,
+		"wrap": true
+	},
+	"groups":
+	[
+		{
+			"selected": 1,
+			"sheets":
+			[
+				{
+					"buffer": 0,
+					"file": "_main/dissertation-daniel-herber.tex",
+					"semi_transient": true,
+					"settings":
+					{
+						"buffer_size": 4027,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								319,
+								319
+							]
+						],
+						"settings":
+						{
+							"bracket_highlighter.busy": false,
+							"bracket_highlighter.locations":
+							{
+								"close":
+								{
+								},
+								"icon":
+								{
+								},
+								"open":
+								{
+								},
+								"unmatched":
+								{
+								}
+							},
+							"bracket_highlighter.regions":
+							[
+								"bh_c_define",
+								"bh_c_define_center",
+								"bh_c_define_open",
+								"bh_c_define_close",
+								"bh_c_define_content",
+								"bh_round",
+								"bh_round_center",
+								"bh_round_open",
+								"bh_round_close",
+								"bh_round_content",
+								"bh_single_quote",
+								"bh_single_quote_center",
+								"bh_single_quote_open",
+								"bh_single_quote_close",
+								"bh_single_quote_content",
+								"bh_unmatched",
+								"bh_unmatched_center",
+								"bh_unmatched_open",
+								"bh_unmatched_close",
+								"bh_unmatched_content",
+								"bh_square",
+								"bh_square_center",
+								"bh_square_open",
+								"bh_square_close",
+								"bh_square_content",
+								"bh_regex",
+								"bh_regex_center",
+								"bh_regex_open",
+								"bh_regex_close",
+								"bh_regex_content",
+								"bh_default",
+								"bh_default_center",
+								"bh_default_open",
+								"bh_default_close",
+								"bh_default_content",
+								"bh_curly",
+								"bh_curly_center",
+								"bh_curly_open",
+								"bh_curly_close",
+								"bh_curly_content",
+								"bh_double_quote",
+								"bh_double_quote_center",
+								"bh_double_quote_open",
+								"bh_double_quote_close",
+								"bh_double_quote_content",
+								"bh_tag",
+								"bh_tag_center",
+								"bh_tag_open",
+								"bh_tag_close",
+								"bh_tag_content",
+								"bh_angle",
+								"bh_angle_center",
+								"bh_angle_open",
+								"bh_angle_close",
+								"bh_angle_content"
+							],
+							"git_gutter_is_enabled": false,
+							"incomplete_sync": null,
+							"remote_loading": false,
+							"synced": false,
+							"syntax": "Packages/LaTeX/LaTeX.sublime-syntax"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 1,
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "_preamble/commands.tex",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 6897,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1421,
+								1421
+							]
+						],
+						"settings":
+						{
+							"bracket_highlighter.busy": false,
+							"bracket_highlighter.locations":
+							{
+								"close":
+								{
+								},
+								"icon":
+								{
+								},
+								"open":
+								{
+								},
+								"unmatched":
+								{
+								}
+							},
+							"bracket_highlighter.regions":
+							[
+								"bh_c_define",
+								"bh_c_define_center",
+								"bh_c_define_open",
+								"bh_c_define_close",
+								"bh_c_define_content",
+								"bh_round",
+								"bh_round_center",
+								"bh_round_open",
+								"bh_round_close",
+								"bh_round_content",
+								"bh_single_quote",
+								"bh_single_quote_center",
+								"bh_single_quote_open",
+								"bh_single_quote_close",
+								"bh_single_quote_content",
+								"bh_unmatched",
+								"bh_unmatched_center",
+								"bh_unmatched_open",
+								"bh_unmatched_close",
+								"bh_unmatched_content",
+								"bh_square",
+								"bh_square_center",
+								"bh_square_open",
+								"bh_square_close",
+								"bh_square_content",
+								"bh_regex",
+								"bh_regex_center",
+								"bh_regex_open",
+								"bh_regex_close",
+								"bh_regex_content",
+								"bh_default",
+								"bh_default_center",
+								"bh_default_open",
+								"bh_default_close",
+								"bh_default_content",
+								"bh_curly",
+								"bh_curly_center",
+								"bh_curly_open",
+								"bh_curly_close",
+								"bh_curly_content",
+								"bh_double_quote",
+								"bh_double_quote_center",
+								"bh_double_quote_open",
+								"bh_double_quote_close",
+								"bh_double_quote_content",
+								"bh_tag",
+								"bh_tag_center",
+								"bh_tag_open",
+								"bh_tag_close",
+								"bh_tag_content",
+								"bh_angle",
+								"bh_angle_center",
+								"bh_angle_open",
+								"bh_angle_close",
+								"bh_angle_content"
+							],
+							"git_gutter_is_enabled": false,
+							"incomplete_sync": null,
+							"remote_loading": false,
+							"synced": false,
+							"syntax": "Packages/LaTeX/LaTeX.sublime-syntax",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 0,
+					"type": "text"
+				}
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 26.0
+	},
+	"input":
+	{
+		"height": 42.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			]
+		],
+		"cols":
+		[
+			0.0,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"output.find_results":
+	{
+		"height": 0.0
+	},
+	"output.latextools":
+	{
+		"height": 308.0
+	},
+	"output.sftp":
+	{
+		"height": 0.0
+	},
+	"pinned_build_system": "Packages/LaTeXTools/LaTeX.sublime-build",
+	"project": "latex.sublime-project",
+	"replace":
+	{
+		"height": 48.0
+	},
+	"save_all_on_build": false,
+	"select_file":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+			[
+				"pacage",
+				"_preamble\\packages.tex"
+			],
+			[
+				"pack",
+				"_preamble\\packages.tex"
+			],
+			[
+				"lpf3",
+				"ch6\\figures\\lpf3.tex"
+			],
+			[
+				"lpf4",
+				"ch6\\figures\\lpf4.tex"
+			],
+			[
+				"app2",
+				"app2\\app2.tex"
+			],
+			[
+				"mm1_results_set2",
+				"ch6\\figures\\mm1_results_set2.tex"
+			],
+			[
+				"symbol",
+				"gls\\symbols.tex"
+			],
+			[
+				"symb",
+				"gls\\symbols.tex"
+			],
+			[
+				"not",
+				"ch5\\algorithms\\notation.tex"
+			],
+			[
+				"dtqp",
+				"ch7\\ch7_dtqp.tex"
+			],
+			[
+				"no",
+				"ch5\\algorithms\\notation.tex"
+			],
+			[
+				"package",
+				"_preamble\\packages.tex"
+			],
+			[
+				"symo",
+				"gls\\symbols.tex"
+			],
+			[
+				"ac",
+				"gls\\acronyms.tex"
+			],
+			[
+				"comm",
+				"_preamble\\commands.tex"
+			],
+			[
+				"sym",
+				"gls\\symbols.tex"
+			],
+			[
+				"acro",
+				"gls\\acronyms.tex"
+			],
+			[
+				"symobl",
+				"gls\\symbols.tex"
+			],
+			[
+				"initialexamples",
+				"ch2\\figures\\initialexamples.tex"
+			],
+			[
+				"symbo",
+				"gls\\symbols.tex"
+			],
+			[
+				"ackage",
+				"_preamble\\packages.tex"
+			],
+			[
+				"notat",
+				"gls\\notation.tex"
+			],
+			[
+				"notation",
+				"gls\\notation.tex"
+			],
+			[
+				"comma",
+				"_preamble\\commands.tex"
+			],
+			[
+				"cls",
+				"uiucecethesis09.cls"
+			],
+			[
+				"hyper",
+				"_preamble\\packages_hyperref.tex"
+			],
+			[
+				"hype",
+				"_preamble\\packages_hyperref.tex"
+			],
+			[
+				"ch9",
+				"ch9\\ch9.tex"
+			],
+			[
+				"ack",
+				"_preamble\\packages.tex"
+			],
+			[
+				"ch8_",
+				"ch8\\ch8_conclusion.tex"
+			],
+			[
+				"results",
+				"ch8\\ch8_results.tex"
+			],
+			[
+				"class",
+				"ch8\\ch8_class.tex"
+			],
+			[
+				"ch8",
+				"ch8\\ch8.tex"
+			],
+			[
+				"ch1_over",
+				"ch1\\ch1_overview.tex"
+			],
+			[
+				"app3_meth",
+				"app3\\app3_methods.tex"
+			],
+			[
+				"app",
+				"app3\\app3.tex"
+			],
+			[
+				"ch3_conte",
+				"ch3\\ch3_content.tex"
+			],
+			[
+				"ch2",
+				"ch2\\ch2_casestudies.tex"
+			],
+			[
+				"alg-subcatalogs",
+				"app1\\algorithms\\alg-subcatalogs.tex"
+			],
+			[
+				"sub",
+				"app1\\app1_subcatalogs.tex"
+			],
+			[
+				"app1",
+				"app1\\app1.tex"
+			],
+			[
+				"app3",
+				"app3\\app3.tex"
+			],
+			[
+				"over",
+				"ch1\\ch1_overview.tex"
+			],
+			[
+				"ch1",
+				"ch1\\ch1.tex"
+			],
+			[
+				"ch1_ov",
+				"ch1\\ch1_overview.tex"
+			],
+			[
+				"algorith",
+				"_preamble\\AlgorithmStyle.tex"
+			],
+			[
+				"findcindex",
+				"ch5\\algorithms\\algorithm2e\\findCindex.tex"
+			],
+			[
+				"app_a",
+				"ch5\\ch5_app_algorithms.tex"
+			],
+			[
+				"hessian",
+				"ch5\\algorithms\\algorithm2e\\hessian.tex"
+			],
+			[
+				"terms",
+				"ch5\\algorithms\\algorithm2e\\lqpterms.tex"
+			],
+			[
+				"mterm",
+				"ch5\\algorithms\\algorithm2e\\mqpterms.tex"
+			],
+			[
+				"packages",
+				"_preamble\\packages.tex"
+			],
+			[
+				"ss",
+				"ch5\\algorithms\\algorithm2e\\SSdefectsA.tex"
+			],
+			[
+				"psdef",
+				"ch5\\algorithms\\algorithm2e\\PSdefectsA.tex"
+			],
+			[
+				"constrain",
+				"ch5\\algorithms\\algorithm2e\\constraints.tex"
+			],
+			[
+				"path",
+				"ch5\\algorithms\\algorithm2e\\path.tex"
+			],
+			[
+				"bound",
+				"ch5\\algorithms\\algorithm2e\\boundary.tex"
+			],
+			[
+				"command",
+				"_preamble\\commands.tex"
+			],
+			[
+				"ch1_",
+				"ch1\\ch1_process.tex"
+			],
+			[
+				"overv",
+				"ch5\\algorithms\\overview.tex"
+			],
+			[
+				"acr",
+				"gls\\acronyms.tex"
+			],
+			[
+				"discu",
+				"ch6\\ch6_discussion.tex"
+			],
+			[
+				"genear",
+				"ch6\\ch6_generate.tex"
+			],
+			[
+				"lpf",
+				"ch6\\ch6_lowpassfilter.tex"
+			],
+			[
+				"freq",
+				"ch6\\ch6_frequencyresponse.tex"
+			],
+			[
+				"intro",
+				"ch6\\ch6_introduction.tex"
+			],
+			[
+				"examples",
+				"ch6\\ch6_examples.tex"
+			],
+			[
+				"ch5_",
+				"ch5\\ch5_appalgorithms.tex"
+			],
+			[
+				"ch5_al",
+				"ch5\\ch5_algorithm.tex"
+			],
+			[
+				"ch5_dt",
+				"ch5\\ch5_dt.tex"
+			],
+			[
+				"comman",
+				"_preamble\\commands.tex"
+			],
+			[
+				"ch",
+				"ch5\\ch5.tex"
+			],
+			[
+				"hyperref",
+				"_preamble\\packages_hyperref.tex"
+			],
+			[
+				"algorithm",
+				"_preamble\\AlgorithmStyle.tex"
+			],
+			[
+				"ch5",
+				"ch5\\ch5_algorithm.tex"
+			],
+			[
+				"ch4",
+				"ch4\\ch4_content.tex"
+			],
+			[
+				"introd",
+				"ch2\\ch2_introduction.tex"
+			],
+			[
+				"simpletree",
+				"ch2\\algorithms\\simpletree.tex"
+			],
+			[
+				"perfect",
+				"ch2\\figures\\perfectmatchings.tex"
+			],
+			[
+				"ove",
+				"ch1\\ch1_overview.tex"
+			],
+			[
+				"conclu",
+				"ch5\\ch5_conclusion.tex"
+			],
+			[
+				"ex1",
+				"ch5\\ch5_ex1.tex"
+			],
+			[
+				"future",
+				"ch5\\ch5_futurework.tex"
+			],
+			[
+				"ch5_app_algorithms",
+				"ch5\\ch5_app_algorithms.tex"
+			],
+			[
+				"app_al",
+				"ch5\\ch5_app_algorithms.tex"
+			],
+			[
+				"pac",
+				"_preamble\\packages.tex"
+			],
+			[
+				"app_codes",
+				"ch5\\ch5_app_codes.tex"
+			],
+			[
+				"figsparsityaps_2",
+				"ch5\\sparsity\\figsparsityAPS_2.tex"
+			],
+			[
+				"figsparsityass_2",
+				"ch5\\sparsity\\figsparsityASS_2.tex"
+			],
+			[
+				"figsparsityhmayer_2",
+				"ch5\\sparsity\\figsparsityHmayer_2.tex"
+			],
+			[
+				"figsparsityhcqhs_2",
+				"ch5\\sparsity\\figsparsityHcqhs_2.tex"
+			],
+			[
+				"figsparsityhss",
+				"ch5\\sparsity\\figsparsityHSS.tex"
+			],
+			[
+				"app_sp",
+				"ch5\\ch5_app_sparsity.tex"
+			],
+			[
+				"algo",
+				"_preamble\\AlgorithmStyle.tex"
+			],
+			[
+				"ch6_",
+				"ch6\\ch6_frequencyresponse.tex"
+			],
+			[
+				"ch6",
+				"ch6\\ch6_examples.tex"
+			],
+			[
+				"ch5_alg",
+				"ch5\\ch5_algorithm.tex"
+			],
+			[
+				"dt",
+				"ch5\\ch5_dt.tex"
+			],
+			[
+				"formula",
+				"ch5\\ch5_formulation.tex"
+			],
+			[
+				"ch5_in",
+				"ch5\\ch5_introduction.tex"
+			],
+			[
+				"ch6_frequencyresponse",
+				"ch6\\ch6_frequencyresponse.tex"
+			],
+			[
+				"compo",
+				"ch7\\figures\\composite_beam.tex"
+			],
+			[
+				"varb",
+				"ch7\\figures\\varbeam.tex"
+			],
+			[
+				"varba",
+				"ch7\\figures\\varbeam.tex"
+			],
+			[
+				"open",
+				"ch7\\figures\\error_openloop.tex"
+			],
+			[
+				"models",
+				"ch7\\figures\\models.tex"
+			],
+			[
+				"coman",
+				"_preamble\\commands.tex"
+			],
+			[
+				"ch7",
+				"ch7\\ch7.tex"
+			],
+			[
+				"ch3",
+				"ch3\\ch3.tex"
+			],
+			[
+				"app1_e",
+				"app1\\app1_examples.tex"
+			],
+			[
+				"com",
+				"_preamble\\commands.tex"
+			],
+			[
+				"hy",
+				"_preamble\\packages_hyperref.tex"
+			],
+			[
+				"ch2_",
+				"ch2\\ch2_candidate.tex"
+			],
+			[
+				"alg",
+				"ch2\\algorithms\\cip.tex"
+			],
+			[
+				"main",
+				"_main\\dissertation-daniel-herber.tex"
+			],
+			[
+				"",
+				"_lists\\acronyms.tex"
+			]
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_symbol":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"selected_group": 0,
+	"settings":
+	{
+	},
+	"show_minimap": true,
+	"show_open_files": true,
+	"show_tabs": true,
+	"side_bar_visible": true,
+	"side_bar_width": 208.0,
+	"status_bar_visible": true,
+	"template_settings":
+	{
+	}
+}

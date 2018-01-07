@@ -1,0 +1,196 @@
+% GUIDELINES: packages in alphabetical order with a comment providing a high-level description of the package
+
+% needs to be loaded first
+\usepackage[hyphens]{url} % hyphenation of URLs
+
+% https://tex.stackexchange.com/questions/66958/how-do-you-suppress-specific-warnings-generated-by-pdflatex
+\usepackage{silence}
+\WarningFilter[pdftoc]{hyperref}{Token not allowed in a PDF string (Unicode)}
+\ActivateWarningFilters[pdftoc]
+
+% normal
+\usepackage[resetcount,algochapter]{algorithm2e} % environment for algorithms 
+\usepackage{amsmath} % AMS mathematical facilities for LATEX
+\usepackage{amssymb} % 
+\usepackage{amsfonts} % TEX fonts from the American Mathematical Society
+\usepackage[american]{babel} % culturally determined typographical rules
+\usepackage{bm} % bold for greek symbols
+\usepackage{caption} % makes captions ragged right
+\usepackage{subcaption} % support for subcaptions
+\usepackage{enumitem} % controls enumerate, itemize and description
+\usepackage{graphicx} % another package that works for figures
+\usepackage{geometry} % customize page layout
+\usepackage{lscape} % modifies the margins and rotates the page locally
+\usepackage{mathtools} % mathematical tools to use with amsmath
+\usepackage{setspace} % set space between lines
+\usepackage[dvipsnames]{xcolor} % defines colors
+\usepackage{blindtext} % produces text for testing
+\usepackage{import} % establish input relative to a directory
+\usepackage{epigraph} % pithy quotations
+\usepackage{nicefrac} % typesets fractions 'nicely'
+\usepackage{etoolbox} % toolbox of programming facilities
+\usepackage{subfiles} % typesetting a multi-file project
+\usepackage{xpatch} % for patching biblatex
+\usepackage[T1]{fontenc} % change font encoding
+\usepackage{lmodern} % use latin modern fonts
+
+
+\usepackage{chngcntr}
+\counterwithout{footnote}{chapter}
+
+\usepackage[normalem]{ulem}
+
+% \usepackage{stringstrings}
+
+%-------------------------------------------------
+% from DETC2017-67668 Co-Design Theory Paper
+%-------------------------------------------------
+\usepackage{ltxcmds}
+\usepackage{ifthen}
+\usepackage{cancel}
+\usepackage{empheq}
+\usepackage{fontawesome}
+%-------------------------------------------------
+
+
+%-------------------------------------------------
+% from DETC2017-67676 Scaling Paper
+%-------------------------------------------------
+% \usepackage{nomencl}
+%-------------------------------------------------
+
+%-------------------------------------------------
+% from MD-16-1635 PM Architectures Paper
+%-------------------------------------------------
+\usepackage{float}
+\restylefloat{table}
+\usepackage[export]{adjustbox}
+\usepackage{varwidth}
+\usepackage{relsize}
+\usepackage{tkz-linknodes}
+\usepackage{rotating}
+\usepackage{tikz} % for drawings
+\usetikzlibrary{shapes.geometric, arrows, topaths, shapes,decorations.text, positioning,shadows,trees,shapes.arrows, fadings,arrows.meta,graphs,graphs.standard}
+% \usetikzlibrary{external}
+\usepackage{blkarray}
+%-------------------------------------------------
+
+%-------------------------------------------------
+% from PM Enhancements Paper
+%-------------------------------------------------
+\usepackage{amsthm} % theorem-like structures
+% \usepackage[strict]{changepage} % change the page layout in the middle of a document 
+\usepackage{epstopdf} % 'include' eps files 
+\usepackage{framed} % framed or shaded regions
+% \usepackage{lastpage} % reference to the last page
+\usepackage{pifont} % Pi fonts (Dingbats, Symbol, etc)
+\usepackage{titlesec} % alternative section titles
+\usepackage{verbatim} % displays verbatim text 
+\usepackage{xstring} % provides macros for manipulating strings 
+%-------------------------------------------------
+
+%-------------------------------------------------
+% from PM circuits paper
+%-------------------------------------------------
+\usepackage{multirow}
+%-------------------------------------------------
+
+%-------------------------------------------------
+% from DT QP paper
+%-------------------------------------------------
+% \usepackage{tikz} % drawings
+\usetikzlibrary{shapes,arrows,positioning,snakes,arrows.meta}
+\usetikzlibrary{matrix}
+\usetikzlibrary{arrows,shapes,positioning, shapes.symbols}
+\usetikzlibrary{calc,decorations.markings, decorations.pathreplacing}
+% \usetikzlibrary{external}
+% \tikzexternalize[prefix=../_main/tikz/]
+\usepackage{matlab-prettifier}
+%-------------------------------------------------
+
+%-------------------------------------------------
+\input{../_preamble/packages_tikz} % drawings
+\input{../_preamble/packages_biblatex} % references
+\input{../_preamble/vAlgorithm} % algorithm environment
+\input{../_preamble/AlgorithmStyle} % algorithm style
+%-------------------------------------------------
+
+%-----------------------------------------------------
+% LATER PACKAGES
+\input{../_preamble/packages_hyperref} % hyperlinks 
+
+%-------------------------------------------------
+% glossaries
+%-------------------------------------------------
+% https://tex.stackexchange.com/questions/28797/links-to-glossary-items-broken/28800
+% \usepackage[automake, acronyms, nogroupskip, indexonlyfirst]{glossaries} % glossaries
+% \usepackage[automake, acronyms, nogroupskip]{glossaries} % glossaries
+
+\usepackage[automake, acronyms, nogroupskip, indexonlyfirst]{glossaries-extra} % glossaries
+
+\newglossary{symbol}{sym}{sbl}{List of Symbols}
+\newglossary{notation}{not}{ntn}{List of General Notation}
+\makeglossaries
+\glsenablehyper
+
+\glsaddkey
+ {foo}% new key
+ {\relax}% default value if "foo" isn't used in \newglossaryentry
+ {\glsentryfoo}% analogous to \glsentrytext
+ {\Glsentryfoo}% analogous to \Glsentrytext
+ {\glsfoo}% analogous to \glstext
+ {\Glsfoo}% analogous to \Glstext
+ {\GLSfoo}% analogous to \GLStext
+
+\loadglsentries{../gls/notation}
+\loadglsentries{../gls/acronyms}
+\loadglsentries{../gls/symbols}
+
+\newglossarystyle{glossymbol}{%
+    \renewenvironment{theglossary}{% Change the table type --> 3 columns
+        \begin{longtable}{r p{4.75in} r}}%
+        {\end{longtable}}%
+    \renewcommand*{\glossaryheader}{%  Change the table header
+        \bfseries Symbol & \bfseries Description & \bfseries Page \\
+              \hline
+        \endhead}
+    \renewcommand*{\glossentry}[2]{%  Change the displayed items
+        \glstarget{##1}{\glossentryname{##1}} %
+        & \glossentrydesc{##1} 
+        & {##2} 
+         \tabularnewline
+    }
+}
+\newglossarystyle{glosacronym}{%
+    \renewenvironment{theglossary}{% Change the table type --> 3 columns
+        \begin{longtable}{r p{3.25in} r}}%
+        {\end{longtable}}%
+    \renewcommand*{\glossaryheader}{%  Change the table header
+        \bfseries Abbreviations & \bfseries Description & \bfseries Page \\
+              \hline
+        \endhead}
+    \renewcommand*{\glossentry}[2]{%  Change the displayed items
+        \glstarget{##1}{\glossentryname{##1}} %
+        & \glossentrydesc{##1} 
+        & {##2} 
+         \tabularnewline
+    }
+}
+\newglossarystyle{glosnotation}{%
+    \renewenvironment{theglossary}{% Change the table type --> 3 columns
+        \begin{longtable}{r p{2.75in} r}}%
+        {\end{longtable}}%
+    \renewcommand*{\glossaryheader}{%  Change the table header
+        \bfseries Notation & \bfseries Description & \bfseries Page \\
+              \hline
+        \endhead}
+    \renewcommand*{\glossentry}[2]{%  Change the displayed items
+        \glstarget{##1}{\glossentryname{##1}} %
+        & \glossentrydesc{##1} 
+        & {##2} 
+         \tabularnewline
+    }
+}
+
+% \usepackage{showframe} % show page frames
+% \usepackage{lineno} % include line numbers 

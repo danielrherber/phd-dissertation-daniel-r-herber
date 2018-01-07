@@ -1,0 +1,31 @@
+%-------------------------------------------------------------------
+\section{Summary} \label{sec:ch5:conclusion}
+
+In this chapter, a unified framework for solving general linear-quadratic dynamic optimization (\lqdo{}) problems was proposed.
+This class of dynamic optimization problems contains problem elements such as a linear nonhomogeneous differential equation, quadratic objective function terms, and additional linear constraints where the optimization variables include the controls, states, parameters, initial state values, and final states values.
+
+% new paragraph
+A class of numerical methods known as direct transcription (\dt) was utilized to find approximate solutions to the \lqdo{} problem.
+The \dt{} methods parameterize both the state and control trajectories and include them as optimization variables. 
+A large number of equality constraints (termed defect constraints) are used to ensure feasible dynamics.
+Both pseudospectral (PS) and single-step (SS) methods are utilized to construct the defect constraints.
+A variety of SS methods are implemented including Euler forward (EF), trapezoidal rule (TR), Hermite-Simpson (HS),  4th-order classical Runge-Kutta (RK4), and zero-order hold (ZOH).
+HS and RK4 are frequently utilized on NLDO problems, but rarely with \lqdo{}.
+ZOH is a commonly used method, particularly within the MPC framework.
+A number of quadrature schemes are implemented including a new composite quadratic Hermite-Simpson (CQHS) method.
+This method is derived in a similar manner as the composite HS method, but uses linear interpolation between node points for each term in the quadratic objective function.
+
+% new paragraph
+An automated problem generation procedure (\apgp) is fully outlined that makes it relatively straightforward to obtain a \dt{} solution to an \lqdo{} problem.
+A structure-based scheme is used to represent the problem.
+The algorithms for efficiently generating the sequences that define the sparse matrices is also described.
+Full \textsc{Matlab} codes are available at Ref.~\cite{github-dt-qp-project}.
+Five examples are shown to demonstrate the efficacy of the \apgp.
+Including a variety of \dt{} methods allowed for direct comparisons between the methods.
+The PS-based methods had extremely fast convergence in problems with no path constraints, and had a smooth optimal solution in general.
+When the nonsmoothness was present in the optimal solutions, the higher-order SS methods performed better, with the HS and RK4 being the best.
+The CQHS-based methods generally performed as good as or better than the other SS methods, demonstrating the relative effectiveness of the new quadrature scheme.
+
+% new paragraph
+A number of extensions are described including integral constraints, min-max objectives, absolute values, output tracking, control rate constraints, and polyhedra constraints, demonstrating that a diverse set of problems fit under the \lqdo{} framework.
+There are a number of methods and features that can be implemented in the future including multiple-interval PS methods, multiphase problems, mesh refinement, costate approximation, additional defect and quadrature methods, customized \qp{} solvers, scaling, and quadratically-constrained {\qp}s.

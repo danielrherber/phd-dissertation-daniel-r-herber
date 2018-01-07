@@ -1,0 +1,36 @@
+\begin{vAlgorithm}[!ht]{\textwidth}{0em}
+\LinesNumbered
+\DontPrintSemicolon
+
+\SetKwFunction{find}{find}
+\SetKwFunction{eye}{eye}
+\SetKwFunction{length}{length}
+
+\SetKwInOut{Input}{Input}
+\SetKwInOut{Output}{Output}
+
+\caption{Limit potential connections based on line-connectivity constraints.\label{alg:app1:lines}}
+
+\Input{%
+        \xvbox{2.5mm}{$\xvar{A}$} -- expanded potential adjacency matrix \\
+        \xvbox{2.5mm}{$\xvar{iR}$} -- component index for right port \\
+        \xvbox{2.5mm}{$\xvar{iL}$} -- component index for left port \\
+        \xvbox{2.5mm}{$\xvar{B}$} -- 3-D array with line-connectivity constraint information \\
+      }
+\Output{%
+        \xvbox{2.5mm}{$\xvar{A}$} -- expanded potential adjacency matrix
+       }
+
+\BlankLine
+
+\If{there are any line-connectivity constraints}{
+
+$\xvar{A}(:, \xvar{iR})$ $\leftarrow$ $\xvar{A}(:,\xvar{iR}) \circ \xvar{B}(:,\xvar{iR},\xvar{iL})$ \tcc*{potentially limit connections}
+
+$\xvar{A}(:, \xvar{iL})$ $\leftarrow$ $\xvar{A}(:,\xvar{iL}) \circ \xvar{B}(:,\xvar{iL},\xvar{iR})$ \tcc*{potentially limit connections}
+
+$\xvar{A}([\xvar{iR},\xvar{iL}],:)$ $\leftarrow$ $\xvar{A}(:,[\xvar{iR},\xvar{iL}])\tran$ \tcc*{make symmetric}
+
+}
+
+\end{vAlgorithm}

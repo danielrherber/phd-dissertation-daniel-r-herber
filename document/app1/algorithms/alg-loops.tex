@@ -1,0 +1,36 @@
+\begin{vAlgorithm}[!ht]{\columnwidth}{0em}
+\LinesNumbered
+\DontPrintSemicolon
+
+\SetKwFunction{find}{find}
+\SetKwFunction{eye}{eye}
+\SetKwFunction{length}{length}
+\SetKwFunction{any}{any}
+
+\SetKwInOut{Input}{Input}
+\SetKwInOut{Output}{Output}
+
+\caption{Limit potential connections based on loops.\label{alg:app1:loops}}
+
+\Input{%
+        \xvbox{2.5mm}{$\xvar{A}$} -- expanded potential adjacency matrix \\
+        \xvbox{2.5mm}{$\xvar{M}$} -- vector indicating if a component replicate is mandatory \\
+        \xvbox{2.5mm}{$\xvar{U}$} -- vector indicating if a component replicate requires unique connections \\
+      }
+\Output{%
+        \xvbox{2.5mm}{$\xvar{A}$} -- expanded potential adjacency matrix
+       }
+
+\BlankLine
+
+\If(\tcc*[f]{some loops should be excluded}){$\any(\xvar{M} \land \xvar{U})$}{
+
+$\xvar{N}$ $\leftarrow$ $\length(\xvar{M})$ \tcc*{total number of component replicates}
+
+$\xvar{iDiag}$ $\leftarrow$ $[1 : \xvar{N}+1 : \xvar{N}^2]$ \tcc*{indices for the diagonal elements}
+
+$\xvar{A}(\xvar{iDiag})$ $\leftarrow$ $!\left(\xvar{M} \land \xvar{U}\right)$ \tcc*{assign NAND between M and U to the diagonal\label{alg:app1:loops-l4}}
+
+}
+
+\end{vAlgorithm}

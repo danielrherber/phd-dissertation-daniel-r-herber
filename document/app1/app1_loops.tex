@@ -1,0 +1,133 @@
+\section{Avoiding Loops\label{sec:app1:loops}}
+
+Under specific NSCs, we can exclude loops during the graph generation process. A loop is an edge that connects a vertex to itself \cite[p.~25]{Diestel2000a}. 
+
+\subsection{Theory}
+
+Consider a component type that is both mandatory (\ref{ch2:s3}) and each edge is required to be unique (\ref{ch2:s7}).
+Then a feasible graph cannot have any loops for this component type since the number of edges would not be unique.
+We cannot make the same assumption if a component type needs to have each edge be unique but is not a mandatory component.
+Consider a two-port, nonmandatory component type with one replicate.
+Now, if we want a connected graph with all components except this specific two-port component, then a loop is required since each port must be filled. Therefore, this enhancement can be implemented with NAND logic where only a mandatory component type with each connection required to be unique is excluded from having loops.
+
+This is not a general enhancement since it requires specific NSCs.
+
+\subsection{Implementation}
+
+\input{../app1/algorithms/alg-loops}
+
+Algorithm~\ref{alg:app1:loops} is the pseudocode for the implementation of this enhancement.
+The implementation is centered around modifying the expanded potential adjacency matrix ($\xvar{A}$) before the graph generation algorithm is called.
+The total number of components is found and then the linear index values for the diagonal of expanded potential adjacency matrix are computed.
+Finally, in line~\ref{alg:app1:loops-l4}, NAND logical operator between $\xvar{M}$ and $\xvar{U}$ is assigned to the diagonal of $\xvar{A}.$
+
+\subsection{Examples}
+
+\subsubsection{Example 1\label{sec:app1:loops-ex1}}
+
+The base three-tuple and NSCs for this example are specified as:
+\begin{align}
+C = \{ \xcolor{X}, \xcolor{Y} \}, \ \ R = [2\ 2], \ \ P = [2\ 2], \ \ \gls{S}_3 \text{ with } \gls{M} = [0\ 1], \ \ S_6 \text{ with } \gls{U} = [1 \ 1]
+\end{align}
+
+\noindent We will consider an all unity $\xvar{A}$ but this could be any expanded potential adjacency matrix. The second and third inputs to Alg.~\ref{alg:app1:loops} are:
+\begin{align}
+\xvar{M} = [0\ 0\ 1\ 1], \quad \xvar{U} = [1\ 1\ 1\ 1], \quad !\left(\xvar{M} \land \xvar{U}\right) = [1\ 1\ 0\ 0]
+\end{align}
+
+\noindent Now, Alg.~\ref{alg:app1:loops} modifies the expanded potential adjacency matrix as:
+\begin{align}
+\xvar{A} = \begin{blockarray}{ccccc}
+& \xcolor{X} & \xcolor{X} & \xcolor{Y} & \xcolor{Y} \\
+\begin{block}{c[cccc]}
+\xcolor{X} & 1 & 1 & 1 & 1 \\
+\xcolor{X} & 1 & 1 & 1 & 1 \\
+\xcolor{Y} & 1 & 1 & 1 & 1 \\
+\xcolor{Y} & 1 & 1 & 1 & 1 \\
+\end{block}
+\end{blockarray}
+\xrightarrow{\xvar{A}(\xvar{iDiag}) \leftarrow !\left(\xvar{M} \land \xvar{U}\right)}
+\xvar{A} = \begin{blockarray}{ccccc}
+& \xcolor{X} & \xcolor{X} & \xcolor{Y} & \xcolor{Y} \\
+\begin{block}{c[cccc]}
+\xcolor{X} & \bm{1} & 1 & 1 & 1 \\
+\xcolor{X} & 1 & \bm{1} & 1 & 1 \\
+\xcolor{Y} & 1 & 1 & \bm{0} & 1 \\
+\xcolor{Y} & 1 & 1 & 1 & \bm{0} \\
+\end{block}
+\end{blockarray}
+\end{align}
+\vspace{-2em}
+
+\noindent where $\xcolor{Y}$ is mandatory and unique connections are required so corresponding diagonal entries in $\xvar{A}$ were zeroed. Table~\ref{tb:app1:loops-ex1} compares the original algorithm with the enhancement for this example. There is a reduction in candidate graphs generated while the number of unique graphs remains the same.
+
+\begin{table}[!ht]
+\centering
+\caption{Comparison (loops, \nameref{sec:app1:loops-ex1}).\label{tb:app1:loops-ex1}}
+\begin{tabular}{r | c | c | c}
+\hline \hline
+& Orig & En & Orig/En \\
+\hline
+Candidate Graphs & 26 & 16 & 1.63 \\ 
+Unique Graphs & 3 & 3 & 1 \\
+Generation Time (s) & 0.0024 & 0.0022 & 1.09 \\
+Total Time (s) & 0.0086 & 0.0070 & 1.23 \\
+\hline \hline
+\end{tabular}
+\end{table}
+
+\subsubsection{Example 2\label{sec:app1:loops-ex2}}
+
+The base three-tuple and NSCs for this example are specified as:
+\begin{align}
+C = \{ \xcolor{X}, \xcolor{Y} \}, \ \ R = [2\ 2], \ \ P = [2\ 2], \ \ S_3 \text{ with } M = [1\ 1], \ \ S_6 \text{ with } U = [1\ 1]
+\end{align}
+
+\noindent We will consider an all unity $\xvar{A}$ but this could be any expanded potential adjacency matrix. The second input to Alg.~\ref{alg:app1:loops} is:
+\begin{align}
+\xvar{M} = [1\ 1\ 1\ 1], \quad \xvar{U} = [1\ 1\ 1\ 1], \quad !\left(\xvar{M} \land \xvar{U}\right) = [0\ 0\ 0\ 0]
+\end{align}
+
+\noindent Now, Alg.~\ref{alg:app1:loops} modifies the expanded potential adjacency matrix as:
+\begin{align}
+\begin{aligned}
+\xvar{A} = \begin{blockarray}{ccccc}
+& \xcolor{X} & \xcolor{X} & \xcolor{Y} & \xcolor{Y} \\
+\begin{block}{c[cccc]}
+\xcolor{X} & 1 & 1 & 1 & 1 \\
+\xcolor{X} & 1 & 1 & 1 & 1 \\
+\xcolor{Y} & 1 & 1 & 1 & 1 \\
+\xcolor{Y} & 1 & 1 & 1 & 1 \\
+\end{block}
+\end{blockarray}
+\xrightarrow{\xvar{A}(\xvar{iDiag}) \leftarrow !\left(\xvar{M} \land \xvar{U}\right)}
+\xvar{A} = \begin{blockarray}{ccccc}
+& \xcolor{X} & \xcolor{X} & \xcolor{Y} & \xcolor{Y} \\
+\begin{block}{c[cccc]}
+\xcolor{X} & \bm{0} & 1 & 1 & 1 \\
+\xcolor{X} & 1 & \bm{0} & 1 & 1 \\
+\xcolor{Y} & 1 & 1 & \bm{0} & 1 \\
+\xcolor{Y} & 1 & 1 & 1 & \bm{0} \\
+\end{block}
+\end{blockarray}
+\end{aligned}
+\end{align}
+\vspace{-2em}
+
+\noindent Since both component types are mandatory and unique connections are required, the entire diagonal is zeroed.
+Table~\ref{tb:app1:loops-ex2} compares the original algorithm with the enhancement for this example. There is a reduction in candidate graphs generated while the number of unique graphs remains the same.
+
+\begin{table}[!ht]
+\centering
+\caption{Comparison (loops, \nameref{sec:app1:loops-ex2}).\label{tb:app1:loops-ex2}}
+\begin{tabular}{r | c | c | c}
+\hline \hline
+& Orig & En & Orig/En \\
+\hline
+Candidate Graphs & 26 & 11 & 2.36 \\ 
+Unique Graphs & 2 & 2 & 1 \\
+Generation Time (s) & 0.0024 & 0.0022 & 1.09 \\
+Total Time (s) & 0.0086 & 0.0060 & 1.43 \\
+\hline \hline
+\end{tabular}
+\end{table}

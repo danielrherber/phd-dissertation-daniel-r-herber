@@ -1,0 +1,45 @@
+\begin{vAlgorithm}[!ht]{1\columnwidth}{0em}
+\LinesNumbered
+\DontPrintSemicolon
+
+\SetKwInOut{Require}{Require}
+
+\caption{Create sequences for Mayer terms.}\label{alg:ch5:Mterms}
+
+\Require{ structure $\mathcal{M}$ of type \xvar{objective}}
+
+$\emptyset$ $\gets$ $\mathcal{I}$, $\mathcal{J}$, $\mathcal{V}$ \tcc*{initialize sequences}
+
+\For{\xvar{k} $\gets$ $1$ \KwTo $\abs{\mathcal{M}}$}{
+
+	\xvar{M} $\gets$ $\mathcal{M}$\myind{\xvar{k}} \tcc*{obtain current substructure }
+
+	\xvar{A} $\gets$ \xvar{M}.\xvar{matrix} \tcc*{obtain current submatrix}
+
+	\xvar{R} $\gets$ \textsc{GetContIndex}(\xvar{M}.\xvar{left}) \tcc*{rows (continuous), see Alg.~\ref{alg:ch5:getindex}}
+
+	\xvar{C} $\gets$ \textsc{GetContIndex}(\xvar{M}.\xvar{right}) \tcc*{columns (continuous), see Alg.~\ref{alg:ch5:getindex}}
+
+	\For{\xvar{i} $\gets$ $1$ \KwTo $\abs{\textsf{R}}$}{
+
+		\For{\xvar{j} $\gets$ $1$ \KwTo $\abs{\textsf{C}}$}{
+
+			\xvar{r} $\gets$ \textsc{GetQPIndex}(\textsf{R}\myind{\textsf{i}}, \xvar{M}.\xvar{left}, 1) \tcc*{rows (QP), see Alg.~\ref{alg:ch5:getindex}}
+
+			\xvar{c} $\gets$ \textsc{GetQPIndex}(\textsf{C}\myind{\textsf{j}}, \xvar{M}.\xvar{right}, 1) \tcc*{columns (QP), see Alg.~\ref{alg:ch5:getindex}}
+
+			$\mathcal{I}$ $\gets$ \textsc{combine}($\mathcal{I}$, \xvar{r})
+
+			$\mathcal{J}$ $\gets$ \textsc{combine}($\mathcal{J}$, \xvar{c})
+
+			$\mathcal{V}$ $\gets$ \textsc{combine}($\mathcal{V}$, \xvar{A}\myind{\xvar{i},\xvar{j}})
+
+		}
+
+	}
+
+}
+
+\textbf{return} $\mathcal{I}$, $\mathcal{J}$, $\mathcal{V}$ \tcc*{sequences that define Mayer terms in $\mathbf{H}$}
+
+\end{vAlgorithm}

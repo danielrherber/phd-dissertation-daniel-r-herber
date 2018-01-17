@@ -22,7 +22,7 @@
 
 \caption{Generate set of unique, feasible graphs using subcatalogs. \label{alg:app1:subcatalogs}}
 
-\Input{$\xvar{Rmin}$ -- vector indicating min number of replicates for each component type \\
+\Input{$\xvar{Rmin}$ -- vector indicating the min number of replicates for each component type \\
 $\xvar{Rmax}$ -- vector indicating the max number of replicates for each component type \\
 $\xvar{C}$ -- colored label set \\
 $\xvar{P}$ -- ports vector \\
@@ -34,16 +34,16 @@ $\xvar{NSC}$ -- structure for the network structure constraints \\
             
 % $\xvar{Nsubcatalogs}$ $\leftarrow$ $\prod(\xvar{Rmax}-\xvar{Rmin}+1)$ \tcc*{number of subcatalogs}
 
-\For(\tcc*[f]{for each component type}){$\xvar{k}$ $\leftarrow$ $1$ \KwTo $\length(\xvar{Rmax})$}{
+\For(\tcc*[f]{for each component type}){$k$ $\leftarrow$ $1$ \KwTo $\length(\xvar{Rmax})$}{
 
-    $\xvar{Rlist}\{\xvar{k}\}$ $\leftarrow$ $\xvar{Rmin}(\xvar{k}) : 1 : \xvar{Rmax}(\xvar{k})$ \tcc*{list of potential number of replicates}
+    $\xvar{Rlist}\{k\}$ $\leftarrow$ $\xvar{Rmin}(k) : 1 : \xvar{Rmax}(k)$ \tcc*{list of potential number of replicates}
 
 }
 
 $\xvar{Subcatalogs}$ $\leftarrow$ matrix form of the cell array from $\ndgrid(\xvar{Rlist})$ \tcc*{generate subcatalogs}
     
 % \For{$\xvar{j}$ $\leftarrow$ $1$ \KwTo $\length(\xvar{Rmax})$}{
-%     $\xvar{r}(\xvar{j})$ $\leftarrow$ $\xvar{SubcatalogsCell}\{\xvar{j}\}(\xvar{k})$ \tcc*{extract R vector for this catalog test}
+%     $\xvar{r}(\xvar{j})$ $\leftarrow$ $\xvar{SubcatalogsCell}\{\xvar{j}\}(k)$ \tcc*{extract R vector for this catalog test}
 % }
 
 $\xvar{Subcatalogs}$ $\leftarrow$ filter $\xvar{Subcatalogs}$ (empty,  odd port, custom filters)
@@ -52,9 +52,9 @@ $\xvar{Nsubcatalogs}$ $\leftarrow$ number of rows in $\xvar{Subcatalogs}$ \tcc*{
 
 $\xvar{nsc}$ $\leftarrow$ $\xvar{NSC}$ \tcc*{local NSC structure}
 
-\For(\textbf{in parallel} \label{alg:app1:subcatalogs-l7}){$\xvar{k}$ $\leftarrow$ $1$ \KwTo $\xvar{Nsubcatalogs}$}{
+\For(\textbf{in parallel} \label{alg:app1:subcatalogs-l7}){$k$ $\leftarrow$ $1$ \KwTo $\xvar{Nsubcatalogs}$}{
 
-    \xvbox{1.5mm}{$\xvar{r}$} $\leftarrow$ $\xvar{Subcatalogs}(\xvar{k},:)$ \tcc*{extract R vector for this subcatalog test}
+    \xvbox{1.5mm}{$\xvar{r}$} $\leftarrow$ $\xvar{Subcatalogs}(k,:)$ \tcc*{extract R vector for this subcatalog test}
 
 % $\xvar{Np}$ $\leftarrow$ $\dot(\xvar{P},\xvar{r})$ \tcc*{calculate number of ports}
 
@@ -78,14 +78,14 @@ $\xvar{nsc}$ $\leftarrow$ $\xvar{NSC}$ \tcc*{local NSC structure}
 
     \xvbox{8mm}{$\xvar{nsc}.\xvar{M}$} $\leftarrow$ $\ones(\size(\xvar{r}))$ \tcc*{all component types are mandatory\label{alg:app1:subcatalogs-l20}}
 
-    $\xvar{Graphs}\{\xvar{k}\}$ $\leftarrow$ generate feasible graphs for this subcatalog using $\xvar{c}$, $\xvar{r}$, $\xvar{p}$, and $\xvar{nsc}$
+    $\xvar{Graphs}\{k\}$ $\leftarrow$ generate feasible graphs for this subcatalog using $\xvar{c}$, $\xvar{r}$, $\xvar{p}$, and $\xvar{nsc}$
 
 % }
 
 }
 
-\For(\textbf{in parallel} \tcc*[f]{obtain unique graphs}){$\xvar{k}$ $\leftarrow$ $1$ \KwTo $\xvar{Nsubcatalogs}$}{
-    $\xvar{Graphs}\{\xvar{k}\}$ $\leftarrow$ determine set of unique graphs in $\xvar{Graphs}\{\xvar{k}\}$
+\For(\textbf{in parallel} \tcc*[f]{obtain unique graphs}){$k$ $\leftarrow$ $1$ \KwTo $\xvar{Nsubcatalogs}$}{
+    $\xvar{Graphs}\{k\}$ $\leftarrow$ determine set of unique graphs in $\xvar{Graphs}\{k\}$
 }
 
 $\xvar{FinalGraphs}$ $\leftarrow$ combine unique graphs from each subcatalog using $\xvar{Graphs}$

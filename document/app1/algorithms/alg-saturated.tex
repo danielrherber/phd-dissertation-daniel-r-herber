@@ -38,13 +38,13 @@ $\xvar{nUncon}$ $\leftarrow$ $\mysum(\xvar{M}(\xvar{iNonSat}))$ \tcc*{\# of mand
 
   \uIf(\tcc*[f]{all mandatory components are in saturated subgraph}){$\xvar{nUncon} = 0$}{
 
-  \For(\tcc*[f]{add remaining edges in arbitrary order\label{alg:app1:saturated-l6}}){ $\xvar{j}$ $\leftarrow$ $1$ \KwTo $\mysum(\xvar{V})$}{
+  \For(\tcc*[f]{add remaining edges in arbitrary order\label{alg:app1:saturated-l6}}){ $j$ $\leftarrow$ $1$ \KwTo $\mysum(\xvar{V})$}{
 
-  {$\xvar{k}$} $\leftarrow$ $\find(\xvar{V},1)$ \tcc*{find first nonzero entry}
+  {$k$} $\leftarrow$ $\find(\xvar{V},1)$ \tcc*{find first nonzero entry}
 
-  {$\xvar{LR}$} $\leftarrow$ $\xvar{cVf}(\xvar{k})-\xvar{V}(\xvar{k})$ % \tcc*{port}
+  {$\xvar{LR}$} $\leftarrow$ $\xvar{cVf}(k)-\xvar{V}(k)$ % \tcc*{port}
 
-  {$\xvar{V}(\xvar{k})$} $\leftarrow$ $\xvar{V}(\xvar{k})-1$ \tcc*{remove port}
+  {$\xvar{V}(k)$} $\leftarrow$ $\xvar{V}(k)-1$ \tcc*{remove port}
 
   {$\xvar{E}$} $\leftarrow$ $[\xvar{E},\xvar{LR}]$ \tcc*{add port}
 
@@ -56,7 +56,7 @@ $\xvar{nUncon}$ $\leftarrow$ $\mysum(\xvar{M}(\xvar{iNonSat}))$ \tcc*{\# of mand
 
 }
 
-\uElseIf(\tcc*[f]{no mandatory comps are in saturated subgraph\label{alg:app1:saturated-l14}}){$\xvar{nUncon} = \mysum(M)$}{
+\uElseIf(\tcc*[f]{no mandatory comps are in saturated subgraph\label{alg:app1:saturated-l14}}){$\xvar{nUncon} = \mysum(\xvar{M})$}{
 
   \tcc{continue with this iteration}
 

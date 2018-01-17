@@ -39,7 +39,7 @@ A thorough analysis of the general co-design formulation is needed to better all
 
 % new paragraph
 One of the numerical solution methods recently applied to co-design problems is known as \glsfirst{DT}, which approximates the infinite-dimensional DO problem with a finite \glsfirst{NLP} that can be solved with standard NLP solvers~\cite{Betts2010a, Biegler2010a, Rao2010a, Allison2014b}. 
-DT has a number of favorable properties that supports the efficient generation of solutions to general co-design problems~\cite{Allison2014a, Allison2014b, Herber2014a}.
+DT has a number of favorable properties that support the efficient generation of solutions to general co-design problems~\cite{Allison2014a, Allison2014b, Herber2014a}.
 
 % new paragraph
 In this chapter, we will explore the general co-design problem with a focus on the simultaneous and nested solution strategies.
@@ -210,7 +210,7 @@ For example, if control bounds are provided, then it is not guaranteed that we c
 % new paragraph
 It is also important to note that this outer-loop feasibility constraint may not strictly be required to find the system-optimal solution using the simultaneous strategy.
 Another strategy is to add a feasibility constraint that restricts $\Omega$ such that the desired property holds.
-This is not ideal since there will be no guarantee that the nested strategy will produce the system-level optimum, but may be a necessity for certain co-design problems.
+This is not ideal since there will be no guarantee that the nested strategy will produce the system-level optimum, but might be a necessity for certain co-design problems.
 The implications of this will be discussed in the following sections.
 
 %---------------------------------------------------------------------
@@ -267,7 +267,7 @@ Eqns.~(\ref{eq:ch3:ocsd_cond_4}) are the {dual feasibility conditions}, and
 Eqns.~(\ref{eq:ch3:ocsd_cond_5}) are the {initial and final time transversality conditions}.
 The conditions in Eqn.~(\ref{eq:ch3:ocsd_cond}) are in addition to the constraints in Eqns.~(\ref{eq:ch3:ocsd_2})--(\ref{eq:ch3:ocsd_4}). The necessary conditions for both strategies can now be derived.
 
-\subsection{Co-design---Simultaneous Strategy}
+\subsection{Co-Design---Simultaneous Strategy}
 
 Here we will derive the simultaneous co-design optimality conditions only using PMP.
 Others have derived the optimality conditions for similar co-design formulations.
@@ -320,7 +320,7 @@ Therefore, the simultaneous co-design optimality conditions are a combination of
 \end{subequations}
 \endgroup
 
-\subsection{Co-design---Nested Strategy}
+\subsection{Co-Design---Nested Strategy}
 
 We now derive the necessary conditions for the nested strategy where the outer-loop problem is defined in Prob.~(\ref{eq:ch3:outerloop}) and the inner loop in Prob.~(\ref{eq:ch3:innerloop}).
 The inner-loop optimality conditions are defined in Eqn.~(\ref{eq:ch3:ocsd_cond}) with only OLC variables.
@@ -482,7 +482,7 @@ Under certain conditions, the QP is convex and efficient to solve for even large
 
 % new paragraph
 This form has been utilized in a number of nested co-design studies~\cite{Herber2014a, Chilan2017a}.
-The simultaneous strategy cannot be applied with this form since most (if not all) co-design dynamic constraints have a nonlinear dependence on the optimization variables~\cite{Fathy2001a}. For example consider the following bilinear dynamic constraint: $\dot{\xi} = - k \xi$, where $k$ is a plant optimization variable. This dynamic constraint would need to be approximated with quadratic constraints.
+The simultaneous strategy cannot be applied with this form since most (if not all) co-design dynamic constraints have a nonlinear dependence on the optimization variables~\cite{Fathy2001a}. For example consider the following bilinear dynamic constraint: $\dot{\xi} = - k \xi$, where $k$ is a plant optimization variable. This dynamic constraint would need to be approximated by quadratic constraints.
 
 \subsubsection{Linear-Quadratic Regulator \label{sec:ch3:lqr}}
 
@@ -597,7 +597,7 @@ Consider the following simple co-design problem that seeks to move a second-orde
 \min_{k,u(t)} \quad & \int_{0}^{t_f} u^2 dt \\
 \text{subject to:} \quad & \dot{\bxi} = \begin{bmatrix} 0 & 1 \\ -k & 0 \end{bmatrix}\bxi + \begin{bmatrix} 0 \\ 1 \end{bmatrix} u \\
 & \textcolor{light-gray}{\phi_1 := }\ \xi_1(0) - x_0 = 0, \ \textcolor{light-gray}{\phi_2 := }\  \xi_2(0) - v_0 = 0 \\
-& \textcolor{light-gray}{\phi_3 := }\ \xi_1(t_f) = 0, \ \textcolor{light-gray}{\phi_2 := }\  \xi_2(t_f) = 0
+& \textcolor{light-gray}{\phi_3 := }\ \xi_1(t_f) = 0, \ \textcolor{light-gray}{\phi_4 := }\  \xi_2(t_f) = 0
 \end{align}
 \end{subequations}
 

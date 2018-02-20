@@ -116,7 +116,7 @@ The appropriate optimization problem needs to be automatically created and solve
 Since these types of problems can be highly nonconvex (see Chapter~\ref{ch:3}), global search algorithms are utilized to help improve the confidence of finding the true optimal solution (in this chapter, a multistart approach is used, but an alternative is a genetic algorithm \cite{Papalambros2017a, Marti2003a, Eiben2003a}).
 
 % new paragraph
-An automated model generation procedure (see Sec.\ref{sec:ch1:modelgen}) was developed to take the generated graphs and produce the appropriate (linear) model.
+An automated model generation procedure (see Sec.~\ref{sec:ch1:modelgen}) was developed to take the generated graphs and produce the appropriate (linear) model.
 This procedure utilizes the \textsc{Simulink}/\textsc{Simscape} modeling environment to generate the appropriate diagram.
 Each time a plant variable is updated, the model is regenerated through a linearization procedure.
 This is a relatively expensive operation; a better method would generate an analytical representation of $\bm{A}(\bm{x}_p)$ and the other matrices so that it only needs to be performed once per candidate architecture.

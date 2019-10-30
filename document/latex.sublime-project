@@ -1,13 +1,4 @@
 {
-	"build_systems":
-	[
-		{
-			"file_regex": "^[ ]*File \"(...*?)\", line ([0-9]*)",
-			"name": "Anaconda Python Builder",
-			"selector": "source.python",
-			"shell_cmd": "\"python\" -u \"$file\""
-		}
-	],
 	"folders":
 	[
 		{
@@ -34,7 +25,9 @@
 				"*.dvi",
 				"*.md5",
 				"*.dpth",
-				"*.auxlock"
+				"*.auxlock",
+				"*.ntn",
+				"*.sbl",
 			],
 			"path": "."
 		}
@@ -43,8 +36,10 @@
 	{
 		"TEXroot": "_main/dissertation-daniel-herber.tex",
 		"builder": "basic",
+		// "aux_directory": "_main/_cache",
 		"builder_settings":
 		{
+			"options": "--shell-escape",
 			"display_log": false,
 			"windows":
 			{

@@ -1,2 +1,7 @@
+!.gitignore
+
+# ignore certain file extensions
 *.sublime-workspace
 *.bib.bak
+*.ini
+*.asv

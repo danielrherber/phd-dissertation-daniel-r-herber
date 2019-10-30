@@ -1,4 +1,6 @@
+\vspace*{-2.75ex} % to maintain page layout
 \section{A Problem Class with Linear Physical Elements\label{sec:ch8:class}}
+\vspace*{-2.25ex} % to maintain page layout
 
 \newcommand{\xarch}{^{(i)}}
 \newcommand{\xclass}{^{\mathcal{P}}}
@@ -13,7 +15,7 @@ Some analogies for these power nodes in different energy domains are in Table~\r
 An example of a \xcolor{TF} (transformer) is a lever, gear, or hydraulic cylinder.
 The \xcolor{GY} (gyrator) typically describes the conversion between energy domains, such as with an electrical DC motor or mass accelerometer.
 The \xcolor{0}-junction is analogous to Kirchhoff's current law and the \xcolor{1}-junction is analogous to the voltage law in electrical systems.
-For more details on bond graph modeling, see Refs.~\cite{Borutzky2010a,Kypuros2013a, Karnopp2012a}
+For more details on bond graph modeling, see Refs.~\cite{Borutzky2010a, Kypuros2013a, Karnopp2012a}.
 
 \begin{table}
 \centering
@@ -24,9 +26,9 @@ Label & Intuitive & Topology Preserving & Electrical \\
 \hline
 \xcolor{Se} & Force & Velocity & Voltage  \\
 \xcolor{Sf} & Velocity & Force & Current \\
-\xcolor{C} & $1/K$ & $M$ & $C$  \\
-\xcolor{I} & $M$ & $1/K$ & $I$ \\
-\xcolor{R} & $B$ & $1/B$ & $R$ \\
+\xcolor{C} & (Spring Constant)$^{-1}$ & Mass & Capacitance \\
+\xcolor{I} & Mass & (Spring Constant)$^{-1}$ & Inductance \\
+\xcolor{R} & Damping Constant & (Damping Constant)$^{-1}$ & Resistance \\
 \hline \hline
 \end{tabular}
 \caption{Some bond graph modeling analogies.\label{tb:ch8:analogies}}
